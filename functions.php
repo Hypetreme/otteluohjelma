@@ -86,66 +86,84 @@ function register()
 		if ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
 		}
-      require 'phpmailer/PHPMailerAutoload.php';
-
-$mail = new PHPMailer;
-
-    $mail->isSMTP();
-    $mail->Host = 'localhost';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'info@appstudios.fi';
-    $mail->Password = 'Kupari-6102';
-    $mail->SMTPSecure = '';
-    $mail->SMTPAutoTLS = false;
-    $mail->Port = 587;
-    $mail->setFrom("vahvistus@otteluohjelma.fi");
-    $mail->AddAddress("hypetremethewanderer@gmail.com");
-    $mail->WordWrap = 50;
-    $mail->CharSet = 'UTF-8';
-    $mail->IsHTML(true);
-    $mail->Subject = "Asia";
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-
-if(!$mail->send()) {
-    echo 'Message could not be sent.';
-    echo 'Mailer Error: ' . $mail->ErrorInfo;
-} else {
-    echo 'Message has been sent';
-}
-
-		echo '<script type="text/javascript">';
-		echo 'alert("Käyttäjä rekisteröity!");';
-		//echo 'document.location.href = "index.php";';
-		echo '</script>';
-	}
 
 	// Sähköpostin lähetys
 
-	/*$to = $email; // Send email to our user
-	$subject = 'Signup | Verification'; // Give the email a subject
-	$message = '
+	require 'phpmailer/PHPMailerAutoload.php';
 
-Thanks for signing up!
+	$mail = new PHPMailer;
+
+	//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+	$mail->isSMTP();                                      // Set mailer to use SMTP
+	$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+	$mail->SMTPAuth = true;                               // Enable SMTP authentication
+	$mail->Username = 'hypetremethewanderer@gmail.com';                 // SMTP username
+	$mail->Password = 'GODofwar3';                           // SMTP password
+	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->Port = 587;                                    // TCP port to connect to
+
+	$mail->SetFrom("vahvistus@otteluohjelma.fi", "Otteluohjelma");
+	$mail->AddReplyTo("vahvistus@otteluohjelma.fi", "Otteluohjelma");
+	$mail->addAddress($email, $uid);     // Add a recipient
+	$mail->isHTML(true);                                  // Set email format to HTML
+
+	$mail->Subject = 'Otteluohjelma: Vahvistus';
+	$mail->Body    = 'Thanks for signing up!
 Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
 
 ------------------------
-Username: ' . $name . '
-Password: ' . $password . '
+Username: '.$uid.'
+Password: '.$pwd.'
 ------------------------
 
 Please click this link to activate your account:
-http://ottelu-jannekarppinen96814.codeanyapp.com/verify.php?email=' . $email . '&hash=' . $hash . '
+http://localhost:8080/otteluohjelma/verify.php?email='.$email.'&hash='.$hash.''; // Our message above including the link
 
-'; // Our message above including the link
-	$headers = 'From:noreply@otteluohjelma.fi' . "\r\n"; // Set from headers
-	mail($to, $subject, $message, $headers); // Send our email*/
+$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
+	if(!$mail->send()) {
+	    echo 'Message could not be sent.';
+	    echo 'Mailer Error: ' . $mail->ErrorInfo;
+	} else {
+	    echo 'Message has been sent';
+	}
+	echo '<script type="text/javascript">';
+	echo 'alert("Käyttäjä rekisteröity!");';
+	echo 'document.location.href = "index.php";';
+	echo '</script>';
 }
+}
+function verifyAccount() {
+	include 'dbh.php';
+	if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !empty($_GET['hash'])){
+    // Verify data
+    $email = mysqli_escape_string($conn,$_GET['email']); // Set email variable
+    $hash = mysqli_escape_string($conn,$_GET['hash']); // Set hash variable
 
+    $sql = "SELECT * FROM user WHERE email='$email' AND hash='$hash' AND activated='0'";
+		$result = mysqli_query($conn, $sql);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+        // We have a match, activate the account
+				$sql = "UPDATE user SET activated='1' WHERE email='".$email."' AND hash='".$hash."' AND activated='0'";
+        $result = mysqli_query($conn,$sql);
+        echo 'Käyttäjätili aktivoitu. Voit nyt kirjautua sisään.';
+    }else{
+        // No match -> invalid url or account has already been activated.
+        echo 'Linkki on väärä tai olet jo aktivoinut tilisi.';
+    }
+
+}else{
+    // Invalid approach
+    echo 'Käytä sinulle lähetettyä linkkiä.';
+}
+}
 function logIn()
 {
 	if(!isset($_SESSION)) {
-	session_start(); }
+	session_start();
+}
 	include 'dbh.php';
 
 	$uid = $_POST['uid'];
@@ -156,12 +174,18 @@ function logIn()
 	$pwd = mysqli_real_escape_string($conn, $pwd);
 	$sql = "SELECT * FROM user WHERE uid='$uid' AND pwd='$pwd'";
 	$result = mysqli_query($conn, $sql);
-	if (!$row = mysqli_fetch_assoc($result)) {
+	$row = mysqli_fetch_assoc($result);
+	if ($row == FALSE) {
 		echo '<script type="text/javascript">';
 		echo 'alert("Käyttäjätunnus tai salasana on väärin!");';
 		echo 'document.location.href = "index.php";';
 		echo '</script>';
-	}
+	} else if ($row['activated'] == 0) {
+		echo '<script type="text/javascript">';
+		echo 'alert("Käyttäjätunnusta ei ole aktivoitu!");';
+		echo 'document.location.href = "index.php";';
+		echo '</script>';
+		}
 	else {
 		$sql = "SELECT * FROM user WHERE uid='$uid'";
 		$result = mysqli_query($conn, $sql);
@@ -171,8 +195,9 @@ function logIn()
 		$_SESSION['id'] = $id;
 		$_SESSION['uid'] = $uid;
 		$_SESSION['type'] = $type;
-		if ($type == 0) {
-			header("Location: teams.php");
+
+if ($type == 0) {
+	header("Location: teams.php");
 		}
 		else {
 			$sql = "SELECT * FROM user WHERE id='$id'";

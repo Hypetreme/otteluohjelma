@@ -1,6 +1,5 @@
 <?php
   session_start();
-  include 'dbh.php';
   $teamid = $_SESSION['teamid'];
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
