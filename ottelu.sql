@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2017 at 10:38 PM
+-- Generation Time: Jan 10, 2017 at 11:42 PM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `ottelu`
 --
-CREATE DATABASE IF NOT EXISTS `ottelu` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `ottelu`;
 
 -- --------------------------------------------------------
 
@@ -99,8 +97,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `type`, `uid`, `pwd`, `email`, `team_id`, `hash`, `activated`) VALUES
-(1, 0, 'admin', 'salasana', 'janne.karppinen@appstudios.fi', 0, '', 1),
-(12, 0, 'testi', 'testi', 'janne.karppinen@appstudios.fi', 0, '559cb990c9dffd8675f6bc2186971dc2', 0);
+(1, 0, 'admin', '$2a$08$fqz3EkuUnunA/a7MWorU9.xEIZtM20rQpv8xFF/TYENPHbYH.5PSq', 'janne.karppinen@appstudios.fi', 0, '6ecbdd6ec859d284dc13885a37ce8d81', 1);
 
 --
 -- Indexes for dumped tables
@@ -153,7 +150,7 @@ ALTER TABLE `team`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -75,11 +75,18 @@ function register()
 	else {
 
 		// Luodaan seuratili
+   require("PasswordHash.php");
 
+   //Aktivointikoodin luonti
 		$hash = md5(rand(0, 1000));
 		$hash = strip_tags($hash);
 		$hash = mysqli_real_escape_string($conn, $hash);
-		$sql = "INSERT INTO user (uid,pwd,type,email,hash) VALUES ('$uid','$pwd','0','$email','$hash')";
+
+   // Salasanan kryptaus
+    $pwdHasher = new PasswordHash(8, false);
+		$pwdHash = $pwdHasher->HashPassword($pwd);
+
+		$sql = "INSERT INTO user (uid,pwd,type,email,hash) VALUES ('$uid','$pwdHash','0','$email','$hash')";
 		$result = mysqli_query($conn, $sql);
 		$sql = "SELECT id FROM user WHERE uid='$uid'";
 		$result = mysqli_query($conn, $sql);
@@ -123,16 +130,18 @@ http://localhost:8080/otteluohjelma/verify.php?email='.$email.'&hash='.$hash.'';
 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 	if(!$mail->send()) {
-	    echo 'Message could not be sent.';
-	    echo 'Mailer Error: ' . $mail->ErrorInfo;
+		echo '<script type="text/javascript">';
+		echo 'alert("Käyttäjä rekisteröity! Sähköpostia ei voitu lähettää. Mailer Error: ' . $mail->ErrorInfo.'");';
+		echo '</script>';
 	} else {
-	    echo 'Message has been sent';
+		echo '<script type="text/javascript">';
+		echo 'alert("Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.");';
+		echo '</script>';
 	}
-	echo '<script type="text/javascript">';
-	echo 'alert("Käyttäjä rekisteröity!");';
-	echo 'document.location.href = "index.php";';
-	echo '</script>';
 }
+echo '<script type="text/javascript">';
+echo 'document.location.href = "index.php";';
+echo '</script>';
 }
 function verifyAccount() {
 	include 'dbh.php';
@@ -165,6 +174,9 @@ function logIn()
 	session_start();
 }
 	include 'dbh.php';
+	require("PasswordHash.php");
+	$hasher = new PasswordHash(8, false);
+	$pwdHash = "*";
 
 	$uid = $_POST['uid'];
 	$pwd = $_POST['pwd'];
@@ -172,10 +184,14 @@ function logIn()
 	$uid = mysqli_real_escape_string($conn, $uid);
 	$pwd = strip_tags($pwd);
 	$pwd = mysqli_real_escape_string($conn, $pwd);
-	$sql = "SELECT * FROM user WHERE uid='$uid' AND pwd='$pwd'";
+	$sql = "SELECT * FROM user WHERE uid='$uid'";
 	$result = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_assoc($result);
-	if ($row == FALSE) {
+	//Käyttäjätunnuksen ja salasanan tarkistus
+	$pwdHash = $row['pwd'];
+	$check = $hasher->CheckPassword($pwd, $pwdHash);
+
+	if ($check == FALSE) {
 		echo '<script type="text/javascript">';
 		echo 'alert("Käyttäjätunnus tai salasana on väärin!");';
 		echo 'document.location.href = "index.php";';
