@@ -3,7 +3,7 @@ session_start();
 include 'dbh.php';
 if (!isset($_SESSION['id'])) {
 header("Location: index.php");
-} 
+}
 include ('inc/header.php');
 include 'functions.php';
 
@@ -80,10 +80,12 @@ include 'functions.php';
         </h4>
         <form id="visitors2" action="functions.php" method="POST">
        <label for="visitorName">Vierasjoukkueen nimi:</label>
-      <input type="text" name="visitorName" value="<?php 
+      <input type="text" name="visitorName" value="<?php
+      if (isset($_SESSION['visitorName'])) {
          echo $_SESSION['visitorName'];
+       }
         ?>">
-        </form>    
+        </form>
       </div>
       </div>
 
@@ -92,28 +94,28 @@ include 'functions.php';
         <form id="visitors" action="functions.php" method="POST">
           <table class="u-full-width">
           <?php
-          $count = listVisitors(); 
+          $count = listVisitors();
           ?>
         </table>
-        <span id="newrow"></span>  
+        <span id="newrow"></span>
 </form>
-      
+
     </div>
 
-        <input type="hidden" name="eventName" value= "<?php echo $_GET['eventName'];?>"> 
-        <input type="hidden" name="eventDate" value= "<?php echo $_GET['eventDate'];?>">     
-  
+        <input type="hidden" name="eventName" value= "<?php echo $_GET['eventName'];?>">
+        <input type="hidden" name="eventDate" value= "<?php echo $_GET['eventDate'];?>">
+
     </div>
-<?php 
-        echo'<input type="hidden" id="ref" value="'.$count.'">';  
-  ?>   
+<?php
+        echo'<input type="hidden" id="ref" value="'.$count.'">';
+  ?>
 <div class="row" style="text-align:center">
-  
-  
+
+
   <div class="twelve columns" style="text-align:center">
 <input style="background-color:black;border-color:black" class="button-primary" type="button" id="btnAdd" onclick="addInput()" value="Lisää pelaaja">
-<input form="visitors" style="background-color:black;border-color:black" class="button-primary" name="addVisitor" type="submit" id="btnAddVisitor" value="Tallenna pelaajat">    
-    
+<input form="visitors" style="background-color:black;border-color:black" class="button-primary" name="addVisitor" type="submit" id="btnAddVisitor" value="Tallenna pelaajat">
+
   </div>
   </div>
 <div class="row">

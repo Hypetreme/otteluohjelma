@@ -7,7 +7,7 @@
   }
 if (isset($_SESSION['eventId'])) {
 unset($_SESSION['homeName']);
-unset($_SESSION['visitorName']);  
+unset($_SESSION['visitorName']);
 unset($_SESSION['eventId']);
 unset($_SESSION['eventName']);
 unset($_SESSION['eventPlace']);
@@ -21,7 +21,7 @@ unset($_SESSION['visitors']);
 ?>
 
   <div class="container">
-      
+
     <div class="row">
       <div class="twelve columns">
         <h4>
@@ -29,7 +29,7 @@ unset($_SESSION['visitors']);
         </h4>
       </div>
     </div>
-    
+
     <div class="row">
         <div class="six columns">
             <h5>
@@ -45,12 +45,12 @@ unset($_SESSION['visitors']);
                 </tr>
               </thead>
               <tbody>
-                <?php listEvents(upcoming); ?>
+                <?php listEvents('upcoming'); ?>
               </tbody>
           </table>
-       </div>      
+       </div>
     </div>
-    
+
     <div class="row">
       <div class="six columns">
             <h5>
@@ -66,15 +66,15 @@ unset($_SESSION['visitors']);
                 </tr>
               </thead>
               <tbody>
-                <?php listEvents(past); ?>
+                <?php listEvents('past'); ?>
               </tbody>
           </table>
-       </div>      
+       </div>
     </div>
-   
+
     <form action="functions.php" method="POST">
-      <input name="newEvent" type="submit" value="Luo Tapahtuma">  
-    </form> 
-    <?php 
+      <input style="background-color:blue;color:white" name="newEvent" type="submit" value="Luo Tapahtuma">
+    </form>
+    <?php
       include ('inc/footer.php');
     ?>

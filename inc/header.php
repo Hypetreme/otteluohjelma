@@ -4,9 +4,9 @@
 <body>
  <?php
     $url = "$_SERVER[REQUEST_URI]";
-    if ($url != "/index.php" && $url != "/teams.php" && $url != "/error.php" && $url != "/register.php") {
+    if ($url != "otteluohjelma/index.php" && $url != "/teams.php" && $url != "/error.php" && $url != "/register.php") {
     echo "<header>";
-    include('inc/nav.php'); 
+    include('inc/nav.php');
     echo "</header>";
   }
 ?>
@@ -14,7 +14,3 @@
   <form name="form" action="functions.php" method="POST">
     <input name="logOut" type="submit" value="Kirjaudu ulos">
   </form>
-
-
-  
-  

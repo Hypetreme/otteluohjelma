@@ -1,11 +1,9 @@
 <?php
-error_reporting(-1);
-ini_set('display_errors', 'On');
-set_error_handler("var_dump");
 
 function register()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$uid = $_POST['uid'];
@@ -91,7 +89,7 @@ function register()
       require 'phpmailer/PHPMailerAutoload.php';
 
 $mail = new PHPMailer;
- 
+
     $mail->isSMTP();
     $mail->Host = 'localhost';
     $mail->SMTPAuth = true;
@@ -126,18 +124,18 @@ if(!$mail->send()) {
 	/*$to = $email; // Send email to our user
 	$subject = 'Signup | Verification'; // Give the email a subject
 	$message = '
- 
+
 Thanks for signing up!
 Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
- 
+
 ------------------------
 Username: ' . $name . '
 Password: ' . $password . '
 ------------------------
- 
+
 Please click this link to activate your account:
 http://ottelu-jannekarppinen96814.codeanyapp.com/verify.php?email=' . $email . '&hash=' . $hash . '
- 
+
 '; // Our message above including the link
 	$headers = 'From:noreply@otteluohjelma.fi' . "\r\n"; // Set from headers
 	mail($to, $subject, $message, $headers); // Send our email*/
@@ -146,7 +144,8 @@ http://ottelu-jannekarppinen96814.codeanyapp.com/verify.php?email=' . $email . '
 
 function logIn()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$uid = $_POST['uid'];
@@ -192,7 +191,8 @@ function logIn()
 
 function logOut()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	session_unset();
 	session_destroy();
 	header("Location:index.php");
@@ -201,7 +201,8 @@ function logOut()
 
 function savePlayer()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$teamId = $_SESSION["teamId"];
@@ -259,7 +260,8 @@ function savePlayer()
 
 function saveTeam()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$id = $_SESSION["id"];
@@ -304,7 +306,8 @@ function saveTeam()
 
 function updateTeam()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$teamId = $_SESSION['teamId'];
@@ -377,7 +380,8 @@ function updateTeam()
 
 function removePlayer()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$teamId = $_SESSION['teamId'];
@@ -389,7 +393,8 @@ function removePlayer()
 
 function removeEvent()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$id = $_SESSION['id'];
@@ -404,7 +409,8 @@ function removeEvent()
 
 function removeVisitor()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$eventId = $_SESSION['eventId'];
@@ -420,7 +426,8 @@ function removeVisitor()
 
 function addVisitor()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	unset($_SESSION['visitors']);
@@ -462,7 +469,8 @@ function addVisitor()
 
 function setEventInfo()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$_SESSION['eventName'] = $_POST['eventName'];
@@ -473,7 +481,8 @@ function setEventInfo()
 
 function setHomeTeam()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$i = 0;
@@ -501,15 +510,19 @@ function setHomeTeam()
 
 function setVisitorTeam()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	$_SESSION['visitorName'] = $_POST['visitorName'];
 	header("Location:event_overview.php?c");
 }
 
 function showHome()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
+	if (isset($_SESSION['eventId'])) {
 	$eventId = $_SESSION['eventId'];
+	}
 	$i = 0;
 	if (isset($_GET['c'])) {
 		foreach($_SESSION['saved']['home']['firstName'] as $value) {
@@ -547,9 +560,13 @@ function showHome()
 
 function showVisitors()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
+	if (isset($_GET['eventId'])) {
 	$eventId = $_GET['eventId'];
+	}
 	$i = 0;
+	if(isset($_SESSION['visitors'])) {
 	foreach($_SESSION['visitors']['firstName'] as $value) {
 		$showFirst = $_SESSION['visitors']['firstName'][$i];
 		$showLast = $_SESSION['visitors']['lastName'][$i];
@@ -564,13 +581,17 @@ function showVisitors()
 		echo '</tr>';
 		$i++;
 	}
-}
+} }
 
 function listVisitors()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
+	if (isset($_SESSION['eventId'])) {
 	$eventId = $_SESSION['eventId'];
+}
 	$i = 0;
+		if (isset($_SESSION['visitors'])) {
 	foreach($_SESSION['visitors']['firstName'] as $value) {
 		if (empty($_SESSION['visitors']['firstName'][$i])) {
 			$i++;
@@ -589,14 +610,15 @@ function listVisitors()
 		echo '<input type="hidden" name="lastName[' . $i . ']" value="' . $showLast . '">';
 		echo '</tr>';
 		$i++;
-	}
+	} 	}
 
 	return $i + 1;
 }
 
 function listHome()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$id = $_SESSION['id'];
@@ -635,7 +657,8 @@ function listEvents($mod)
 {
 	include 'dbh.php';
 
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	$id = $_SESSION['id'];
 	$teamId = $_SESSION['teamId'];
 	$i = 1;
@@ -691,7 +714,8 @@ function eventId()
 {
 	include 'dbh.php';
 
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	$id = $_SESSION['id'];
 	$teamId = $_SESSION['teamId'];
 	$_SESSION['eventId'] = $_GET['eventId'];
@@ -741,7 +765,8 @@ function eventId()
 
 function createEvent()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$id = $_SESSION["id"];
@@ -877,7 +902,8 @@ function createEvent()
 
 function listTeams()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$i = 1;
@@ -905,7 +931,8 @@ function listTeams()
 
 function listPlayers()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$id = $_SESSION['id'];
@@ -938,7 +965,8 @@ function listPlayers()
 
 function getTeamName()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$id = $_SESSION['id'];
@@ -977,7 +1005,8 @@ function getTeamName()
 
 function editTeam()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	include 'dbh.php';
 
 	$i = 1;
@@ -1008,7 +1037,8 @@ function editTeam()
 
 function newEvent()
 {
-	session_start();
+	if(!isset($_SESSION)) {
+	session_start(); }
 	$_SESSION['homeName'] = $_SESSION['teamName'];
 	if (isset($_SESSION['eventId'])) {
 		unset($_SESSION['eventId']);
@@ -1030,12 +1060,15 @@ function error()
 }
 
 function userData()
-{
+{ 	include 'dbh.php';
+	if(!isset($_SESSION)) {
 	session_start();
-	include 'dbh.php';
-
+}
 	$id = $_SESSION['id'];
+	$teamId = "";
+	if (isset($_SESSION['teamId'])) {
 	$teamId = $_SESSION['teamId'];
+	}
 	$sql = "SELECT * FROM user WHERE team_id='$teamId'";
 	$result = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_assoc($result);
@@ -1090,7 +1123,7 @@ if (isset($_GET['removePlayer'])) {
 }
 
 if (isset($_GET['eventId'])) {
-	eventId($showNum);
+	eventId();
 }
 
 if (isset($_GET['removeEvent'])) {

@@ -1,12 +1,14 @@
 <?php
   session_start();
   include 'dbh.php';
-  $teamid = $_SESSION['teamid'];
+unset($_SESSION['teamId']);
+unset($_SESSION['teamName']);
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
   }
   if (($_SESSION['type']!=0)) {
-    header("Location: team.php?teamid=$teamid");
+      $teamId = $_SESSION['teamId'];
+    header("Location: team.php?teamId=$teamId");
   }
 
   include('inc/header.php');
@@ -22,7 +24,7 @@
       document.getElementById('btnSave').style="display:block;";
       var num = document.getElementById('ref').value.match(/\d+/)[0];
       var finalNum = +num + count - 1;
-      
+
       var etuCount = "joukkuenimi" + finalNum;
       var etuField = document.createElement("input");
       etuField.type = "text";
@@ -52,7 +54,7 @@
 </script>
 
   <div class="container">
-      
+
     <div class="row">
       <div class="twelve columns">
         <h1>
@@ -60,10 +62,10 @@
         </h1>
       </div>
     </div>
-    
+
     <div class="row">
       <div class="twelve columns">
-        
+
         <form name="form" action="functions.php" method="POST">
           <table class='u-full-width'>
           <thead>
@@ -82,22 +84,22 @@
             <td><span id="newrow"></span></td>
             <td></td>
           </tr>
-          </table>  
-        </div> 
+          </table>
+        </div>
 
         <div class="twelve columns">
           <a href="#" id="iconAddTeam"  onclick="addInput()">
             <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
           </a>
-          <input style="display:none"class="button-primary" name="saveTeam" type="submit" id="btnSave" value="Tallenna">  
+          <input style="display:none"class="button-primary" name="saveTeam" type="submit" id="btnSave" value="Tallenna">
         </div>
-        
+
       </form>
     </div>
-                
+
   </div>
 
 
-  <?php 
+  <?php
     include ('inc/footer.php');
   ?>
