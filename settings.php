@@ -48,33 +48,38 @@ $url2 = 'location.href="'.$loc.'"';
 
     <div class="row">
 
-          <table class='six columns' style='width:70px'>
-          <thead>
-            <h5 style="position: relative;">
-          Käyttäjätiedot
-        </h5>
-            </thead>
-          <tr>
-          <?php userData(); ?>
+      <div class="six columns">
+        <h5>Logo</h5>
+        <table class="u-full-width">
+        <form action="functions.php" method="post" enctype="multipart/form-data">
+          <tbody>
+            <tr>
+              <td><input type="file" name="file" id="file"></td>
+              <td><input type="submit" value="Tallenna logo" name="logoUpload"></td>
             </tr>
+          </tbody>
 
-          </table>
+        </form>
+        </table>
+      </div>
 
     </div>
+
     <div class="row">
 
-          <table class='six columns' style='width:70px'>
-          <thead>
-          <h5 style="position: relative;">
-          -
-        </h5>
-            </thead>
-          <?php
-          ?>
-
-          </table>
-
+      <div class="six columns">
+        <h5>Käyttäjätiedot</h5>
+        <table class="u-full-width">
+          <tbody>
+            <tr>
+              <?php userData(); ?>
+            </tr>
+          </body>
+        </table>
+      </div>
     </div>
+
+
   <?php
     include ('inc/footer.php');
   ?>

@@ -11,6 +11,3 @@
   }
 ?>
 <div class="wrapper">
-  <form name="form" action="functions.php" method="POST">
-    <input name="logOut" type="submit" value="Kirjaudu ulos">
-  </form>

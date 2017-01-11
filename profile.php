@@ -2,7 +2,8 @@
 
   session_start();
   include 'dbh.php';
-  $teamid = $_SESSION['teamid'];
+  $teamId = $_SESSION['teamId'];
+  $teamName = $_SESSION['teamName'];
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
   }
@@ -23,11 +24,12 @@ unset($_SESSION['visitors']);
 
   <div class="container">
 
+
     <div class="row">
       <div class="twelve columns">
         <h4>
           Profiili
-        </h4>
+           </h4>
       </div>
     </div>
 
@@ -50,6 +52,9 @@ unset($_SESSION['visitors']);
               </tbody>
           </table>
        </div>
+       <div class="six columns">
+
+       </div>
     </div>
 
     <div class="row">
@@ -63,7 +68,7 @@ unset($_SESSION['visitors']);
                   <td>Tapahtuman nimi</td>
                   <td>Koti</td>
                   <td>Vieras</td>
-                  <td>Pvm</td>
+                  <td>Päivämäärä</td>
                 </tr>
               </thead>
               <tbody>

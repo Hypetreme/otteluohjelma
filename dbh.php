@@ -1,7 +1,7 @@
 <?php
-      
-$conn = mysqli_connect("localhost", "root", "", "ottelu");  
-      
+
+$conn = mysqli_connect("localhost", "root", "", "ottelu");
+
 if (!$conn) {
       die("Connection failed: ".mysqli_connect_error());
       }
@@ -9,7 +9,7 @@ if (!$conn) {
 
 /*
 
-try {  
+try {
   $conn = new PDO('mysql:host=localhost;dbname=root', "ottelu", "");
 } catch (PDOException $e){
   print "Error!: " . $e->getMessage() . "<br/>";
@@ -17,6 +17,5 @@ try {
 }
 
 */
-      
-?>
 
+?>
