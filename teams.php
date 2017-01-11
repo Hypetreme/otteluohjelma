@@ -60,7 +60,7 @@ unset($_SESSION['teamName']);
 
     <div class="row">
       <div class="twelve columns">
-        <h1>
+        <h1 style="text-transform: uppercase;">
           Joukkueet
         </h1>
       </div>

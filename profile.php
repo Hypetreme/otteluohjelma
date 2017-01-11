@@ -1,4 +1,5 @@
 <?php
+
   session_start();
   include 'dbh.php';
   $teamid = $_SESSION['teamid'];
