@@ -1,9 +1,7 @@
 <?php
 
 function register()
-{
-	if(!isset($_SESSION)) {
-	session_start(); }
+{ session_start();
 	include 'dbh.php';
 
 	$uid = $_POST['uid'];
@@ -74,25 +72,38 @@ function register()
 	}
 	else {
 
-		// Luodaan seuratili
-   require("PasswordHash.php");
-
    //Aktivointikoodin luonti
 		$hash = md5(rand(0, 1000));
 		$hash = strip_tags($hash);
 		$hash = mysqli_real_escape_string($conn, $hash);
 
    // Salasanan kryptaus
+	  require("PasswordHash.php");
     $pwdHasher = new PasswordHash(8, false);
 		$pwdHash = $pwdHasher->HashPassword($pwd);
 
+    //Joukkuetilin luonti
+		if (isset($_SESSION['id'])) {
+		$id = $_SESSION['id'];
+		$sql = "INSERT INTO team (name,user_id) VALUES ('$uid','$id')";
+		$result = mysqli_query($conn, $sql);
+
+	  $sql = "SELECT * FROM team ORDER BY ID DESC LIMIT 1";
+	  $result = mysqli_query($conn, $sql);
+    if ($row = mysqli_fetch_array($result)) {
+		$teamId = $row['id'];
+}
+    $sql = "INSERT INTO user (uid,pwd,type,email,hash,team_id) VALUES ('$uid','$pwdHash','1','$email','$hash','$teamId')";
+    $result = mysqli_query($conn, $sql);
+} else {
+   //Seuratilin luonti
 		$sql = "INSERT INTO user (uid,pwd,type,email,hash) VALUES ('$uid','$pwdHash','0','$email','$hash')";
 		$result = mysqli_query($conn, $sql);
 		$sql = "SELECT id FROM user WHERE uid='$uid'";
 		$result = mysqli_query($conn, $sql);
 		if ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
-		}
+		} }
 
 	// Sähköpostin lähetys
 
@@ -138,10 +149,15 @@ $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 		echo 'alert("Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.");';
 		echo '</script>';
 	}
+} if (isset($_SESSION['id'])) {
+	echo '<script type="text/javascript">';
+	echo 'document.location.href = "teams.php";';
+	echo '</script>';
+} else {
+  echo '<script type="text/javascript">';
+  echo 'document.location.href = "index.php";';
+  echo '</script>';
 }
-echo '<script type="text/javascript">';
-echo 'document.location.href = "index.php";';
-echo '</script>';
 }
 function verifyAccount() {
 	include 'dbh.php';
@@ -307,11 +323,18 @@ function saveTeam()
 
 	$id = $_SESSION["id"];
 	$teams = array(
-		'name' => array()
+		'name' => array(),
+		'email' => array()
 	);
 	$i = 0;
 	foreach($_POST as $key => $value) {
 		$teams['name'][$i] = $value;
+		$i++;
+	}
+
+	$i = 0;
+	foreach($_POST as $key => $value) {
+		$teams['email'][$i] = $value;
 		$i++;
 	}
 
@@ -324,6 +347,10 @@ function saveTeam()
 
 		$team = $teams['name'][$i];
 		$team = strip_tags($team);
+
+		$email = $teams[''][$i];
+		$team = strip_tags($team);
+
 		$team = mysqli_real_escape_string($conn, $team);
 		if (!empty($team)) {
 			$sql = "INSERT INTO team (name,user_id) VALUES ('$team','$id')";
@@ -956,13 +983,24 @@ function listTeams()
 
 	$sql = "SELECT * from team WHERE user_id='$id'";
 	$result = mysqli_query($conn, $sql);
-	while ($row = mysqli_fetch_array($result)) {
+  while ($row = mysqli_fetch_array($result)) {
+  $teamId = $row['id'];
+
+	$sql2 = "SELECT * from user WHERE team_id='$teamId'";
+	$result2 = mysqli_query($conn, $sql2);
+  $row2 = mysqli_fetch_array($result2);
+
 		$showId = $row['id'];
 		$showName = $row['name'];
 		echo "<tr'>";
 		echo '<td><img style="width: 35px; height: 35px; vertical-align: middle;" src="images/default_team.png"></td>';
+		if ($row2['activated'] == 1) {
 		echo '<td><a style="text-decoration:none;" href="profile.php?teamId=' . $showId . '">' . $showName . '</a></td>';
-		echo '<td></td>';
+		echo '<td style="color:green">Käytössä</td>';
+	} else {
+		echo '<td><a style="text-decoration:none;color:gray" href="#">' . $showName . '</a></td>';
+		echo '<td style="color:red">Ei aktivoitu</td>';
+	}
 		echo "</tr>";
 		$i++;
 	}
@@ -1173,10 +1211,6 @@ if (isset($_GET['removeEvent'])) {
 
 if (isset($_GET['removeVisitor'])) {
 	removeVisitor();
-}
-
-if (isset($_POST['addToEvent'])) {
-	addToEvent();
 }
 
 if (isset($_POST['createEvent'])) {

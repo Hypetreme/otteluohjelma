@@ -16,40 +16,43 @@ unset($_SESSION['teamName']);
 ?>
 
   <script type="text/javascript">
-    var count = 1;
 
     function addInput() {
       document.getElementById('newTr').style="width: 100%;";
       document.getElementById('iconAddTeam').style="display:none;";
       document.getElementById('btnSave').style="display:block;";
       var num = document.getElementById('ref').value.match(/\d+/)[0];
-      var finalNum = +num + count - 1;
 
-      var etuCount = "joukkuenimi" + finalNum;
-      var etuField = document.createElement("input");
-      etuField.type = "text";
-      etuField.name = etuCount;
-      etuField.id = etuCount;
-      //etuField.style = "width:200px;height:40px";
+      var uidField = document.createElement("input");
+      uidField.type = "text";
+      uidField.name = "uid";
+      uidField.id = "uid";
 
-      //var etuP = document.createElement("p");
-      //var etuText = document.createTextNode("Nimi:");
-      //etuP.appendChild(etuText);
+      var emailField = document.createElement("input");
+      emailField.type = "text";
+      emailField.name = "email";
+      emailField.id = "email";
 
-      var headerCount = "Joukkue " + finalNum;
+      var pwdField = document.createElement("input");
+      pwdField.type = "password";
+      pwdField.name = "pwd";
+      pwdField.id = "pwd";
 
-      //var header = document.createElement("h4");
-      //var headerText = document.createTextNode(headerCount);
-     // header.appendChild(headerText);
+      var uidH = document.createElement("label");
+      uidH.innerHTML = "Nimi:";
 
-      //var br = document.createElement("br");
+      var emailH = document.createElement("label");
+      emailH.innerHTML = "Sähköposti:";
 
-      //document.getElementById('newrow').appendChild(header);
-      //document.getElementById('newrow').appendChild(etuP);
-      document.getElementById('newrow').appendChild(etuField);
-      //document.getElementById('newrow').appendChild(br);
+      var pwdH = document.createElement("label");
+      pwdH.innerHTML = "Salasana:";
 
-      count += 1;
+      document.getElementById('newrow').appendChild(uidH);
+      document.getElementById('newrow').appendChild(uidField);
+      document.getElementById('newrow').appendChild(emailH);
+      document.getElementById('newrow').appendChild(emailField);
+      document.getElementById('newrow').appendChild(pwdH);
+      document.getElementById('newrow').appendChild(pwdField);
     }
 </script>
 
@@ -91,7 +94,7 @@ unset($_SESSION['teamName']);
           <a href="#" id="iconAddTeam"  onclick="addInput()">
             <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
           </a>
-          <input style="display:none"class="button-primary" name="saveTeam" type="submit" id="btnSave" value="Tallenna">
+          <input style="display:none"class="button-primary" name="register" type="submit" id="btnSave" value="Tallenna">
         </div>
 
       </form>

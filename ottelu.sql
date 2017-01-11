@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2017 at 11:42 PM
+-- Generation Time: Jan 11, 2017 at 10:59 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -56,6 +56,13 @@ CREATE TABLE `player` (
   `number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `player`
+--
+
+INSERT INTO `player` (`id`, `user_id`, `team_id`, `firstName`, `lastName`, `number`) VALUES
+(2, 1, 5, 'Reino', 'Rotta', 65);
+
 -- --------------------------------------------------------
 
 --
@@ -73,7 +80,8 @@ CREATE TABLE `team` (
 --
 
 INSERT INTO `team` (`id`, `user_id`, `name`) VALUES
-(1, 1, 'Rotat');
+(5, 1, 'Rotat'),
+(6, 1, 'Sammakot');
 
 -- --------------------------------------------------------
 
@@ -97,7 +105,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `type`, `uid`, `pwd`, `email`, `team_id`, `hash`, `activated`) VALUES
-(1, 0, 'admin', '$2a$08$fqz3EkuUnunA/a7MWorU9.xEIZtM20rQpv8xFF/TYENPHbYH.5PSq', 'janne.karppinen@appstudios.fi', 0, '6ecbdd6ec859d284dc13885a37ce8d81', 1);
+(1, 0, 'admin', '$2a$08$fqz3EkuUnunA/a7MWorU9.xEIZtM20rQpv8xFF/TYENPHbYH.5PSq', 'janne.karppinen@appstudios.fi', 0, '6ecbdd6ec859d284dc13885a37ce8d81', 1),
+(8, 1, 'Rotat', '$2a$08$csfUm.4Shn.d.pB67tiBD.tFfDFxYPEVb5htx336zYrnAQWRtYon2', 'janne.karppinen@appstudios.fi', 5, '8a0e1141fd37fa5b98d5bb769ba1a7cc', 1),
+(9, 1, 'Sammakot', '$2a$08$ENp6p233q4TVLG20enVbvOqxcoD9Ev7UW5tffJbRHwZ0DhA7KsDDu', 'janne.karppinen@appstudios.fi', 6, '934815ad542a4a7c5e8a2dfa04fea9f5', 0);
 
 --
 -- Indexes for dumped tables
@@ -140,17 +150,17 @@ ALTER TABLE `event`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
