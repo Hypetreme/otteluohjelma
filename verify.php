@@ -1,6 +1,6 @@
 <?php
   include('inc/header.php');
-  include 'functions.php';
+  include ('functions.php');
 ?>
 
 <div class="container">
@@ -10,12 +10,6 @@
         <?php verifyAccount();?>
       </h4>
     </div>
-  </div>
-  <div class="row">
-      <div class="twelve columns" style="text-align:center">
-        <h3>
-      </h3>
-      </div>
   </div>
 </div>
 

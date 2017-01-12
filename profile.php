@@ -1,22 +1,23 @@
 <?php
-
   session_start();
   include 'dbh.php';
+  if (!$_SESSION['type'] == 0) {
   $teamId = $_SESSION['teamId'];
   $teamName = $_SESSION['teamName'];
+}
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
   }
-if (isset($_SESSION['eventId'])) {
-unset($_SESSION['homeName']);
-unset($_SESSION['visitorName']);
-unset($_SESSION['eventId']);
-unset($_SESSION['eventName']);
-unset($_SESSION['eventPlace']);
-unset($_SESSION['eventDate']);
-unset($_SESSION['home']);
-unset($_SESSION['visitors']);
-}
+  if (isset($_SESSION['eventId'])) {
+    unset($_SESSION['homeName']);
+    unset($_SESSION['visitorName']);
+    unset($_SESSION['eventId']);
+    unset($_SESSION['eventName']);
+    unset($_SESSION['eventPlace']);
+    unset($_SESSION['eventDate']);
+    unset($_SESSION['home']);
+    unset($_SESSION['visitors']);
+  }
   include 'functions.php';
   getTeamName();
   include('inc/header.php');
@@ -42,9 +43,7 @@ unset($_SESSION['visitors']);
               <thead>
                 <tr>
                   <td>Tapahtuman nimi</td>
-                  <td>Koti</td>
-                  <td>Vieras</td>
-                  <td>Pvm</td>
+                  <td>Päivämäärä</td
                 </tr>
               </thead>
               <tbody>
@@ -53,8 +52,9 @@ unset($_SESSION['visitors']);
           </table>
        </div>
        <div class="six columns">
-
-       </div>
+        <h5>Avatar</h5>
+        <!-- tähän -->
+     </div>
     </div>
 
     <div class="row">
@@ -65,7 +65,7 @@ unset($_SESSION['visitors']);
             <table class="u-full-width">
               <thead>
                 <tr>
-                  <td>Tapahtuman nimi</td>
+                  <td>Tapahtuman nimi<td>
                   <td>Koti</td>
                   <td>Vieras</td>
                   <td>Päivämäärä</td>
@@ -79,7 +79,7 @@ unset($_SESSION['visitors']);
     </div>
 
     <form action="functions.php" method="POST">
-      <input style="background-color:blue;color:white" name="newEvent" type="submit" value="Luo Tapahtuma">
+      <input name="newEvent" type="submit" value="Luo Tapahtuma">
     </form>
     <?php
       include ('inc/footer.php');

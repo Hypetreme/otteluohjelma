@@ -93,7 +93,7 @@ function register()
     if ($row = mysqli_fetch_array($result)) {
 		$teamId = $row['id'];
 }
-    $sql = "INSERT INTO user (uid,pwd,type,email,hash,team_id) VALUES ('$uid','$pwdHash','1','$email','$hash','$teamId')";
+    $sql = "INSERT INTO user (uid,pwd,type,email,hash,team_id,owner_id) VALUES ('$uid','$pwdHash','1','$email','$hash','$teamId','$id')";
     $result = mysqli_query($conn, $sql);
 } else {
    //Seuratilin luonti
@@ -189,9 +189,12 @@ function logoUpload() {
 	session_start();
 }
 	if(isset($_SESSION['id'])) {
+	$id = $_SESSION['id'];
+	$uid = $_SESSION['uid'];
+	if(isset($_SESSION['teamId'])) {
 	$teamId =	$_SESSION['teamId'];
 	$teamName =	$_SESSION['teamName'];
-
+}
 	if (isset($_POST['logoUpload']))
 	{
 		$filename = $_FILES["file"]["name"];
@@ -200,37 +203,49 @@ function logoUpload() {
 		$filesize = $_FILES["file"]["size"];
 		$allowed_file_types = array('.jpg','.jpeg','.png','.gif');
 
-		if (in_array($file_ext,$allowed_file_types) && ($filesize < 200000))
-		{
 			// Rename file
+			if (!$_SESSION['type'] == 0) {
 			$newfilename = $teamName . $teamId . $file_ext;
-			if (file_exists("images/logos/" . $newfilename))
-			{
-				// file already exists error
-				echo "You have already uploaded this file.";
-			}
-			else
-			{
-				move_uploaded_file($_FILES["file"]["tmp_name"], "images/logos/" . $newfilename);
-				echo "File uploaded successfully.";
-			}
+		} else {
+			$newfilename = $uid . $id . $file_ext;
+		}
+
+		if (!in_array($file_ext,$allowed_file_types) && (!$filesize < 200000))
+		{
+			// file type error
+			unlink($_FILES["file"]["tmp_name"]);
+			echo '<script type="text/javascript">';
+			echo 'alert("Kuva ei ole sallitussa muodossa!");';
+			echo 'document.location.href = "profile.php";';
+			echo '</script>';
+			//echo "Only these file types are allowed for upload: " . implode(', ',$allowed_file_types);
+
 		}
 		elseif (empty($file_basename))
 		{
 			// file selection error
-			echo "Please select a file to upload.";
+			echo '<script type="text/javascript">';
+			echo 'alert("Valitse ladattava logo!");';
+			echo 'document.location.href = "profile.php";';
+			echo '</script>';
 		}
 		elseif ($filesize > 200000)
 		{
 			// file size error
-			echo "The file you are trying to upload is too large.";
+			echo '<script type="text/javascript">';
+			echo 'alert("Kuvan tiedostokoko on liian iso!");';
+			echo 'document.location.href = "profile.php";';
+			echo '</script>';
 		}
 		else
 		{
-			// file type error
-			echo "Only these file typs are allowed for upload: " . implode(', ',$allowed_file_types);
-			unlink($_FILES["file"]["tmp_name"]);
+			move_uploaded_file($_FILES["file"]["tmp_name"], "images/logos/" . $newfilename);
+			echo '<script type="text/javascript">';
+			echo 'alert("Logon lataus onnistui.");';
+			echo 'document.location.href = "profile.php";';
+			echo '</script>';
 		}
+
 	} }}
 function logIn()
 {
@@ -309,57 +324,21 @@ function savePlayer()
 	if(!isset($_SESSION)) {
 	session_start(); }
 	include 'dbh.php';
-
 	$teamId = $_SESSION["teamId"];
 	$id = $_SESSION["id"];
-	$names = array(
-		'first' => array() ,
-		'last' => array() ,
-		'number' => array()
-	);
-	$i = 0;
-	foreach($_POST as $key => $value) {
-		if (strpos($key, 'first') !== false) {
-			$names['first'][$i] = $value;
-			$i++;
-		}
-	}
-
-	$i = 0;
-	foreach($_POST as $key => $value) {
-		if (strpos($key, 'last') !== false) {
-			$names['last'][$i] = $value;
-			$i++;
-		}
-	}
-
-	$i = 0;
-	foreach($_POST as $key => $value) {
-		if (strpos($key, 'number') !== false) {
-			$names['number'][$i] = $value;
-			$i++;
-		}
-	}
-
-	$i = 0;
-	foreach($names['first'] as $value) {
-		$firstName = $names['first'][$i];
-		$lastName = $names['last'][$i];
-		$number = $names['number'][$i];
-		$firstName = strip_tags($firstName);
-		$firstName = mysqli_real_escape_string($conn, $firstName);
-		$lastName = strip_tags($lastName);
-		$lastName = mysqli_real_escape_string($conn, $lastName);
-		$number = strip_tags($number);
-		$number = mysqli_real_escape_string($conn, $number);
-		if (!empty($firstName) && !empty($lastName)) {
+if ($_POST['firstName'] && $_POST['lastName'] && $_POST['number']) {
+$firstName = $_POST['firstName'];
+$lastName = $_POST['lastName'];
+$number = $_POST['number'];
 			$sql = "INSERT INTO player (user_id,team_id,firstName,lastName,number) VALUES ('$id','$teamId','$firstName','$lastName','$number')";
 			$result = mysqli_query($conn, $sql);
+		} else {
+			echo '<script type="text/javascript">';
+			echo 'alert("Täytä kaikki pelaajan tiedot!");';
+			echo 'document.location.href = "team.php?teamId='.$teamId.'"';
+			echo '</script>';
+			exit();
 		}
-
-		$i++;
-	}
-
 	header("Location: team.php?teamId=$teamId");
 }
 
@@ -545,40 +524,36 @@ function addVisitor()
 	if(!isset($_SESSION)) {
 	session_start(); }
 	include 'dbh.php';
-
-	unset($_SESSION['visitors']);
+	//unset($_SESSION['visitors']);
 	$i = 0;
-	if (!empty($_POST)) {
-		foreach($_POST['firstName'] as $key => $value) {
+	if ($_POST['firstName'] && $_POST['lastName'] && $_POST['number']) {
 			while (!empty($_SESSION['visitors']['firstName'][$i])) {
 				$i++;
 			}
-
-			$_SESSION['visitors']['firstName'][$i] = $value;
-			$i++;
-		}
+			$_SESSION['visitors']['firstName'][$i] = $_POST['firstName'];
 
 		$i = 0;
-		foreach($_POST['lastName'] as $key => $value) {
 			while (!empty($_SESSION['visitors']['lastName'][$i])) {
 				$i++;
 			}
-
-			$_SESSION['visitors']['lastName'][$i] = $value;
-			$i++;
-		}
+			$_SESSION['visitors']['lastName'][$i] = $_POST['lastName'];
 
 		$i = 0;
-		foreach($_POST['number'] as $key => $value) {
 			while (!empty($_SESSION['visitors']['number'][$i])) {
 				$i++;
 			}
+			$_SESSION['visitors']['number'][$i] = $_POST['number'];
 
-			$_SESSION['visitors']['number'][$i] = $value;
-			$i++;
-		}
+	} else {
+		echo '<script type="text/javascript">';
+		echo 'alert("Täytä kaikki pelaajan tiedot!");';
+		echo 'document.location.href = "event3.php";';
+		echo '</script>';
+		exit();
 	}
-
+	if (!empty($_POST['visitorName'])) {
+  $_SESSION['visitorName'] = $_POST['visitorName'];
+}
 	$eventId = $_SESSION['eventId'];
 	header("Location:event3.php");
 }
@@ -709,9 +684,9 @@ function listVisitors()
 	$i = 0;
 		if (isset($_SESSION['visitors'])) {
 	foreach($_SESSION['visitors']['firstName'] as $value) {
-		if (empty($_SESSION['visitors']['firstName'][$i])) {
+		/*if (empty($_SESSION['visitors']['firstName'][$i])) {
 			$i++;
-		}
+		}*/
 
 		$showFirst = $_SESSION['visitors']['firstName'][$i];
 		$showLast = $_SESSION['visitors']['lastName'][$i];
@@ -738,7 +713,15 @@ function listHome()
 	include 'dbh.php';
 
 	$id = $_SESSION['id'];
+	if (isset($_SESSION['teamId'])) {
 	$teamId = $_SESSION['teamId'];
+} else {
+	$eventId = $_SESSION['eventId'];
+	$sql = "SELECT * from event WHERE id ='$eventId'";
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($result);
+	$teamId = $row['team_id'];
+}
 	$i = 0;
 	$sql = "SELECT * from player WHERE team_id='$teamId'";
 	$result = mysqli_query($conn, $sql);
@@ -776,7 +759,9 @@ function listEvents($mod)
 	if(!isset($_SESSION)) {
 	session_start(); }
 	$id = $_SESSION['id'];
+	if (isset($_SESSION['teamId'])) {
 	$teamId = $_SESSION['teamId'];
+}
 	$i = 1;
 	if ($mod == "all") {
 		if ($_SESSION['type'] == 0) {
@@ -789,7 +774,7 @@ function listEvents($mod)
 
 	if ($mod == "upcoming") {
 		if ($_SESSION['type'] == 0) {
-			$sql = "SELECT * from event WHERE date >= CURDATE() AND team_id='$teamId'";
+			$sql = "SELECT * from event WHERE date >= CURDATE() AND owner_id='$id'";
 		}
 		else {
 			$sql = "SELECT * from event WHERE date >= CURDATE() AND team_id='$teamId'";
@@ -798,7 +783,7 @@ function listEvents($mod)
 
 	if ($mod == "past") {
 		if ($_SESSION['type'] == 0) {
-			$sql = "SELECT * from event WHERE date < CURDATE() AND team_id='$teamId'";
+			$sql = "SELECT * from event WHERE date < CURDATE() AND owner_id='$id'";
 		}
 		else {
 			$sql = "SELECT * from event WHERE date < CURDATE() AND team_id='$teamId'";
@@ -809,9 +794,11 @@ function listEvents($mod)
 	while ($row = mysqli_fetch_array($result)) {
 		$showId = $row['id'];
 		$showName = $row['name'];
+		$showDate = $row['date'];
 		echo "<tr>";
 		if ($mod != "all") {
 			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
+			echo '<td><p style="text-decoration:none;margin:0">' . $showDate . '</p></td>';
 		}
 		else {
 			echo '<td><img src="default_team.png"></td>';
@@ -833,13 +820,15 @@ function eventId()
 	if(!isset($_SESSION)) {
 	session_start(); }
 	$id = $_SESSION['id'];
+	if (isset($_SESSION['teamId'])) {
 	$teamId = $_SESSION['teamId'];
+}
 	$_SESSION['eventId'] = $_GET['eventId'];
 	$eventId = $_SESSION['eventId'];
 	$i = 0;
 	if (!empty($_SESSION['eventId'])) {
 		if ($_SESSION['type'] == 0) {
-			$sql = "SELECT * from event WHERE id='$eventId' AND team_id='$teamId'";
+			$sql = "SELECT * from event WHERE id='$eventId' AND owner_id='$id'";
 		}
 		else {
 			$sql = "SELECT * from event WHERE id='$eventId' AND team_id='$teamId'";
@@ -886,8 +875,10 @@ function createEvent()
 	include 'dbh.php';
 
 	$id = $_SESSION["id"];
+	if (isset($_SESSION['teamId'])) {
 	$teamId = $_SESSION['teamId'];
 	$teamName = $_SESSION['teamName'];
+}
 	$visitorName = $_SESSION['visitorName'];
 	$eventName = $_SESSION['eventName'];
 	$eventPlace = $_SESSION['eventPlace'];
@@ -973,7 +964,11 @@ function createEvent()
 		$result = mysqli_query($conn, $sql);
 	}
 	else {
-		$sql = "INSERT INTO event (user_id,team_id,name,date) VALUES ('$id','$teamId','$eventName','$realDate')";
+		$sql = "SELECT * from user WHERE id='$id'";
+		$result = mysqli_query($conn, $sql);
+		$row = mysqli_fetch_array($result);
+		$ownerId = $row['owner_id'];
+		$sql = "INSERT INTO event (user_id,team_id,owner_id,name,date) VALUES ('$id','$teamId','$ownerId','$eventName','$realDate')";
 		$result = mysqli_query($conn, $sql);
 	}
 
@@ -992,8 +987,8 @@ function createEvent()
 	// kirjoitetaan tiedosto
 
 	$fp = fopen("files/overview" . $eventId . ".json", "wb");
-	fwrite($fp, $json);
-	if (fwrite) {
+
+	if (fwrite($fp, $json)) {
 		$ok = "SUCCESSFULLY UPLOADED FILE";
 		echo "<script type='text/javascript'>alert('$ok');</script>";
 	}
@@ -1013,6 +1008,7 @@ function createEvent()
 	unset($_SESSION['eventDate']);
 	unset($_SESSION['home']);
 	unset($_SESSION['visitors']);
+	unset($_SESSION['saved']);
 	echo "<script>window.location.href='my_events.php'</script>";
 }
 
@@ -1097,7 +1093,7 @@ function getTeamName()
 	include 'dbh.php';
 
 	$id = $_SESSION['id'];
-	if ($_SESSION['type'] == 0) {
+	if ($_SESSION['type'] == 0 && isset($_GET['teamId'])) {
 		$_SESSION['teamId'] = $_GET['teamId'];
 		$teamId = $_SESSION['teamId'];
 		$sql = "SELECT * from team WHERE id='$teamId' AND user_id='$id'";
@@ -1106,7 +1102,7 @@ function getTeamName()
 			$_SESSION['teamId'] = $row['id'];
 			$_SESSION['teamName'] = $row['name'];
 		}
-		else {
+		else  {
 			unset($_SESSION['teamId']);
 			unset($_SESSION['teamName']);
 			set_error_handler('error');
@@ -1202,12 +1198,12 @@ function userData()
 	$userName = $row['uid'];
 	$type = $row['type'];
 	echo '<tr>';
-	echo '<td class="td-bold">Käyttäjänimi</td>';
+	echo '<td class="bold">Käyttäjänimi</td>';
 	echo '<td>' . $userName . '</td>';
 	echo '</tr>';
 
 	echo '<tr>';
-	echo '<td class="td-bold">Tilintyyppi:</td>';
+	echo '<td class="bold">Tilintyyppi:</td>';
 	if ($type == 1) {
 		echo '<td>Joukkuetaso</td>';
 	}

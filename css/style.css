@@ -15,7 +15,6 @@ body {
 header {
   width: 100%;
   background-color: #fff;
-  height: 60px;
   border-bottom: 1px solid #ccc;
   background-color: #9B2743;
   position: absolute;
@@ -28,7 +27,6 @@ header {
 }
 
 .navbar {
-  padding: 18px 0px;
 }
 
 .navbar-list {
@@ -40,6 +38,9 @@ header {
   position: relative;
   float: left;
   margin-bottom: 0;
+  margin-right: 35px;
+  height: 60px;
+  line-height: 60px;
 }
 
 .navbar-link {
@@ -47,7 +48,6 @@ header {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: .2rem;
-  margin-right: 35px;
   text-decoration: none;
   color: #fff;
   cursor: pointer;
@@ -56,3 +56,59 @@ header {
 .navbar-link:hover {
   color: #4d1321;
 }
+
+
+.bold {
+  font-weight: 400;
+}
+
+.logo {
+  background-size: cover;
+  display: inline-block;
+  width: 40px;
+  border-radius: 50%;
+  height: 40px;
+  margin-top: 10px;
+}
+
+.liLogo {
+  float: right;
+}
+.navMore {
+  color: #fff;
+  position: relative;
+  top: -7px;
+}
+
+.navMoreBox {
+  position: absolute;
+  background-color: #87223a;
+  right: -34px;
+  top: 59px;
+  float: left;
+  width: 150px;
+  box-sizing: border-box;
+  border-bottom-left-radius: 3px;
+  border-left: 4px solid #9B2743;
+  border-right: 4px solid #9B2743;
+  border-bottom: 4px solid #9B2743;
+  border-bottom-right-radius: 3px;
+}
+.navMoreBox ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.navMoreBox ul li {
+  width: 100%;
+  display: inline-block;
+  padding: 6px 0px;
+  margin: 0;
+  -webkit-transition: all 100ms ease-in-out;
+  -moz-transition: all 100ms ease-in-out;
+  -ms-transition: all 100ms ease-in-out;
+  -o-transition: all 100ms ease-in-out;
+  transition: all 100ms ease-in-out;
+}
+.navMoreBox ul li:hover { background-color: #9b2743; }
+.navMoreBox ul li a { width: 100%; padding: 0px 10px; display: inline-block; cursor: pointer; color: #fff; }

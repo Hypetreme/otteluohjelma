@@ -1,16 +1,52 @@
 <?php
   session_start();
-  include 'dbh.php';
+  include ('dbh.php');
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
   }
-  include 'functions.php';
-  include ('inc/header.php'); 
+  include ('functions.php');
+  include ('inc/header.php');
 ?>
 
 
-  <script>
+  <script type="text/javascript">
+
+
+
     var count = 1;
+
+    $content = "<di class='six columnsumns'>";
+    $content += "<h1>Lisää pelaaja</h1>";
+    $content += "<label>Etunimi:</label>";
+    $content += "<input type='text'>";
+    $content += "<label>Sukunimi:</label>";
+    $content += "<input type='text'>";
+    $content += "<label>Pelinumero:</label>";
+    $content += "<input type='text'>";
+    $content += "</div>";
+
+    $(function(){
+
+      $('.addPlayer').avgrund({
+      	width: 640, // max is 640px
+      	height: 350, // max is 350px
+      	showClose: false, // switch to 'true' for enabling close button
+      	showCloseText: '', // type your text for close button
+      	closeByEscape: true, // enables closing popup by 'Esc'..
+      	closeByDocument: true, // ..and by clicking document itself
+      	holderClass: '', // lets you name custom class for popin holder..
+      	overlayClass: '', // ..and overlay block
+      	enableStackAnimation: false, // another animation type
+      	onBlurContainer: '', // enables blur filter for specified block
+      	openOnEvent: true, // set to 'false' to init on load
+      	setEvent: 'click', // use your event like 'mouseover', 'touchmove', etc.
+      	//onLoad: function (elem) { ... }, // set custom call before popin is inited..
+      	//onUnload: function (elem) { ... }, // ..and after it was closed
+      	template: $content // or function (elem) { }, or $('.content')
+      });
+
+    });
+
 
     function addInput() {
       document.getElementById('newTr').style="display:table-row;height:61px";
@@ -19,26 +55,26 @@
       var num = document.getElementById('ref').value.match(/\d+/)[0];
       var finalNum = +num + count - 1;
 
-      var etuCount = "first" + finalNum;
+      var etuCount = "firstName";
       var etuField = document.createElement("input");
       etuField.type = "text";
       etuField.name = etuCount;
       etuField.id = etuCount;
       etuField.style = "padding:0; margin:0;margin-left:-10px;width:100px;clear:left;";
-      
-      var sukuCount = "last" + finalNum;
+
+      var sukuCount = "lastName";
       var sukuField = document.createElement("input");
       sukuField.type = "text";
       sukuField.name = sukuCount;
       sukuField.id = sukuCount;
       sukuField.style = "padding:0; margin:0;margin-left:-5px;width:100px;clear:left;";
 
-      var nroCount = "number" + finalNum;
+      var nroCount = "number";
       var nroField = document.createElement("input");
       nroField.type = "text";
       nroField.name = nroCount;
       nroField.id = nroCount;
-      nroField.style = "padding:0; margin:0;margin-left:5px;width:40px;clear:left;";
+      nroField.style = "padding:0; margin:0; margin-left:5px; width:40px; clear:left;";
 
       /*var etuP = document.createElement("p");
       var etuText = document.createTextNode("Etunimi:");
@@ -74,14 +110,11 @@
 
       count += 1;
     }
-    
+
   </script>
 
   <div class="container">
-   
-
     <div class="row">
-     
       <div class="twelve columns">
          <h4>
           <span><?php echo $_SESSION['teamName'];?></span>
@@ -104,29 +137,29 @@
             </thead>
             <?php
               $count = listPlayers();
+              echo'<input type="hidden" id="ref" value="'.$count.'">';
             ?>
-          
-     
-          <?php 
-            echo'<input type="hidden" id="ref" value="'.$count.'">';  
-          ?>
-          <tr id="newTr" style="height:61px;display:none">
-            <td><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>
-          <td id="numRow" style="padding:0; margin:0 "></td>
-           <td id="firstRow" style="padding:0; margin:0 "></td>
-           <td id="lastRow" style="padding:0; margin:0 "></td> 
-          </tr>
+            <tr id="newTr" style="height:61px;display:none">
+              <td><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>
+              <td id="numRow" style="padding:0; margin:0 "></td>
+              <td id="firstRow" style="padding:0; margin:0 "></td>
+              <td id="lastRow" style="padding:0; margin:0 "></td>
+            </tr>
           </table>
-          
+
           <div class="row">
             <div class="twelve columns" style="text-align:left">
-           <a href="#" id="iconAddPlayer"  onclick="addInput()">
-            <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
-          </a>
-          <input style="display:none"class="button-primary" name="savePlayer" type="submit" id="btnSave" value="Tallenna">  
-        </form>
-      </div>
-    </div>
-      
+              <a href="#" id="iconAddPlayer" onclick="addInput()">
+                <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
+              </a>
+
+              <a href="#" id="iconAddPlayer" class="addPlayer">
+                Lisää pelaaja
+              </a>
+
+            <input style="display:none"class="button-primary" name="savePlayer" type="submit" id="btnSave" value="Tallenna">
+            </div>
+        </form><!-- end of form -->
+          </div>
   </div>
   <?php include('inc/footer.php'); ?>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 11, 2017 at 10:59 AM
+-- Generation Time: Jan 11, 2017 at 03:16 PM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -39,7 +39,8 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`id`, `user_id`, `team_id`, `name`, `date`) VALUES
-(1, 1, 1, 'LÃ¤tkÃ¤peli', '2017-02-12');
+(1, 1, 1, 'LÃ¤tkÃ¤peli', '2017-02-12'),
+(2, 1, 5, 'LÃ¤tkÃ¤peli', '2017-05-12');
 
 -- --------------------------------------------------------
 
@@ -145,7 +146,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `player`
 --
