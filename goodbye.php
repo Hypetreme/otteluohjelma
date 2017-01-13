@@ -1,4 +1,4 @@
 <?php
-include 'functions.php';
-logOut();
+  include 'functions.php';
+  logOut();
 ?>

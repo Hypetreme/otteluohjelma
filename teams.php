@@ -39,7 +39,10 @@ unset($_SESSION['teamName']);
       var emailField = document.createElement("input");
       emailField.type = "text";
       emailField.name = "email";
-      emailField.id = "email";
+      emailField.id = "emal";
+
+
+  mailField.autocomplete = ""
 
       var pwdField = document.createElement("input");
       pwdField.type = "password";
@@ -55,7 +58,7 @@ unset($_SESSION['teamName']);
         colorOption2.text = "Punainen";
         var colorOption3 = document.createElement("option");
         colorOption3.value = "vihreä";
-        colorOpton3.text = "Vihreä";
+        colorOption3.text= "Vihreä";
 
      colorField.appendChild(colorOption1);
       colorField.appendChild(colorOption2);
@@ -105,7 +108,8 @@ unset($_SESSION['teamName']);
                 <th>Laji</th>
                 <th>Nimi</th>
                 <th>Tila</th>
-              </tr>
+               <th></th>
+                  </tr>
             </thead>
           <?php
             $count = listTeams();

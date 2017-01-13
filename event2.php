@@ -3,8 +3,8 @@ session_start();
 include 'dbh.php';
 if (!isset($_SESSION['id'])) {
 header("Location: index.php");
-} 
-include ('inc/header.php'); 
+}
+include ('inc/header.php');
 include 'functions.php';
 
 ?>
@@ -20,7 +20,7 @@ include 'functions.php';
       remFirst.parentNode.removeChild(remFirst);
       var remLast = element.querySelectorAll("input")[0];
       remLast.parentNode.removeChild(remLast);
-      
+
       //määritetään table
       var playerElement = document.getElementById("removedPlayers");
       var tr = document.createElement("tr");
@@ -28,10 +28,10 @@ include 'functions.php';
       tr.id = id + "t";
       tr.setAttribute("name", count );
       tr.className += "inteam";
-      
-      
 
-      //luodaan funktion kuuntelija     
+
+
+      //luodaan funktion kuuntelija
       tr.addEventListener("click", function(){
         movePlayer(id,count);
       }, false);
@@ -56,41 +56,61 @@ include 'functions.php';
     }
 
     function movePlayer(i,c) {
-      var id = i;      
-      var element = document.getElementById(id);   
-      
+      var id = i;
+      var element = document.getElementById(id);
+
       var move = document.getElementById(id+"t");
       move.parentNode.removeChild(move);
-      
+
       var num = document.createElement("input");
       var value = move.querySelectorAll("td")[1].innerHTML;
       num.type = "hidden";
       num.name = "number["+c+"]"
       num.value = value;
-      
+
       var first = document.createElement("input");
       var value = move.querySelectorAll("td")[2].innerHTML;
       first.type = "hidden";
       first.name = "firstName["+c+"]"
       first.value = value;
-      
+
       var last = document.createElement("input");
       var value = move.querySelectorAll("td")[3].innerHTML;
       last.type = "hidden";
       last.name = "lastName["+c+"]"
       last.value = value;
-      
+
       element.appendChild(num);
       element.appendChild(first);
       element.appendChild(last);
-      
+
       document.getElementById(id).style = "display: grid";
     }
   </script>
 
   <div class="container">
+    <div class="row" id="guide">
+      <div class="twelve columns" style="text-align: center;">
 
-    
+      <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+      <h3 style="color:white;padding-top:5px">1</h3>
+    </div></a>
+
+  <a href="#" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">2</h3>
+  </div></a>
+
+  <a href="event3.php" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">3</h3>
+  </div></a>
+
+  <a href="event_overview.php" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">4</h3>
+  </div></a>
+
+  </div>
+  </div>
+
 
     <div class="row">
 <br>
@@ -100,7 +120,7 @@ include 'functions.php';
         </h4>
       </div>
       </div>
-      
+
     <div class="row">
 
       <div class="six columns">
@@ -121,14 +141,14 @@ include 'functions.php';
           <?php
           listHome();
           ?>
-        </table>     
+        </table>
 
       </div>
     </div>
 
-        <input type="hidden" name="eventName" value= "<?php echo $_SESSION['eventName'];?>"> 
-        <input type="hidden" name="eventDate" value= "<?php echo $_SESSION['eventDate'];?>">     
-  
+        <input type="hidden" name="eventName" value= "<?php echo $_SESSION['eventName'];?>">
+        <input type="hidden" name="eventDate" value= "<?php echo $_SESSION['eventDate'];?>">
+
     </div>
 
 

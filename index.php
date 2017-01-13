@@ -1,5 +1,5 @@
-<?php  
-  include('inc/header.php'); 
+<?php
+  include('inc/header.php');
 ?>
 
 <!-- Tähän sitten se switchi -->
@@ -27,7 +27,7 @@
       </div>
       <div class="twelve columns">
         <label for="pwd">
-          Password:      
+          Password:
         </label>
         <input type="password" name="pwd">
       </div>

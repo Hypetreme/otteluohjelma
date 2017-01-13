@@ -103,46 +103,13 @@ function register()
 		$result = mysqli_query($conn, $sql);
 		if ($row = mysqli_fetch_assoc($result)) {
 			$id = $row['id'];
+			$sql = "UPDATE user SET owner_id = $id WHERE id = $id";
+			$result = mysqli_query($conn, $sql);
 		} }
 
-	// Sähköpostin lähetys
-
-	require 'phpmailer/PHPMailerAutoload.php';
-
-	$mail = new PHPMailer;
-
-	//$mail->SMTPDebug = 3;                               // Enable verbose debug output
-
-	$mail->isSMTP();                                      // Set mailer to use SMTP
-	$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
-	$mail->SMTPAuth = true;                               // Enable SMTP authentication
-	$mail->Username = 'hypetremethewanderer@gmail.com';                 // SMTP username
-	$mail->Password = 'GODofwar3';                           // SMTP password
-	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-	$mail->Port = 587;                                    // TCP port to connect to
-
-	$mail->SetFrom("vahvistus@otteluohjelma.fi", "Otteluohjelma");
-	$mail->AddReplyTo("vahvistus@otteluohjelma.fi", "Otteluohjelma");
-	$mail->addAddress($email, $uid);     // Add a recipient
-	$mail->isHTML(true);                                  // Set email format to HTML
-
-	$mail->Subject = 'Otteluohjelma: Vahvistus';
-	$mail->Body    = 'Thanks for signing up!
-Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
-
-------------------------
-Username: '.$uid.'
-Password: '.$pwd.'
-------------------------
-
-Please click this link to activate your account:
-http://localhost:8080/otteluohjelma/verify.php?email='.$email.'&hash='.$hash.''; // Our message above including the link
-
-$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-	if(!$mail->send()) {
+	if(sendEmail('reg',$uid,$pwd,$email,$hash) == FALSE) {
 		echo '<script type="text/javascript">';
-		echo 'alert("Käyttäjä rekisteröity! Sähköpostia ei voitu lähettää. Mailer Error: ' . $mail->ErrorInfo.'");';
+		echo 'alert("Käyttäjä rekisteröity! Sähköpostia ei voitu lähettää.");';
 		echo '</script>';
 	} else {
 		echo '<script type="text/javascript">';
@@ -159,6 +126,78 @@ $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
   echo '</script>';
 }
 }
+function sendEmail($mod,$uid,$pwd,$email,$hash) {
+	include ('dbh.php');
+	// Sähköpostin lähetys
+if ($mod == 'resend') {
+	$sql = "SELECT * FROM user WHERE team_id = '$uid'";
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_assoc($result);
+	$email = $row['email'];
+	$hash = $row['hash'];
+}
+	require 'phpmailer/PHPMailerAutoload.php';
+
+	$mail = new PHPMailer;
+
+	//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+	$mail->isSMTP();                                      // Set mailer to use SMTP
+	$mail->Host = 'mail.zoner.fi';  // Specify main and backup SMTP servers
+	$mail->SMTPAuth = true;                               // Enable SMTP authentication
+	$mail->Username = 'no_reply@otteluohjelma.fi';                 // SMTP username
+	$mail->Password = 'vWV1md6ils';                           // SMTP password
+	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->Port = 587;                                    // TCP port to connect to
+
+	$mail->SetFrom("vahvistus@otteluohjelma.fi", "Otteluohjelma");
+	$mail->AddReplyTo("vahvistus@otteluohjelma.fi", "Otteluohjelma");
+	$mail->addAddress($email, $uid);     // Add a recipient
+	$mail->isHTML(true);                                  // Set email format to HTML
+
+	$mail->Subject = 'Otteluohjelma: Vahvistus';
+  if ($mod == 'reg') {
+	$mail->Body = 'Thanks for signing up!
+Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
+
+------------------------
+Username: '.$uid.'
+Password: '.$pwd.'
+------------------------
+Please click this link to activate your account:
+http://'.$_SERVER['SERVER_NAME'].'/otteluohjelma/verify.php?email='.$email.'&hash='.$hash.''; // Our message above including the link
+} else {
+	$mail->Body =
+	'Please click this link to activate your account:
+	http://'.$_SERVER['SERVER_NAME'].'/otteluohjelma/verify.php?email='.$email.'&hash='.$hash.'';
+
+}
+
+$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+if (!$mail->send()) {
+	if ($mod == 'reg') {
+	echo 'Mailer Error:'.$mail->ErrorInfo.'';
+	return FALSE;
+} else {
+	echo '<script type="text/javascript">';
+	echo 'alert("Aktivointikoodia ei voitu lähettää!");';
+	echo 'document.location.href = "teams.php";';
+	echo '</script>';
+
+}
+} else {
+	if ($mod == 'reg') {
+	return TRUE;
+} else {
+	echo '<script type="text/javascript">';
+	echo 'alert("Aktivointikoodi lähetetty sähköpostiin");';
+	echo 'document.location.href = "teams.php";';
+	echo '</script>';
+
+}
+}
+}
+
 function verifyAccount() {
 	include 'dbh.php';
 	if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !empty($_GET['hash'])){
@@ -764,16 +803,11 @@ function listEvents($mod)
 }
 	$i = 1;
 	if ($mod == "all") {
-		if ($_SESSION['type'] == 0) {
 			$sql = "SELECT * from event WHERE team_id='$teamId'";
-		}
-		else {
-			$sql = "SELECT * from event WHERE team_id='$teamId'";
-		}
 	}
 
 	if ($mod == "upcoming") {
-		if ($_SESSION['type'] == 0) {
+		if (!isset($_SESSION['teamId'])) {
 			$sql = "SELECT * from event WHERE date >= CURDATE() AND owner_id='$id'";
 		}
 		else {
@@ -782,7 +816,7 @@ function listEvents($mod)
 	}
 
 	if ($mod == "past") {
-		if ($_SESSION['type'] == 0) {
+		if (!isset($_SESSION['teamId'])) {
 			$sql = "SELECT * from event WHERE date < CURDATE() AND owner_id='$id'";
 		}
 		else {
@@ -798,16 +832,12 @@ function listEvents($mod)
 		echo "<tr>";
 		if ($mod != "all") {
 			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
-			echo '<td><p style="text-decoration:none;margin:0">' . $showDate . '</p></td>';
+			echo '<td><p style="margin-bottom: 0;">' . $showDate . '</p></td>';
 		}
 		else {
 			echo '<td><img src="default_team.png"></td>';
-			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '"><h4>' . $showName . '</h4></a></td>';
+			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
 		}
-
-		echo '<td></td>';
-		echo '<td></td>';
-		echo '<td></td>';
 		echo "</tr>";
 		$i++;
 	}
@@ -1036,16 +1066,26 @@ function listTeams()
 
 		$showId = $row['id'];
 		$showName = $row['name'];
-		echo "<tr'>";
+		echo '<tr style="min-height: 80px; height: 80px;">';
 		echo '<td><img style="width: 35px; height: 35px; vertical-align: middle;" src="images/default_team.png"></td>';
 		if ($row2['activated'] == 1) {
-		echo '<td><a style="text-decoration:none;" href="profile.php?teamId=' . $showId . '">' . $showName . '</a></td>';
-		echo '<td style="color:green">Käytössä</td>';
-	} else {
-		echo '<td><a style="text-decoration:none;color:gray" href="#">' . $showName . '</a></td>';
-		echo '<td style="color:red">Ei aktivoitu</td>';
-	}
-		echo "</tr>";
+			echo '<td><a style="text-decoration:none;" href="profile.php?teamId=' . $showId . '">' . $showName . '</a></td>';
+			echo '<td><i style="color: #003400;" class="material-icons">check_circle</i></td>';
+			echo '<td><a style="display: inline-block; text-decoration: none; vertical-align: middle;" href="#"><i style="float: left; padding-right: 3px;" class="material-icons">open_in_browser</i>Siirry</a></td>';
+		} else {
+			echo '<td><a style="text-decoration:none; color:gray;" href="#">' . $showName . '</a></td>';
+			echo '<td><i style="color: #670a1c;" class="material-icons">cancel</i></td>';
+
+			echo '<form action="functions.php" method="POST">';
+			echo '<input type="hidden" name="teamId" value='.$showId.'>';
+			echo '<td>
+				<a style="display: inline-block; text-decoration: none; vertical-align: middle;" href="?sendActivation" name="sendActivation"><i style="float: left; padding-right: 3px;" class="material-icons">refresh</i>Lähetä vahvistus</a>
+				<br/>
+				<a style="display: inline-block; text-decoration: none; vertical-align: middle;" href="#"><i style="float: left; padding-right: 3px;" class="material-icons">open_in_browser</i>Siirry</a>
+			</td>';
+			echo '</form>';
+		}
+		echo '</tr>';
 		$i++;
 	}
 
@@ -1282,4 +1322,8 @@ if (isset($_POST['logoUpload'])) {
 	logoUpload();
 }
 
+if (isset($_GET['sendActivation'])) {
+	sendEmail('resend',$_POST['teamId'],null,null,null);
+	//print_r($_POST);
+}
 ?>

@@ -15,12 +15,13 @@
 
     var count = 1;
 
-    $content = "<di class='six columnsumns'>";
+    $content = "<div class='six columns'>";
     $content += "<h1>Lisää pelaaja</h1>";
     $content += "<label>Etunimi:</label>";
     $content += "<input type='text'>";
     $content += "<label>Sukunimi:</label>";
     $content += "<input type='text'>";
+    $content += "</div>";
     $content += "<label>Pelinumero:</label>";
     $content += "<input type='text'>";
     $content += "</div>";

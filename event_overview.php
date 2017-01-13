@@ -9,6 +9,27 @@ include 'functions.php';
 ?>
 
   <div class="container">
+    <div class="row" id="guide">
+      <div class="twelve columns" style="text-align: center;">
+
+      <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+      <h3 style="color:white;padding-top:5px">1</h3>
+    </div></a>
+
+  <a href="event2.php" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">2</h3>
+  </div></a>
+
+  <a href="event3.php" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">3</h3>
+  </div></a>
+
+  <a href="#" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">4</h3>
+  </div></a>
+
+  </div>
+  </div>
     <div class="row">
 <br>
       <div class="twelve columns" style="text-align: center;">

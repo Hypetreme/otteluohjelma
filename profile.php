@@ -18,7 +18,7 @@
     unset($_SESSION['home']);
     unset($_SESSION['visitors']);
   }
-  include 'functions.php';
+  include ('functions.php');
   getTeamName();
   include('inc/header.php');
 ?>
@@ -42,8 +42,8 @@
             <table class="u-full-width">
               <thead>
                 <tr>
-                  <td>Tapahtuman nimi</td>
-                  <td>Päivämäärä</td
+                  <th>Tapahtuman nimi</th>
+                  <th>Päivämäärä</th>
                 </tr>
               </thead>
               <tbody>
@@ -65,10 +65,8 @@
             <table class="u-full-width">
               <thead>
                 <tr>
-                  <td>Tapahtuman nimi<td>
-                  <td>Koti</td>
-                  <td>Vieras</td>
-                  <td>Päivämäärä</td>
+                  <th>Tapahtuman nimi</th>
+                  <th>Päivämäärä</th>
                 </tr>
               </thead>
               <tbody>
