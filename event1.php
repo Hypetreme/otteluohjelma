@@ -7,6 +7,29 @@ header("Location: index.php");
 
 include ('inc/header.php');
 ?>
+<link rel="stylesheet" href="datepicker/classic.css">
+<link rel="stylesheet" href="datepicker/classic.date.css">
+<script src="js/jquery.js"></script>
+<script src="datepicker/picker.js"></script>
+<script src="datepicker/picker.date.js"></script>
+<script>
+$(document).ready(function() {
+$("#eventDate").click(function () {
+$("#eventDate").pickadate({
+    today: 'Tänään',
+    clear: '',
+    close: '',
+    monthsFull: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
+  weekdaysShort: ['Ma', 'Ti', 'Ke', 'To', 'Pe', 'La', 'Su'],
+  format: 'dd.mm.yyyy',
+  // An integer (positive/negative) sets it relative to today.
+min: -1,
+// `true` sets it to today. `false` removes any limits.
+max: false
+});
+});
+});
+</script>
 
 <div class="container">
   <div class="row" id="guide">
@@ -53,7 +76,7 @@ include ('inc/header.php');
          echo $_SESSION['eventPlace']; }
         ?>">
       <label for="eventdate">Tapahtuman pvm:</label>
-      <input type="text" name="eventDate" value="<?php
+      <input type="text" name="eventDate" id="eventDate" value="<?php
       if (isset($_SESSION['eventDate'])) {
          echo $_SESSION['eventDate']; }
         ?>">
