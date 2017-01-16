@@ -16,6 +16,7 @@
     unset($_SESSION['eventDate']);
     unset($_SESSION['home']);
     unset($_SESSION['visitors']);
+    unset($_SESSION['saved']);
   }
   include ('functions.php');
   include ('inc/header.php');

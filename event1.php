@@ -7,30 +7,25 @@ header("Location: index.php");
 
 include ('inc/header.php');
 ?>
-<script>
-if(window.location.href.indexOf("event1") > -1) {
-       //alert("your url contains the name franky");
-    }
-</script>
+
 <div class="container">
   <div class="row" id="guide">
     <div class="twelve columns" style="text-align: center;">
-
     <a href="#" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
     <h3 style="color:white;padding-top:5px">1</h3>
   </div></a>
 
-<a href="event2.php" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<h3 style="color:white;padding-top:5px">2</h3>
-</div></a>
+<div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name ="setEventInfo" value ="2">
+</div>
 
-<a href="event3.php" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<h3 style="color:white;padding-top:5px">3</h3>
-</div></a>
+<div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide" value="3">
+</div>
 
-<a href="event_overview.php" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<h3 style="color:white;padding-top:5px">4</h3>
-</div></a>
+<div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide2" value="4">
+</div>
 
 </div>
 </div>
@@ -41,9 +36,9 @@ if(window.location.href.indexOf("event1") > -1) {
         <span>Tapahtuman tiedot</span>
       </h4>
     </div>
-<form name="form" action="functions.php" method="POST">
-  </div>
 
+  </div>
+<form id="info" action="functions.php" method="POST">
   <div class="row">
     <div class="twelve columns">
       <label for="eventName">Tapahtuman nimi:</label>

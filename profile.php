@@ -17,6 +17,7 @@
     unset($_SESSION['eventDate']);
     unset($_SESSION['home']);
     unset($_SESSION['visitors']);
+    unset($_SESSION['saved']);
   }
   include ('functions.php');
   getTeamName();
@@ -76,9 +77,11 @@
        </div>
     </div>
 
-    <form action="functions.php" method="POST">
+<?php if (isset($_SESSION['teamId'])) {
+    echo '<form action="functions.php" method="POST">
       <input name="newEvent" type="submit" value="Luo Tapahtuma">
-    </form>
+    </form>'; }
+?>
     <?php
       include ('inc/footer.php');
     ?>

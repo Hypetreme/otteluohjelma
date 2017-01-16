@@ -10,7 +10,17 @@ unset($_SESSION['teamName']);
       $teamId = $_SESSION['teamId'];
     header("Location: team.php?teamId=$teamId");
   }
-
+  if (isset($_SESSION['eventId'])) {
+    unset($_SESSION['homeName']);
+    unset($_SESSION['visitorName']);
+    unset($_SESSION['eventId']);
+    unset($_SESSION['eventName']);
+    unset($_SESSION['eventPlace']);
+    unset($_SESSION['eventDate']);
+    unset($_SESSION['home']);
+    unset($_SESSION['visitors']);
+    unset($_SESSION['saved']);
+  }
   include('inc/header.php');
   include('functions.php');
 ?>

@@ -6,7 +6,6 @@ header("Location: index.php");
 }
 include ('inc/header.php');
 include 'functions.php';
-
 ?>
   <script type="text/javascript">
     function removePlayer(id, first, last, num) {
@@ -26,7 +25,7 @@ include 'functions.php';
       var tr = document.createElement("tr");
       //voidaan lisää id suoraan tr:n
       tr.id = id + "t";
-      tr.setAttribute("name", count );
+      //tr.setAttribute("name", count );
       tr.className += "inteam";
 
 
@@ -91,29 +90,29 @@ include 'functions.php';
   <div class="container">
     <div class="row" id="guide">
       <div class="twelve columns" style="text-align: center;">
-
-      <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+      <a href="event1.php" style="text-decoration:none">
+      <div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
       <h3 style="color:white;padding-top:5px">1</h3>
-    </div></a>
+      </div></a>
 
-  <a href="#" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <a href="#" style="text-decoration:none">
+  <div id="section2" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
   <h3 style="color:white;padding-top:5px">2</h3>
   </div></a>
 
-  <a href="event3.php" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">3</h3>
-  </div></a>
+  <div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeam" value="3">
+  </div>
 
-  <a href="event_overview.php" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">4</h3>
-  </div></a>
+  <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide" value="4">
+  </div>
 
   </div>
   </div>
 
 
     <div class="row">
-<br>
       <div class="twelve columns" style="text-align: center;">
         <h4>
           <span>Lisää kotijoukkueen pelaajat</span>
@@ -136,7 +135,7 @@ include 'functions.php';
         <h5>
           <span>Tapahtuman pelaajat</span>
         </h5>
-        <form name="form" action="functions.php" method="POST">
+<form id="home" action="functions.php" method="POST">
           <table class="u-full-width">
           <?php
           listHome();
@@ -146,22 +145,15 @@ include 'functions.php';
       </div>
     </div>
 
-        <input type="hidden" name="eventName" value= "<?php echo $_SESSION['eventName'];?>">
-        <input type="hidden" name="eventDate" value= "<?php echo $_SESSION['eventDate'];?>">
+        <div class="row">
+          <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
+         <input class="button-primary" type="button" value="Takaisin" onclick="window.location='event1.php'"/>
 
+            <input class="button-primary" type="submit" name="setHomeTeam" id="btnEvent2" value="Seuraava">
+            </form>
+          </div>
+        </div>
     </div>
-
-
-    <div class="row">
-      <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
-     <input class="button-primary" type="button" value="Takaisin" onclick="window.location='event1.php'"/>
-
-        <input class="button-primary" type="submit" name="setHomeTeam" id="btnEvent2" value="Seuraava">
-        </form>
-      </div>
-    </div>
-
-  </div>
 
 
   <?php include('inc/footer.php'); ?>

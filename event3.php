@@ -6,7 +6,6 @@ header("Location: index.php");
 }
 include ('inc/header.php');
 include 'functions.php';
-
 ?>
 
   <script>
@@ -91,9 +90,9 @@ include 'functions.php';
   <h3 style="color:white;padding-top:5px">3</h3>
   </div></a>
 
-  <a href="event_overview.php" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">4</h3>
-  </div></a>
+  <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <input form="visitors2" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name ="setVisitorTeam" value ="4">
+  </div>
 
   </div>
   </div>

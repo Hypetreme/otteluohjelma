@@ -1,9 +1,11 @@
 <?php
   session_start();
-  $teamid = $_SESSION['teamid'];
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
   }
+  if (isset($_SESSION['teamId'])) {
+  $teamid = $_SESSION['teamid'];
+}
 if (isset($_SESSION['eventId'])) {
 unset($_SESSION['homeName']);
 unset($_SESSION['visitorName']);

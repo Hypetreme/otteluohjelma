@@ -9,7 +9,8 @@ include 'functions.php';
 ?>
 
   <div class="container">
-    <div class="row" id="guide">
+  <?php if (!isset($_GET['eventId'])) {
+    echo '<div class="row" id="guide">
       <div class="twelve columns" style="text-align: center;">
 
       <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
@@ -29,7 +30,8 @@ include 'functions.php';
   </div></a>
 
   </div>
-  </div>
+  </div>'; }
+  ?>
     <div class="row">
 <br>
       <div class="twelve columns" style="text-align: center;">
@@ -82,7 +84,7 @@ include 'functions.php';
     <div class="row">
       <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
        <?php
-      if (isset($_GET['eventId'])) {
+       if (isset($_GET['eventId'])) {
       $eventId = $_GET['eventId'];
     }
       $url = "event3.php";
@@ -94,7 +96,7 @@ include 'functions.php';
        echo "<button class='button-primary' type='submit' name='createEvent' id='btncreateEvent' value='Tallenna'>";
        echo "Tallenna</button>";
        echo "</form>";
-        } else {
+     } else if (isset($_GET['eventId'])) {
        echo "<form style='display: inline;padding: 5px' action='functions.php?removeEvent=".$eventId."' method='POST'>";
        echo "<button style='border-color:gray;background-color:gray;' class='button-primary' name='removeEvent' type='submit' id='btnremoveEvent' value='Poista'>";
        echo "Poista</button>";

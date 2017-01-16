@@ -200,7 +200,7 @@ if (!$mail->send()) {
 
 function verifyAccount() {
 	include 'dbh.php';
-	if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !empty($_GET['hash'])){
+	if(isset($_GET['email']) && !empty($_GET['email']) && isset($_GET['hash']) && !empty($_GET['hash'])){
     // Verify data
     $email = mysqli_escape_string($conn,$_GET['email']); // Set email variable
     $hash = mysqli_escape_string($conn,$_GET['hash']); // Set hash variable
@@ -555,6 +555,9 @@ function removeVisitor()
 	$_SESSION['visitors']['firstName'] = array_values($_SESSION['visitors']['firstName']);
 	$_SESSION['visitors']['lastName'] = array_values($_SESSION['visitors']['lastName']);
 	$_SESSION['visitors']['number'] = array_values($_SESSION['visitors']['number']);
+	if (empty($_SESSION['visitors']['firstName'])) {
+	unset($_SESSION['visitors']);
+	}
 	header("Location:event3.php");
 }
 
@@ -597,26 +600,60 @@ function addVisitor()
 	header("Location:event3.php");
 }
 
-function setEventInfo()
+function setEventInfo($mod)
 {
 	if(!isset($_SESSION)) {
 	session_start(); }
 	include 'dbh.php';
+	if (empty($_POST['eventName']) || empty($_POST['eventPlace']) || empty($_POST['eventDate'])) {
+ 	echo '<script type="text/javascript">';
+ 	echo 'alert("Täytä kaikki tapahtuman tiedot!");';
+ 	echo 'document.location.href = "event1.php"';
+ 	echo '</script>';
+ 	exit();
+ }
 
+if ($mod == 'guide' || $mod == 'guide2') {
+if (!isset($_SESSION['visitors'])) {
+	echo '<script type="text/javascript">';
+	echo 'alert("Lisää vähintään yksi vierasjoukkueen pelaaja!");';
+	echo 'document.location.href = "event3.php"';
+	echo '</script>';
+	exit(); }
+ else if (!isset($_SESSION['visitorName'])) {
+	echo '<script type="text/javascript">';
+	echo 'alert("Aseta vierasjoukkueen nimi!");';
+	echo 'document.location.href = "event3.php"';
+	echo '</script>';
+	exit();
+} if($mod == 'guide') {
+header("Location:event3.php");
+} else {
+header("Location:event_overview.php");
+}
+}
+else {
 	$_SESSION['eventName'] = $_POST['eventName'];
 	$_SESSION['eventPlace'] = $_POST['eventPlace'];
 	$_SESSION['eventDate'] = $_POST['eventDate'];
 	header("Location:event2.php");
 }
-
-function setHomeTeam()
-{
+}
+function setHomeTeam($mod) {
 	if(!isset($_SESSION)) {
 	session_start(); }
 	include 'dbh.php';
 
+	if (!isset($_SESSION['eventName']) && !isset($_SESSION['eventPlace']) && !isset($_SESSION['eventDate'])) {
+			echo '<script type="text/javascript">';
+			echo 'alert("Täytä kaikki tapahtuman tiedot!");';
+			echo 'document.location.href = "event1.php"';
+			echo '</script>';
+			exit();
+		}
 	$i = 0;
 	unset($_SESSION['saved']);
+	if (isset($_POST['firstName']) && isset($_POST['lastName']) && isset($_POST['number'])) {
 	foreach($_POST['firstName'] as $value) {
 		$_SESSION['saved']['home']['firstName'][$i] = $value;
 		$i++;
@@ -635,26 +672,75 @@ function setHomeTeam()
 	}
 
 	$eventId = $_SESSION['eventId'];
+	if ($mod == 'guide') {
+	header("Location:event_overview.php");
+} else {
 	header("Location:event3.php");
+}
+}
+else {
+		echo '<script type="text/javascript">';
+		echo 'alert("Lisää vähintään yksi pelaaja!");';
+		echo 'document.location.href = "event2.php"';
+		echo '</script>';
+	}
 }
 
 function setVisitorTeam()
 {
 	if(!isset($_SESSION)) {
 	session_start(); }
-	$_SESSION['visitorName'] = $_POST['visitorName'];
-	header("Location:event_overview.php?c");
+if ($_POST['visitorName']) {
+$_SESSION['visitorName'] = $_POST['visitorName'];
+}
+if (!$_POST['visitorName']) {
+			echo '<script type="text/javascript">';
+			echo 'alert("Aseta vierasjoukkueen nimi!");';
+			echo 'document.location.href = "event3.php"';
+			echo '</script>';
+		}
+else if(!isset($_SESSION['visitors'])) {
+	echo '<script type="text/javascript">';
+	echo 'alert("Lisää vähintään yksi vierasjoukkueen pelaaja!");';
+	echo 'document.location.href = "event3.php"';
+	echo '</script>';
+}
+ else {
+		header("Location:event_overview.php?c");
+	}
 }
 
 function showHome()
 {
 	if(!isset($_SESSION)) {
 	session_start(); }
+
 	if (isset($_SESSION['eventId'])) {
 	$eventId = $_SESSION['eventId'];
+}
+	if (empty($_SESSION['eventName']) && empty($_SESSION['eventPlace']) && empty($_SESSION['eventDate'])) {
+		echo '<script type="text/javascript">';
+		echo 'alert("Täytä kaikki tapahtuman tiedot!");';
+		echo 'document.location.href = "event1.php"';
+		echo '</script>';
+		exit();
+	}
+	if (!isset($_SESSION['visitors'])) {
+		echo '<script type="text/javascript">';
+		echo 'alert("Lisää vähintään yksi vierasjoukkueen pelaaja!");';
+		echo 'document.location.href = "event3.php"';
+		echo '</script>';
+		exit();
+	}
+	if (!isset($_SESSION['visitorName'])) {
+		echo '<script type="text/javascript">';
+		echo 'alert("Aseta vierasjoukkueen nimi!");';
+		echo 'document.location.href = "event3.php"';
+		echo '</script>';
+		exit();
 	}
 	$i = 0;
-	if (isset($_GET['c'])) {
+	if (isset($_GET['c']) && isset($_SESSION['saved'])) {
 		foreach($_SESSION['saved']['home']['firstName'] as $value) {
 			$showFirst = $_SESSION['saved']['home']['firstName'][$i];
 			$showLast = $_SESSION['saved']['home']['lastName'][$i];
@@ -717,15 +803,19 @@ function listVisitors()
 {
 	if(!isset($_SESSION)) {
 	session_start(); }
+
+	if (empty($_SESSION['eventName']) && empty($_SESSION['eventPlace']) && empty($_SESSION['eventDate'])) {
+		echo '<script type="text/javascript">';
+		echo 'alert("Täytä kaikki tapahtuman tiedot!");';
+		echo 'document.location.href = "event1.php"';
+		echo '</script>';
+	}
 	if (isset($_SESSION['eventId'])) {
 	$eventId = $_SESSION['eventId'];
 }
 	$i = 0;
-		if (isset($_SESSION['visitors'])) {
+		if (!empty($_SESSION['visitors'])) {
 	foreach($_SESSION['visitors']['firstName'] as $value) {
-		/*if (empty($_SESSION['visitors']['firstName'][$i])) {
-			$i++;
-		}*/
 
 		$showFirst = $_SESSION['visitors']['firstName'][$i];
 		$showLast = $_SESSION['visitors']['lastName'][$i];
@@ -750,6 +840,12 @@ function listHome()
 	if(!isset($_SESSION)) {
 	session_start(); }
 	include 'dbh.php';
+	if (empty($_SESSION['eventName']) && empty($_SESSION['eventPlace']) && empty($_SESSION['eventDate'])) {
+	  echo '<script type="text/javascript">';
+		echo 'alert("Täytä kaikki tapahtuman tiedot!");';
+		echo 'document.location.href = "event1.php"';
+		echo '</script>';
+	}
 
 	$id = $_SESSION['id'];
 	if (isset($_SESSION['teamId'])) {
@@ -952,6 +1048,15 @@ function createEvent()
 			)
 		)
 	);
+	$i = 0;
+	if (!isset($_SESSION['saved'])) {
+		foreach($_SESSION['home']['firstName'] as $key => $value) {
+			$_SESSION['saved']['home']['firstName'] = $_SESSION['home']['firstName'];
+			$_SESSION['saved']['home']['lastName'] = $_SESSION['home']['lastName'];
+			$_SESSION['saved']['home']['number'] = $_SESSION['home']['number'];
+			$i++;
+		}
+	}
 	$i = 0;
 	foreach($_SESSION['saved']['home']['firstName'] as $key => $value) {
 		$overview['teams']['home']['players'][$i]['first'] = $value;
@@ -1254,12 +1359,24 @@ function userData()
 	echo '</tr>';
 }
 
-if (isset($_POST['setEventInfo'])) {
+if (isset($_POST['setEventInfo'])){
 	setEventInfo();
+}
+
+if (isset($_POST['setEventInfoGuide'])){
+	setEventInfo('guide');
+}
+
+if (isset($_POST['setEventInfoGuide2'])){
+	setEventInfo('guide2');
 }
 
 if (isset($_POST['setHomeTeam'])) {
 	setHomeTeam();
+}
+
+if (isset($_POST['setHomeTeamGuide'])) {
+	setHomeTeam('guide');
 }
 
 if (isset($_POST['setVisitorTeam'])) {
