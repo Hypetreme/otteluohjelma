@@ -7,30 +7,15 @@ header("Location: index.php");
 
 include ('inc/header.php');
 ?>
-<link rel="stylesheet" href="datepicker/classic.css">
-<link rel="stylesheet" href="datepicker/classic.date.css">
+<link rel="stylesheet" href="inc/widgets/datepicker/classic.css">
+<link rel="stylesheet" href="inc/widgets/datepicker/classic.date.css">
 <script src="js/jquery.js"></script>
-<script src="datepicker/picker.js"></script>
-<script src="datepicker/picker.date.js"></script>
+<script src="js/main.js"></script>
+<script src="inc/widgets/datepicker/picker.js"></script>
+<script src="inc/widgets/datepicker/picker.date.js"></script>
 <script>
-$(document).ready(function() {
-$("#eventDate").click(function () {
-$("#eventDate").pickadate({
-    today: 'Tänään',
-    clear: '',
-    close: '',
-    monthsFull: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
-  weekdaysShort: ['Ma', 'Ti', 'Ke', 'To', 'Pe', 'La', 'Su'],
-  format: 'dd.mm.yyyy',
-  // An integer (positive/negative) sets it relative to today.
-min: -1,
-// `true` sets it to today. `false` removes any limits.
-max: false
-});
-});
-});
+datePicker();
 </script>
-
 <div class="container">
   <div class="row" id="guide">
     <div class="twelve columns" style="text-align: center;">
@@ -43,11 +28,15 @@ max: false
 </div>
 
 <div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide" value="3">
+<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide3" value="3">
 </div>
 
 <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide2" value="4">
+<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide4" value="4">
+</div>
+
+<div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide5" value="5">
 </div>
 
 </div>
@@ -75,11 +64,12 @@ max: false
       if (isset($_SESSION['eventPlace'])) {
          echo $_SESSION['eventPlace']; }
         ?>">
+
       <label for="eventdate">Tapahtuman pvm:</label>
       <input type="text" name="eventDate" id="eventDate" value="<?php
       if (isset($_SESSION['eventDate'])) {
          echo $_SESSION['eventDate']; }
-        ?>">
+        ?>"> </div>
     </div>
   </div>
 

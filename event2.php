@@ -90,6 +90,7 @@ include 'functions.php';
   <div class="container">
     <div class="row" id="guide">
       <div class="twelve columns" style="text-align: center;">
+
       <a href="event1.php" style="text-decoration:none">
       <div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
       <h3 style="color:white;padding-top:5px">1</h3>
@@ -105,7 +106,11 @@ include 'functions.php';
   </div>
 
   <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide" value="4">
+  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide4" value="4">
+  </div>
+
+  <div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide5" value="5">
   </div>
 
   </div>

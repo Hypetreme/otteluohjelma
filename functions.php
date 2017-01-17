@@ -615,12 +615,16 @@ function setEventInfo($mod)
 $_SESSION['eventName'] = $_POST['eventName'];
 $_SESSION['eventPlace'] = $_POST['eventPlace'];
 $_SESSION['eventDate'] = $_POST['eventDate'];
-if ($mod == "4"){
-	header("Location:event_overview.php?c");
-}
-else if ($mod == "3"){
+if ($mod == "3"){
 	header("Location:event3.php");
 }
+else if ($mod == "4"){
+	header("Location:event4.php");
+}
+else if ($mod == "5"){
+	header("Location:event_overview.php?c");
+}
+
 else  {
 	header("Location:event2.php");
 }
@@ -659,6 +663,9 @@ function setHomeTeam($mod) {
 
 	$eventId = $_SESSION['eventId'];
 	if ($mod == '4') {
+	header("Location:event4.php");
+}
+	else if ($mod == '5') {
 	header("Location:event_overview.php?c");
 } else {
 	header("Location:event3.php");
@@ -672,7 +679,7 @@ else {
 	}
 }
 
-function setVisitorTeam()
+function setVisitorTeam($mod)
 {
 	if(!isset($_SESSION)) {
 	session_start(); }
@@ -698,10 +705,13 @@ else if(!isset($_SESSION['visitors'])) {
 	echo '</script>';
 }
  else {
+	 if ($mod == '5') {
 		header("Location:event_overview.php?c");
-	}
+	} else {
+			header("Location:event4.php");
+		}
 }
-
+}
 function showHome()
 {
 	if(!isset($_SESSION)) {
@@ -717,7 +727,7 @@ function showHome()
 		echo '</script>';
 		exit();
 	}
-	else if (!isset($_SESSION['saved'])) {
+	else if (!isset($_SESSION['saved']) && !isset($_SESSION['eventId'])){
 		echo '<script type="text/javascript">';
 		echo 'alert("Lisää vähintään yksi pelaaja!");';
 		echo 'document.location.href = "event2.php"';
@@ -802,7 +812,7 @@ function listVisitors()
 {
 	if(!isset($_SESSION)) {
 	session_start(); }
-	if (!isset($_SESSION['saved'])) {
+	if (!isset($_SESSION['saved']) && !isset($_SESSION['visitors']) && !isset($_SESSION['home'])) {
 		echo '<script type="text/javascript">';
 		echo 'alert("Lisää vähintään yksi pelaaja!");';
 		echo 'document.location.href = "event2.php"';
@@ -973,6 +983,7 @@ function eventId()
 				$_SESSION['eventName'] = $json['eventinfo'][0];
 				$_SESSION['eventPlace'] = $json['eventinfo'][1];
 				$_SESSION['eventDate'] = $json['eventinfo'][2];
+				$_SESSION['matchText'] = $json['eventinfo'][3];
 				$_SESSION['homeName'] = $json['teams']['home'][0];
 				$_SESSION['visitorName'] = $json['teams']['visitors'][0];
 				foreach($json['teams']['home']['players'] as $value) {
@@ -1013,6 +1024,7 @@ function createEvent()
 	$eventName = $_SESSION['eventName'];
 	$eventPlace = $_SESSION['eventPlace'];
 	$eventDate = $_SESSION['eventDate'];
+	$matchText = $_SESSION['matchText'];
 	$date = date_create($eventDate);
 	$realDate = date_format($date, "Y-m-d");
 	$visitorName = strip_tags($visitorName);
@@ -1027,7 +1039,8 @@ function createEvent()
 		'eventinfo' => array(
 			$eventName,
 			$eventPlace,
-			$eventDate
+			$eventDate,
+			$matchText
 		) ,
 		'teams' => array(
 			'home' => array(
@@ -1145,6 +1158,7 @@ function createEvent()
 	unset($_SESSION['eventName']);
 	unset($_SESSION['eventPlace']);
 	unset($_SESSION['eventDate']);
+	unset($_SESSION['matchText']);
 	unset($_SESSION['home']);
 	unset($_SESSION['visitors']);
 	unset($_SESSION['saved']);
@@ -1362,29 +1376,53 @@ function userData()
 
 	echo '</tr>';
 }
+function setMatchText() {
+	if(!isset($_SESSION)) {
+	session_start();
+	}
+if ($_POST['matchText']) {
+	$_SESSION['matchText'] = $_POST['matchText'];
+} header("Location: event_overview.php?c");
+}
+
+if (isset($_POST['setMatchText'])){
+	setMatchText();
+}
 
 if (isset($_POST['setEventInfo'])){
 	setEventInfo();
 }
 
-if (isset($_POST['setEventInfoGuide'])){
+if (isset($_POST['setEventInfoGuide3'])){
 	setEventInfo('3');
 }
 
-if (isset($_POST['setEventInfoGuide2'])){
+if (isset($_POST['setEventInfoGuide4'])){
 	setEventInfo('4');
+}
+
+if (isset($_POST['setEventInfoGuide5'])){
+	setEventInfo('5');
 }
 
 if (isset($_POST['setHomeTeam'])) {
 	setHomeTeam();
 }
 
-if (isset($_POST['setHomeTeamGuide'])) {
+if (isset($_POST['setHomeTeamGuide4'])) {
 	setHomeTeam('4');
+}
+
+if (isset($_POST['setHomeTeamGuide5'])) {
+	setHomeTeam('5');
 }
 
 if (isset($_POST['setVisitorTeam'])) {
 	setVisitorTeam();
+}
+
+if (isset($_POST['setVisitorTeamGuide5'])) {
+	setVisitorTeam('5');
 }
 
 if (isset($_POST['addVisitor'])) {

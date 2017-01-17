@@ -13,9 +13,9 @@ include 'functions.php';
     echo '<div class="row" id="guide">
       <div class="twelve columns" style="text-align: center;">
 
-      <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-      <h3 style="color:white;padding-top:5px">1</h3>
-    </div></a>
+  <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">1</h3>
+  </div></a>
 
   <a href="event2.php" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
   <h3 style="color:white;padding-top:5px">2</h3>
@@ -25,8 +25,12 @@ include 'functions.php';
   <h3 style="color:white;padding-top:5px">3</h3>
   </div></a>
 
-  <a href="#" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <a href="event4.php" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
   <h3 style="color:white;padding-top:5px">4</h3>
+  </div></a>
+
+  <a href="#" style="text-decoration:none"><div id="section5" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">5</h3>
   </div></a>
 
   </div>
@@ -74,8 +78,15 @@ include 'functions.php';
           showVisitors();
           ?>
         </table>
-
       </div>
+    <div class="twelve columns" style="text-align: center;">
+      <h4>
+        <span>Ennakkoteksti</span>
+      </h4>
+      <span><?php if (isset($_SESSION['matchText'])) {
+        echo $_SESSION['matchText']; }
+        ?></span>
+    </div>
     </div>
 
         <input type="hidden" name="eventName" value= "<?php echo $_SESSION['eventName'];?>">
@@ -87,7 +98,7 @@ include 'functions.php';
        if (isset($_GET['eventId'])) {
       $eventId = $_GET['eventId'];
     }
-      $url = "event3.php";
+      $url = "event4.php";
       $url2 = "event1.php";
         if (isset($_GET['c'])) {
        echo "<button class='button-primary' type='button' value='Takaisin' onclick='window.location=\"$url\"'/>";

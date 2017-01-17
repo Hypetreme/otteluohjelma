@@ -94,17 +94,13 @@ header {
   line-height: initial;
 }
 
-.liLogo .openNav {
-  display: block;
-  position: relative;
-  top: 10px;
-  left: 4px;
+.liLogo .openNav,
+.liLogo .changeTeam,
+.btn {
+  display: inline-block;
   cursor: pointer;
 }
 
-.liLogo .changeTeam {
-  cursor: pointer;
-}
 
 .btn {
   margin: 0;

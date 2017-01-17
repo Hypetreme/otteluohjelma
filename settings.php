@@ -34,13 +34,16 @@
           $url = "";
           if (isset($_SESSION['teamId'])) {
             $team = 'team.php?teamId='.$_SESSION['teamId'];
+            $ads = 'ads.php';
             $url = 'location.href="'.$team.'"';
+            $url3 = 'location.href="'.$ads.'"';
           }
-          $loc = 'my_events.php';
-          $url2 = 'location.href="'.$loc.'"';
+          $events = 'my_events.php';
+          $url2 = 'location.href="'.$events.'"';
           if (isset($_SESSION['teamId'])) {
             echo '<li class="navbar-item"><button onclick='.$url.'>Kokoonpano</button></li>';
             echo '<li class="navbar-item"><button onclick='.$url2.'>Tapahtumasi</button></li>';
+            echo '<li class="navbar-item"><button onclick='.$url3.'>Aseta Mainospaikat</button></li>';
           }
         ?>
       </ul>

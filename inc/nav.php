@@ -11,132 +11,102 @@
     <div class="row" style="background-color: #f7f7f7;">
       <div class="container">
         <ul class="navbar-list">
+          <?php
 
-            <?php
-              $session = $profile = $profile2 = $teams = $url = $url2 = $url3 = "";
+          $session = $profile = $profile2 = $teams = $url = $url2 = $url3 = "";
 
-              if (isset($_SESSION)) {
-                $session = json_encode($_SESSION);
-                if (isset($_SESSION['teamId'])) {
-                  $profile = 'profile.php?teamId=' . $_SESSION['teamId'];
-                }
-                else {
-                  $profile = 'profile.php';
-                }
-              }
+          if (isset($_SESSION)) {
 
-              $teams = 'teams.php';
-              $url = 'location.href="' . $teams . '"';
-              $url2 = 'location.href="' . $profile . '"';
-              $id = $_SESSION['id'];
-              $uid = $_SESSION['uid'];
+            $session = json_encode($_SESSION);
 
-              if (isset($_SESSION)) {
-                if (($_SESSION['type'] == 0)) {
-                  echo '<li class="navbar-item">
-                        <a class="navbar-link" onclick=' . $url . '>Joukkueet</a>
-                      </li>';
-                }
+            if (isset($_SESSION['teamId'])) {
+              $profile = 'profile.php?teamId=' . $_SESSION['teamId'];
+            } else {
+              $profile = 'profile.php';
+            }
 
-                if (!isset($_SESSION['teamId'])) {
+          }
 
-                  $fileName = 'images/logos/' . $uid . $id . '.jpg';
-                  if (file_exists($fileName)) {
-                    echo '
-                      <li class="liLogo navbar-item">
-                      <i class="material-icons changeTeam">import_export</i>
-                      <div class="btn">
-                        <a class="navbar-link" onclick=' . $url2 . '>
-                          <div class="ctx">
-                            <div class="ctx-r">
-                              <div class="avatar" style="background-image: url(' . $fileName . ');"></div>
-                            </div>
-                            <div class="ctx-r">
-                              <div class="name">'.$uid.'</div>
-                            </div>
-                          </div>
-                        </a>
+          //defining variables
+          $team       =   'teams.php';
+          $url        =   'location.href="'.$profile.'"';
+          $id         =   $_SESSION['id'];
+          $uid        =   $_SESSION['uid'];
+          $teamName   =   $_SESSION['teamName'];
+          $teamId     =   $_SESSION['teamId'];
+
+          //$stmt = $conn->prepare("");
+          //$stmt->execute();
+          //$result = $stmt->fetchAll();
+
+
+
+          //if there is session teamId
+          if (isset($_SESSION['teamId'])) {
+            $fileName = 'images/logos/'.$teamName.$teamId.'.jpg';
+            if (file_exists($fileName)){
+              $profileLink = $url;
+              $profileFile = $fileName;
+              $profileName = $teamName;
+            }else{
+              $profileLink = $url;
+              $profileFile = "images/logos/joukkueet.png";
+              $profileName = $teamName;
+            }
+          }else{
+            $fileName = 'images/logos/'.$uid.$id.'.jpg';
+            if (file_exists($fileName)){
+              $profileLink = $url;
+              $profileFile = $fileName;
+              $profileName = $uid;
+            }else{
+              $profileLink = $url;
+              $profileFile = "images/logos/seura.png";
+              $profileName = $uid;
+            }
+          }
+
+          echo '<li class="liLogo navbar-item">
+                  <i class="material-icons changeTeam">import_export</i>
+                  <div class="btn">
+                    <a class="navbar-link" onclick=' . $profileLink . '>
+                      <div class="ctx">
+                        <div class="ctx-r">
+                          <div class="avatar" style="background-image: url(' . $profileFile . ');"></div>
                         </div>
-                        <i class="material-icons openNav">keyboard_arrow_right</i>
-                        </li>';
-                  }
-                  else {
-                    echo '
-                      <li class="liLogo navbar-item">
-                      <i class="material-icons changeTeam">import_export</i>
-                      <div class="btn">
-                        <a class="navbar-link" onclick=' . $url2 . '>
-                          <div class="ctx">
-                            <div class="ctx-r">
-                              <div class="avatar" style="background-image: url(images/logos/seura.png);"></div>
-                            </div>
-                            <div class="ctx-r">
-                              <div class="name">'.$uid.'</div>
-                            </div>
-                          </div>
-                        </a>
+                        <div class="ctx-r">
+                          <div class="name">' . $profileName . '</div>
                         </div>
-                        <i class="material-icons openNav">keyboard_arrow_right</i>
-                        </li>';
-
-                  }
-                } else {
-                  $teamName = $_SESSION['teamName'];
-                  $teamId = $_SESSION['teamId'];
-                  $fileName = 'images/logos/' . $teamName . $teamId . '.jpg';
-                  if (file_exists($fileName)) {
-                    echo '
-                    <li class="liLogo navbar-item">
-                    <i class="material-icons changeTeam">import_export</i>
-                      <div class="btn">
-                        <a class="navbar-link" onclick=' . $url2 . '>
-                          <div class="ctx">
-                            <div class="ctx-r">
-                              <div class="avatar" style="background-image: url(' . $fileName . ');"></div>
-                            </div>
-                            <div class="ctx-r">
-                              <div class="name">'.$teamName.'</div>
-                            </div>
-                          </div>
-                        </a>
                       </div>
-                      <i class="material-icons openNav">keyboard_arrow_right</i>
-                      </li>
-                      ';
+                    </a>
+                  </div>
+                  <i class="material-icons openNav">keyboard_arrow_right</i>
+                </li>';
 
-                  }
-                  else {
-                    echo '
-                      <li class="liLogo navbar-item">
-                      <i class="material-icons changeTeam">import_export</i>
-                      <div class="btn">
-                        <a class="navbar-link" onclick=' . $url2 . '>
-                          <div class="ctx">
-                            <div class="ctx-r">
-                              <div class="avatar" style="background-image: url(images/logos/joukkue.png);"></div>
-                            </div>
-                            <div class="ctx-r">
-                              <div class="name">'.$teamName.'</div>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                      <i class="material-icons openNav">keyboard_arrow_right</i>
-                      </li>';
+          echo '<script>console.log(' . $session . ')</script>';
 
-                  }
-                }
-              }
+          ?>
+        <script type="text/javascript">
 
-              echo '<script>console.log(' . $session . ')</script>';
-              ?>
-
-        <script>
           $(function(){
 
             var moreNav = $('.more');
             var links = $(".more li");
             var moreNavBtn = $('.liLogo .openNav');
+            var changeTeam = $('.liLogo .changeTeam');
+            var navJoukkueet = $('.nav-joukkueet');
+
+            changeTeam.on("click", function(){
+                navJoukkueet.css({
+                  "display" : "inline-block",
+                  "position" : "absolute",
+                  "top" : "10px",
+                  "left" : "0",
+                  "height" : "42px",
+                  "border-top-left-radius" : "0",
+                  "border-bottom-left-radius" : "0"
+                });
+            });
 
             moreNavBtn.on("click", function(e){
 
@@ -177,13 +147,30 @@
           .more li {
             display: none;
           }
+
+          .nav-joukkueet {
+           display: none;
+          }
         </style>
 
         <div class="more">
-          <li class="navbar-item"><a class="navbar-link" href='#'>Profiili</a></li>
+          <li class="navbar-item"><a class="navbar-link" onclick=' <?php echo $url ?>'>Profiili</a></li>
+          <?php
+          if (($_SESSION['type'] == 0)) {
+            echo '<li class="navbar-item"><a class="navbar-link" href="teams.php">Joukkueet</a></li>';
+          }
+          ?>
           <li class="navbar-item"><a class="navbar-link" onclick="location.href='settings.php'">Asetukset</a></li>
           <li class="navbar-item"><a class="navbar-link" onclick="location.href='goodbye.php'">Kirjaudu ulos</a></li>
         </div>
+
+        <select id="nav-joukkueet" name="nav-joukkueet" class="nav-joukkueet">
+          <option value="joukkue1" selected disabled>Current</option>
+          <option value="joukkue2">Joukkue2</option>
+          <option value="joukkue3">Joukkue3</option>
+          <option value="joukkue4">Joukkue4</option>
+        </select>
+
       </ul>
     </div>
   </div>
