@@ -52,7 +52,7 @@ header {
   position: relative;
   float: left;
   margin-bottom: 0;
-  margin-right: 35px;
+  margin-right: 21px;
   height: 60px;
   line-height: 60px;
 }
@@ -89,9 +89,9 @@ header {
 }
 
 .liLogo {
-  height: 40px;
   padding: 10px 0px;
   line-height: initial;
+  margin-right: 10px;
 }
 
 .liLogo .openNav,
@@ -99,7 +99,20 @@ header {
 .btn {
   display: inline-block;
   cursor: pointer;
+  vertical-align: middle;
 }
+
+.liLogo .changeTeam {
+  border-radius: 50%;
+    padding: 4px;
+    margin-right: 4px;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+
+
 
 
 .btn {
@@ -127,7 +140,7 @@ header {
   cursor: pointer;
 }
 
-.ctx:hover {
+.ctx:hover, .liLogo .changeTeam:hover {
   background-color: #f7f7f7;
 }
 
@@ -140,7 +153,7 @@ header {
 .ctx .avatar {
   width: 40px;
   height: 40px;
-  background-image: url('https://4.bp.blogspot.com/--3JcfTPuq74/VTGasiKxiCI/AAAAAAAAIvk/Nom6AdzbMiI/s1600/angel.jpg');
+  background-image: url('../images/default.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;

@@ -7,7 +7,7 @@
   <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
   <link rel="stylesheet" type="text/css" href="css/skeleton.css">
-  <link rel="stylesheet" type="text/css" href="css/avgrund.css">
+  <!--<link rel="stylesheet" type="text/css" href="css/avgrund.css">-->
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script type="text/javascript" src="js/jquery.js"></script>

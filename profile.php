@@ -3,7 +3,7 @@
   include 'dbh.php';
   if (!$_SESSION['type'] == 0) {
   $teamId = $_SESSION['teamId'];
-  $teamName = $_SESSION['teamName'];
+  $teamUid = $_SESSION['teamUid'];
 }
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
@@ -18,6 +18,11 @@
     unset($_SESSION['home']);
     unset($_SESSION['visitors']);
     unset($_SESSION['saved']);
+    unset($_SESSION['matchText']);
+  }
+  if (isset($_GET['back'])) {
+    unset($_SESSION['teamId']);
+    unset($_SESSION['teamUid']);
   }
   include ('functions.php');
   getTeamName();
@@ -30,7 +35,7 @@
     <div class="row">
       <div class="twelve columns">
         <h4>
-          Profiili
+          Etusivu
            </h4>
       </div>
     </div>
@@ -44,6 +49,9 @@
               <thead>
                 <tr>
                   <th>Tapahtuman nimi</th>
+                  <?php if (!isset($_SESSION['teamId'])) {
+                  echo '<th>Joukkue</th>';
+                  } ?>
                   <th>Päivämäärä</th>
                 </tr>
               </thead>
@@ -67,6 +75,9 @@
               <thead>
                 <tr>
                   <th>Tapahtuman nimi</th>
+                  <?php if (!isset($_SESSION['teamId'])) {
+                  echo '<th>Joukkue</th>';
+                  } ?>
                   <th>Päivämäärä</th>
                 </tr>
               </thead>

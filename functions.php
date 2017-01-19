@@ -8,14 +8,11 @@ function register()
 	$email = $_POST['email'];
 	$pwd = $_POST['pwd'];
 	$uid = strip_tags($uid);
-	$uid = mysqli_real_escape_string($conn, $uid);
-	$email = strip_tags($email);
-	$email = mysqli_real_escape_string($conn, $email);
-	$pwd = strip_tags($pwd);
-	$pwd = mysqli_real_escape_string($conn, $pwd);
-	$check_uid = "SELECT * FROM user WHERE uid = '$uid'";
-	$result_uid = mysqli_query($conn, $check_uid);
-	if (mysqli_num_rows($result_uid) >= 1) {
+	$stmt = $conn->prepare("SELECT * FROM user WHERE uid = username");
+	$stmt->bindParam(":username", $uid);
+	$stmt->execute();
+	$result = $stmt->fetchAll();
+	if ($result) {
 		echo '<script type="text/javascript">';
 		echo 'alert("Käyttäjänimi on jo olemassa!");';
 		echo 'document.location.href = "register.php";';
@@ -75,7 +72,6 @@ function register()
    //Aktivointikoodin luonti
 		$hash = md5(rand(0, 1000));
 		$hash = strip_tags($hash);
-		$hash = mysqli_real_escape_string($conn, $hash);
 
    // Salasanan kryptaus
 	  require("PasswordHash.php");
@@ -85,26 +81,40 @@ function register()
     //Joukkuetilin luonti
 		if (isset($_SESSION['id'])) {
 		$id = $_SESSION['id'];
-		$sql = "INSERT INTO team (name,user_id) VALUES ('$uid','$id')";
-		$result = mysqli_query($conn, $sql);
+		$stmt = $conn->prepare("INSERT INTO team (name,user_id) VALUES (:username, :id)");
+		$stmt->bindParam(":username", $uid);
+		$stmt->bindParam(":id", $id);
+		$stmt->execute();
 
-	  $sql = "SELECT * FROM team ORDER BY ID DESC LIMIT 1";
-	  $result = mysqli_query($conn, $sql);
-    if ($row = mysqli_fetch_array($result)) {
+	  $stmt = $conn->prepare("SELECT * FROM team ORDER BY ID DESC LIMIT 1");
+	  $stmt->execute();
+    if ($row = $stmt->fetch()) {
 		$teamId = $row['id'];
 }
-    $sql = "INSERT INTO user (uid,pwd,type,email,hash,team_id,owner_id) VALUES ('$uid','$pwdHash','1','$email','$hash','$teamId','$id')";
-    $result = mysqli_query($conn, $sql);
+    $stmt = $conn->prepare("INSERT INTO user (uid,pwd,type,email,hash,team_id,owner_id) VALUES (:username, :passwordhash, '1', :email, :hash, :teamid, :id)");
+		$stmt->bindParam(":username", $uid);
+		$stmt->bindParam(":passwordhash", $pwdHash);
+		$stmt->bindParam(":email", $email);
+		$stmt->bindParam(":hash", $hash);
+		$stmt->bindParam(":teamid", $teamId);
+		$stmt->bindParam(":id", $id);
+    $stmt->execute();
 } else {
    //Seuratilin luonti
-		$sql = "INSERT INTO user (uid,pwd,type,email,hash) VALUES ('$uid','$pwdHash','0','$email','$hash')";
-		$result = mysqli_query($conn, $sql);
-		$sql = "SELECT id FROM user WHERE uid='$uid'";
-		$result = mysqli_query($conn, $sql);
-		if ($row = mysqli_fetch_assoc($result)) {
+		$stmt = $conn->prepare("INSERT INTO user (uid,pwd,type,email,hash) VALUES (:username, :passwordhash, '0', :email, :hash)");
+		$stmt->bindParam(":username", $uid);
+		$stmt->bindParam(":passwordhash", $pwdHash);
+		$stmt->bindParam(":email", $email);
+		$stmt->bindParam(":hash", $hash);
+		$stmt->execute();
+		$stmt = $conn->prepare("SELECT id FROM user WHERE uid= :username");
+		$stmt->bindParam(":username", $uid);
+		$stmt->execute();
+		if ($row = $stmt->fetch()) {
 			$id = $row['id'];
-			$sql = "UPDATE user SET owner_id = $id WHERE id = $id";
-			$result = mysqli_query($conn, $sql);
+			$stmt = $conn->prepare("UPDATE user SET owner_id = :id WHERE id = :id");
+			$stmt->bindParam(":id", $id);
+			$stmt->execute();
 		} }
 
 	if(sendEmail('reg',$uid,$pwd,$email,$hash) == FALSE) {
@@ -130,9 +140,10 @@ function sendEmail($mod,$uid,$pwd,$email,$hash) {
 	include ('dbh.php');
 	// Sähköpostin lähetys
 if ($mod == 'resend') {
-	$sql = "SELECT * FROM user WHERE team_id = '$uid'";
-	$result = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_assoc($result);
+	$stmt = $conn->prepare("SELECT * FROM user WHERE team_id = :username");
+	$stmt->bindParam(':username');
+	$stmt->execute();
+	$row = $stmt->fetch();
 	$email = $row['email'];
 	$hash = $row['hash'];
 }
@@ -202,16 +213,20 @@ function verifyAccount() {
 	include 'dbh.php';
 	if(isset($_GET['email']) && !empty($_GET['email']) && isset($_GET['hash']) && !empty($_GET['hash'])){
     // Verify data
-    $email = mysqli_escape_string($conn,$_GET['email']); // Set email variable
-    $hash = mysqli_escape_string($conn,$_GET['hash']); // Set hash variable
+    $email = $_GET['email']; // Set email variable
+    $hash = $_GET['hash']; // Set hash variable
 
-    $sql = "SELECT * FROM user WHERE email='$email' AND hash='$hash' AND activated='0'";
-		$result = mysqli_query($conn, $sql);
+    $stmt = $conn->prepare("SELECT * FROM user WHERE email= :email AND hash= :hash AND activated='0'");
+		$stmt->bindParam(':email',$email);
+		$stmt->bindParam(':hash',$hash);
+		$stmt->execute();
 
-    if ($row = mysqli_fetch_assoc($result)) {
+    if ($row = $stmt->fetch()) {
         // We have a match, activate the account
-				$sql = "UPDATE user SET activated='1' WHERE email='".$email."' AND hash='".$hash."' AND activated='0'";
-        $result = mysqli_query($conn,$sql);
+				$stmt = $conn->prepare("UPDATE user SET activated='1' WHERE email= :email AND hash= :hash AND activated='0'");
+				$stmt->bindParam(':email',$email);
+				$stmt->bindParam(':hash',$hash);
+				$stmt->execute();
         echo 'Käyttäjätili aktivoitu. Voit nyt kirjautua sisään.';
     }else{
         // No match -> invalid url or account has already been activated.
@@ -223,19 +238,19 @@ function verifyAccount() {
     echo 'Käytä sinulle lähetettyä linkkiä.';
 }
 }
-function logoUpload() {
+function fileUpload($mod) {
 	if(!isset($_SESSION)) {
 	session_start();
 }
+
 	if(isset($_SESSION['id'])) {
 	$id = $_SESSION['id'];
 	$uid = $_SESSION['uid'];
 	if(isset($_SESSION['teamId'])) {
 	$teamId =	$_SESSION['teamId'];
-	$teamName =	$_SESSION['teamName'];
+	$teamUid =	$_SESSION['teamUid'];
 }
-	if (isset($_POST['logoUpload']))
-	{
+
 		$filename = $_FILES["file"]["name"];
 		$file_basename = substr($filename, 0, strripos($filename, '.')); // get file extention
 		$file_ext = substr($filename, strripos($filename, '.')); // get file name
@@ -244,9 +259,34 @@ function logoUpload() {
 
 			// Rename file
 			if (!$_SESSION['type'] == 0) {
-			$newfilename = $teamName . $teamId . $file_ext;
+				if ($mod =='ad1') {
+			$newfilename = 'j_'. $teamUid . $teamId .'_ad1'. $file_ext;
+				}
+        else if ($mod =='ad2') {
+			$newfilename = 'j_'. $teamUid . $teamId .'_ad2'. $file_ext;
+					}
+				else if ($mod =='ad3') {
+			$newfilename = 'j_'. $teamUid . $teamId .'_ad3'. $file_ext;
+						}
+				else if ($mod =='ad4') {
+			$newfilename = 'j_'. $teamUid . $teamId .'_ad4'. $file_ext;
+							}
+				else {
+			$newfilename = $teamUid . $teamId . $file_ext;
+		}
 		} else {
+			if ($mod =='ad1') {
+			$newfilename = 's_'. $teamUid . $teamId .'_ad1'. $file_ext;
+			} else if ($mod =='ad2') {
+		 $newfilename = 's_'. $teamUid . $teamId .'_ad2'. $file_ext;
+	 } else if ($mod =='ad3') {
+			$newfilename = 's_'. $teamUid . $teamId .'_ad3'. $file_ext;
+		}else if ($mod =='ad4') {
+				$newfilename = 's_'. $teamUid . $teamId .'_ad4'. $file_ext;
+			}
+      else {
 			$newfilename = $uid . $id . $file_ext;
+		}
 		}
 
 		if (!in_array($file_ext,$allowed_file_types) && (!$filesize < 200000))
@@ -278,14 +318,21 @@ function logoUpload() {
 		}
 		else
 		{
+				if ($mod =='ad1' || $mod =='ad2' || $mod =='ad3' || $mod =='ad4') {
+			move_uploaded_file($_FILES["file"]["tmp_name"], "images/ads/" . $newfilename);
+			echo '<script type="text/javascript">';
+			echo 'alert("Kuvan lataus onnistui.");';
+			echo 'document.location.href = "ads.php";';
+			echo '</script>';
+				} else {
 			move_uploaded_file($_FILES["file"]["tmp_name"], "images/logos/" . $newfilename);
 			echo '<script type="text/javascript">';
 			echo 'alert("Logon lataus onnistui.");';
 			echo 'document.location.href = "profile.php";';
 			echo '</script>';
 		}
-
-	} }}
+		}
+}}
 function logIn()
 {
 	if(!isset($_SESSION)) {
@@ -298,13 +345,11 @@ function logIn()
 
 	$uid = $_POST['uid'];
 	$pwd = $_POST['pwd'];
-	$uid = strip_tags($uid);
-	$uid = mysqli_real_escape_string($conn, $uid);
-	$pwd = strip_tags($pwd);
-	$pwd = mysqli_real_escape_string($conn, $pwd);
-	$sql = "SELECT * FROM user WHERE uid='$uid'";
-	$result = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_assoc($result);
+	$stmt = $conn->prepare("SELECT * FROM user WHERE uid = :username");
+	$stmt->bindParam(':username', $uid);
+	$stmt->execute();
+
+	$row = $stmt->fetch();
 	//Käyttäjätunnuksen ja salasanan tarkistus
 	$pwdHash = $row['pwd'];
 	$check = $hasher->CheckPassword($pwd, $pwdHash);
@@ -321,27 +366,33 @@ function logIn()
 		echo '</script>';
 		}
 	else {
-		$sql = "SELECT * FROM user WHERE uid='$uid'";
-		$result = mysqli_query($conn, $sql);
-		$row = mysqli_fetch_assoc($result);
+		$stmt = $conn->prepare("SELECT * FROM user WHERE uid = :username");
+		$stmt->bindParam(':username',$uid);
+		$stmt->execute();
+		$row = $stmt->fetch();
 		$type = $row['type'];
 		$id = $row['id'];
+		$ownerId = $row['owner_id'];
 		$_SESSION['id'] = $id;
 		$_SESSION['uid'] = $uid;
 		$_SESSION['type'] = $type;
+		$_SESSION['ownerId'] = $id;
 
 if ($type == 0) {
-	header("Location: teams.php");
+	header("Location: profile.php");
 		}
 		else {
-			$sql = "SELECT * FROM user WHERE id='$id'";
-			$result = mysqli_query($conn, $sql);
-			$row = mysqli_fetch_assoc($result);
+			$stmt = $conn->prepare("SELECT * FROM user WHERE id = :id");
+			$stmt->bindParam(':id',$id);
+			$stmt->execute();
+			$row = $stmt->fetch();
 			$_SESSION['teamId'] = $row['team_id'];
+			$_SESSION['teamUid'] = $row['uid'];
 			$teamId = $_SESSION['teamId'];
-			$sql = "SELECT * FROM team WHERE id='$teamId'";
-			$result = mysqli_query($conn, $sql);
-			$row = mysqli_fetch_assoc($result);
+			$stmt = $conn->prepare("SELECT * FROM team WHERE id = :teamid");
+			$stmt->bindParam(':teamid',$teamId);
+			$stmt->execute();
+			$row = $stmt->fetch();
 			$_SESSION['teamName'] = $row['name'];
 			header("Location: profile.php");
 		}
@@ -366,11 +417,16 @@ function savePlayer()
 	$teamId = $_SESSION["teamId"];
 	$id = $_SESSION["id"];
 if ($_POST['firstName'] && $_POST['lastName'] && $_POST['number']) {
-$firstName = $_POST['firstName'];
-$lastName = $_POST['lastName'];
-$number = $_POST['number'];
-			$sql = "INSERT INTO player (user_id,team_id,firstName,lastName,number) VALUES ('$id','$teamId','$firstName','$lastName','$number')";
-			$result = mysqli_query($conn, $sql);
+		  $firstName = $_POST['firstName'];
+			$lastName = $_POST['lastName'];
+			$number = $_POST['number'];
+			$stmt = $conn->prepare("INSERT INTO player (user_id,team_id,firstName,lastName,number) VALUES (:id, :teamid, :firstname, :lastname, :number)");
+			$stmt->bindParam(':id',$id);
+			$stmt->bindParam(':teamid',$teamId);
+			$stmt->bindParam(':firstname',$firstName);
+			$stmt->bindParam(':lastname',$lastName);
+			$stmt->bindParam(':number',$number);
+      $stmt->execute();
 		} else {
 			echo '<script type="text/javascript">';
 			echo 'alert("Täytä kaikki pelaajan tiedot!");';
@@ -417,25 +473,69 @@ function saveTeam()
 		$email = $teams[''][$i];
 		$team = strip_tags($team);
 
-		$team = mysqli_real_escape_string($conn, $team);
 		if (!empty($team)) {
-			$sql = "INSERT INTO team (name,user_id) VALUES ('$team','$id')";
-			$result = mysqli_query($conn, $sql);
+			$stmt= $conn->prepare("INSERT INTO team (name,user_id) VALUES (:team, :id)");
+			$stmt->bindParam(':team',$team);
+			$stmt->bindParam(':id',$id);
+			$stmt->execute();
 		}
 	}
-
-	$sql = "SELECT * FROM team ORDER BY ID DESC LIMIT 1";
-	$result = mysqli_query($conn, $sql);
-	while ($row = mysqli_fetch_array($result)) {
+	$stmt = $conn->prepare("SELECT * FROM team ORDER BY ID DESC LIMIT 1");
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
 		$teamId = $row['id'];
-		echo $eventId;
 	}
 
 	// Luodaan joukkuetili
 
-	$sql = "INSERT INTO user (uid,pwd,type,team_id) VALUES ('$team','salasana','1','$teamId')";
-	$result = mysqli_query($conn, $sql);
+	$stmt = $conn->prepare("INSERT INTO user (uid,pwd,type,team_id) VALUES ('$team','salasana','1','$teamId')");
+	$stmt->bindParam(':team',$team);
+	$stmt->bindParam(':teamid',$teamId);
+	$stmt->execute();
 	header("Location: teams.php");
+}
+
+function saveUser()
+{
+	if(!isset($_SESSION)) {
+	session_start(); }
+	$id = $_SESSION["id"];
+	$uid = $_SESSION['uid'];
+	$teamId = $_SESSION["teamId"];
+	$teamName = $_POST['name'];
+
+	include 'dbh.php';
+	require("PasswordHash.php");
+	$hasher = new PasswordHash(8, false);
+	$pwdHash = "*";
+	$pwd = $_POST['pwd'];
+	$stmt = $conn->prepare("SELECT * FROM user WHERE uid = :username");
+	$stmt->bindParam(':username', $uid);
+	$stmt->execute();
+
+	$row = $stmt->fetch();
+	//Käyttäjätunnuksen ja salasanan tarkistus
+	$pwdHash = $row['pwd'];
+	$check = $hasher->CheckPassword($pwd, $pwdHash);
+
+	if ($check == FALSE) {
+		echo '<script type="text/javascript">';
+		echo 'alert("Salasana on väärin!");';
+		echo 'document.location.href = "edit_user.php"';
+		echo '</script>';
+	} else {
+if (!empty($_POST['name'])) {
+			$stmt = $conn->prepare("UPDATE team SET name = :teamname WHERE id = :teamid");
+			$stmt->bindParam(':teamname',$teamName);
+			$stmt->bindParam(':teamid',$teamId);
+      $stmt->execute();
+			echo '<script type="text/javascript">';
+			echo 'alert("Joukkueen nimi muutettu.");';
+			echo 'document.location.href = "settings.php"';
+			echo '</script>';
+			$_SESSION['teamName'] = $teamName;
+		}
+}
 }
 
 function updateTeam()
@@ -446,7 +546,7 @@ function updateTeam()
 
 	$teamId = $_SESSION['teamId'];
 	$id = $_SESSION["id"];
-	$teamName = $_POST['teamName'];
+	$teamUid = $_POST['teamUid'];
 	print_r($_POST);
 	$names = array(
 		'first' => array() ,
@@ -492,23 +592,17 @@ function updateTeam()
 		$lastName = $names['last'][$i];
 		$number = $names['number'][$i];
 		$nameId = $names['id'][$i];
-		$firstName = strip_tags($firstName);
-		$firstName = mysqli_real_escape_string($conn, $firstName);
-		$lastName = strip_tags($lastName);
-		$lastName = mysqli_real_escape_string($conn, $lastName);
-		$number = strip_tags($number);
-		$number = mysqli_real_escape_string($conn, $number);
 		echo $firstName . " " . $lastName . " " . $nameId . "<br />";
 		if (!empty($firstName) && !empty($lastName)) {
-			$sql = "UPDATE player SET firstName='$firstName',lastName='$lastName',number='$number' WHERE id ='$nameId'";
-			$result = mysqli_query($conn, $sql);
+			$stmt = $conn->prepare("UPDATE player SET firstName = :firstname, lastName = :lastname, number = :number WHERE id = :nameid");
+			$stmt->bindParam(':firstname',$firstName);
+			$stmt->bindParam(':lastname',$lastName);
+			$stmt->bindParam(':number',$number);
+			$stmt->bindParam(':nameid',$nameId);
+			$stmt->execute();
 			$i++;
 		}
 	}
-
-	$sql = "UPDATE team SET name='$teamName' WHERE id='$teamId'";
-	$result = mysqli_query($conn, $sql);
-	$_SESSION['teamName'] = $teamName;
 	header("Location: team.php?teamId=$teamId");
 }
 
@@ -520,8 +614,9 @@ function removePlayer()
 
 	$teamId = $_SESSION['teamId'];
 	$removeId = $_GET['removePlayer'];
-	$sql = "DELETE FROM player WHERE id='$removeId'";
-	mysqli_query($conn, $sql);
+	$stmt = $conn->prepare("DELETE FROM player WHERE id = :removeid");
+	$stmt->bindParam(':removeid',$removeId);
+	$stmt->execute();
 	header("Location: team.php?teamId=$teamId");
 }
 
@@ -533,12 +628,68 @@ function removeEvent()
 
 	$id = $_SESSION['id'];
 	$removeId = $_GET['removeEvent'];
-	$sql = "DELETE FROM event WHERE id='$removeId' AND user_id='$id'";
-	if (mysqli_query($conn, $sql)) {
+	$stmt = $conn->prepare("DELETE FROM event WHERE id = :removeid AND user_id = :id");
+	$stmt->bindParam(':removeid',$removeId);
+	$stmt->bindParam(':id',$id);
+	if ($stmt->execute()) {
 		unlink('files/overview' . $removeId . '.json');
 	}
 
 	header("Location: my_events.php");
+}
+
+function removeTeam()
+{
+	if(!isset($_SESSION)) {
+	session_start(); }
+	include 'dbh.php';
+	require("PasswordHash.php");
+	$id = $_SESSION['id'];
+	$uid = $_SESSION['uid'];
+	$teamId = $_SESSION['teamId'];
+	$hasher = new PasswordHash(8, false);
+	$pwdHash = "*";
+	$pwd = $_POST['pwd'];
+	$stmt = $conn->prepare("SELECT * FROM user WHERE uid = :username");
+	$stmt->bindParam(':username', $uid);
+	$stmt->execute();
+
+	$row = $stmt->fetch();
+	//Käyttäjätunnuksen ja salasanan tarkistus
+	$pwdHash = $row['pwd'];
+	$check = $hasher->CheckPassword($pwd, $pwdHash);
+
+	if ($check == FALSE) {
+		echo '<script type="text/javascript">';
+		echo 'alert("Salasana on väärin!");';
+		echo 'document.location.href = "edit_user.php"';
+		echo '</script>';
+	} else {
+	$stmt = $conn->prepare("DELETE FROM team WHERE id = :teamid AND user_id = :id");
+	$stmt->bindParam(':teamid',$teamId);
+	$stmt->bindParam(':id',$id);
+
+	$stmt2 = $conn->prepare("DELETE FROM user WHERE team_id = :teamid AND owner_id = :id");
+	$stmt2->bindParam(':teamid',$teamId);
+	$stmt2->bindParam(':id',$id);
+
+	$stmt3 = $conn->prepare("DELETE FROM player WHERE team_id = :teamid AND user_id = :id");
+	$stmt3->bindParam(':teamid',$teamId);
+	$stmt3->bindParam(':id',$id);
+	$stmt3->execute();
+
+	if ($stmt->execute() && $stmt2->execute()) {
+		unset($_SESSION['teamId']);
+		unset($_SESSION['teamUid']);
+		unset($_SESSION['teamName']);
+		echo '<script type="text/javascript">';
+		echo 'alert("Joukkue poistettu.");';
+		echo 'document.location.href = "profile.php"';
+		echo '</script>';
+} else {
+	set_error_handler('error');
+}
+}
 }
 
 function removeVisitor()
@@ -866,16 +1017,18 @@ function listHome()
 	$teamId = $_SESSION['teamId'];
 } else {
 	$eventId = $_SESSION['eventId'];
-	$sql = "SELECT * from event WHERE id ='$eventId'";
-	$result = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($result);
+	$stmt = $conn->prepare("SELECT * from event WHERE id = :eventid");
+	$stmt->bindParam(':eventid',$eventId);
+	$stmt->execute();
+	$row = $stmt->fetch();
 	$teamId = $row['team_id'];
 }
 	$i = 0;
-	$sql = "SELECT * from player WHERE team_id='$teamId'";
-	$result = mysqli_query($conn, $sql);
-	while ($row = mysqli_fetch_array($result)) {
-		$showId = $row['id'];
+	$stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
+	$stmt->bindParam(':teamid',$teamId);
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
+	  $showId = $row['id'];
 		$_SESSION['home']['firstName'][$i] = $row['firstName'];
 		$_SESSION['home']['lastName'][$i] = $row['lastName'];
 		$_SESSION['home']['number'][$i] = $row['number'];
@@ -913,35 +1066,49 @@ function listEvents($mod)
 }
 	$i = 1;
 	if ($mod == "all") {
-			$sql = "SELECT * from event WHERE team_id='$teamId'";
+			$stmt = $conn->prepare("SELECT * from event WHERE team_id = :teamid ");
+			$stmt->bindParam(':teamid',$teamId);
 	}
 
 	if ($mod == "upcoming") {
 		if (!isset($_SESSION['teamId'])) {
-			$sql = "SELECT * from event WHERE date >= CURDATE() AND owner_id='$id'";
+			$stmt = $conn->prepare("SELECT * from event WHERE date >= CURDATE() AND owner_id = :id");
+			$stmt->bindParam(':id',$id);
 		}
 		else {
-			$sql = "SELECT * from event WHERE date >= CURDATE() AND team_id='$teamId'";
+			$stmt = $conn->prepare("SELECT * from event WHERE date >= CURDATE() AND team_id = :teamid");
+			$stmt->bindParam(':teamid',$teamId);
 		}
 	}
 
 	if ($mod == "past") {
 		if (!isset($_SESSION['teamId'])) {
-			$sql = "SELECT * from event WHERE date < CURDATE() AND owner_id='$id'";
+			$stmt = $conn->prepare("SELECT * from event WHERE date < CURDATE() AND owner_id = :id");
+			$stmt->bindParam(':id',$id);
 		}
 		else {
-			$sql = "SELECT * from event WHERE date < CURDATE() AND team_id='$teamId'";
+			$stmt = $conn->prepare("SELECT * from event WHERE date < CURDATE() AND team_id = :teamid");
+			$stmt->bindParam(':teamid',$teamId);
 		}
 	}
 
-	$result = mysqli_query($conn, $sql);
-	while ($row = mysqli_fetch_array($result)) {
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
 		$showId = $row['id'];
 		$showName = $row['name'];
+		$showTeam = $row['team_id'];
 		$showDate = $row['date'];
 		echo "<tr>";
 		if ($mod != "all") {
 			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
+		if (!isset($teamId)) {
+			$stmt2 = $conn->prepare("SELECT * from user WHERE team_id = :teamid");
+			$stmt2->bindParam(':teamid',$showTeam);
+			$stmt2->execute();
+			$row2 = $stmt2->fetch();
+			$teamUid = $row2['uid'];
+			echo '<td><p style="margin-bottom: 0;">' . $teamUid . '</p></td>';
+		}
 			echo '<td><p style="margin-bottom: 0;">' . $showDate . '</p></td>';
 		}
 		else {
@@ -968,14 +1135,15 @@ function eventId()
 	$i = 0;
 	if (!empty($_SESSION['eventId'])) {
 		if ($_SESSION['type'] == 0) {
-			$sql = "SELECT * from event WHERE id='$eventId' AND owner_id='$id'";
+			$stmt = $conn->prepare("SELECT * from event WHERE id='$eventId' AND owner_id = :id");
+			$stmt->bindParam(':id',$id);
 		}
 		else {
-			$sql = "SELECT * from event WHERE id='$eventId' AND team_id='$teamId'";
+			$stmt = $conn->prepare("SELECT * from event WHERE id='$eventId' AND team_id = :teamid");
+			$stmt->bindParam(':teamid',$teamId);
 		}
-
-		$result = mysqli_query($conn, $sql);
-		if ($row = mysqli_fetch_array($result)) {
+      $stmt->execute();
+		if ($row = $stmt->fetch()) {
 			$eventId = $row['id'];
 			$json = file_get_contents('files/overview' . $eventId . '.json');
 			$json = json_decode($json, true);
@@ -1027,14 +1195,6 @@ function createEvent()
 	$matchText = $_SESSION['matchText'];
 	$date = date_create($eventDate);
 	$realDate = date_format($date, "Y-m-d");
-	$visitorName = strip_tags($visitorName);
-	$visitorName = mysqli_real_escape_string($conn, $visitorName);
-	$eventName = strip_tags($eventName);
-	$eventName = mysqli_real_escape_string($conn, $eventName);
-	$eventPlace = strip_tags($eventPlace);
-	$eventPlace = mysqli_real_escape_string($conn, $eventPlace);
-	$eventDate = strip_tags($eventDate);
-	$eventDate = mysqli_real_escape_string($conn, $eventDate);
 	$overview = array(
 		'eventinfo' => array(
 			$eventName,
@@ -1112,23 +1272,34 @@ function createEvent()
 
 	if (!empty($_SESSION['eventId'])) {
 		$eventId = $_SESSION['eventId'];
-		$sql = "UPDATE event SET name='$eventName',date='$realDate' WHERE id ='$eventId'";
-		$result = mysqli_query($conn, $sql);
+		$stmt = $conn->prepare("UPDATE event SET name = :eventname,date = :realdate WHERE id = :eventid");
+		$stmt->bindParam(':eventname',$eventName);
+		$stmt->bindParam(':realdate',$$realDate);
+		$stmt->bindParam(':eventid',$eventId);
+		$stmt->execute();
 	}
 	else {
-		$sql = "SELECT * from user WHERE id='$id'";
-		$result = mysqli_query($conn, $sql);
-		$row = mysqli_fetch_array($result);
+		$stmt = $conn->prepare("SELECT * from user WHERE id = :id");
+		$stmt->bindParam(':id',$id);
+		$stmt->execute();
+		$row = $stmt->fetch();
 		$ownerId = $row['owner_id'];
-		$sql = "INSERT INTO event (user_id,team_id,owner_id,name,date) VALUES ('$id','$teamId','$ownerId','$eventName','$realDate')";
-		$result = mysqli_query($conn, $sql);
+		$stmt = $conn->prepare("INSERT INTO event (user_id,team_id,owner_id,name,date) VALUES ('$id','$teamId','$ownerId','$eventName','$realDate')");
+		$stmt->bindParam(':id',$id);
+		$stmt->bindParam(':teamid',$teamId);
+		$stmt->bindParam(':ownerid',$ownerId);
+		$stmt->bindParam(':eventname',$eventName);
+		$stmt->bindParam(':realdate',$$realDate);
+		$stmt->execute();
 	}
 
 	// Haetaan tapahtuman ID
 
-	$sql = "SELECT * from event WHERE user_id='$id' AND name='$eventName'";
-	$result = mysqli_query($conn, $sql);
-	while ($row = mysqli_fetch_array($result)) {
+	$stmt = $conn->prepare("SELECT * from event WHERE user_id = :id AND name = :eventname");
+	$stmt->bindParam(':id',$id);
+	$stmt->bindParam(':eventname',$eventName);
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
 		$eventId = $row['id'];
 	}
 
@@ -1154,6 +1325,7 @@ function createEvent()
 	// Tyhjennetään Tapahtumamuuttujat
 
 	unset($_SESSION['eventId']);
+	unset($_SESSION['homeName']);
 	unset($_SESSION['visitorName']);
 	unset($_SESSION['eventName']);
 	unset($_SESSION['eventPlace']);
@@ -1175,20 +1347,21 @@ function listTeams()
 	$id = $_SESSION['id'];
 	if (isset($_SESSION['teamId'])) {
 		unset($_SESSION['teamId']);
-		unset($_SESSION['teamName']);
+		unset($_SESSION['teamUid']);
 	}
 
-	$sql = "SELECT * from team WHERE user_id='$id'";
-	$result = mysqli_query($conn, $sql);
-  while ($row = mysqli_fetch_array($result)) {
+	$stmt = $conn->prepare("SELECT * from team WHERE user_id='$id'");
+	$stmt->execute();
+  while ($row = $stmt->fetch()) {
   $teamId = $row['id'];
+  $showId = $row['id'];
 
-	$sql2 = "SELECT * from user WHERE team_id='$teamId'";
-	$result2 = mysqli_query($conn, $sql2);
-  $row2 = mysqli_fetch_array($result2);
+	$stmt2 = $conn->prepare("SELECT * from user WHERE team_id='$teamId'");
+	$stmt2->execute();
+  $row2 = $stmt2->fetch();
 
-		$showId = $row['id'];
-		$showName = $row['name'];
+
+		$showName = $row2['uid'];
 		echo '<tr style="min-height: 80px; height: 80px;">';
 		echo '<td><img style="width: 35px; height: 35px; vertical-align: middle;" src="images/default_team.png"></td>';
 		if ($row2['activated'] == 1) {
@@ -1224,10 +1397,11 @@ function listPlayers()
 	$id = $_SESSION['id'];
 	$teamId = $_SESSION['teamId'];
 	$i = 0;
-	$sql = "SELECT * from player WHERE team_id='$teamId'";
-	$result = mysqli_query($conn, $sql);
-	if (mysqli_num_rows($result) > 0) {
-		while ($row = mysqli_fetch_array($result)) {
+	$stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
+	$stmt->bindParam(':teamid',$teamId);
+	$stmt->execute();
+	if ($stmt->execute()) {
+		while ($row = $stmt->fetch()) {
 			$showId = $row['id'];
 			$showFirst = $row['firstName'];
 			$showLast = $row['lastName'];
@@ -1259,29 +1433,41 @@ function getTeamName()
 	if ($_SESSION['type'] == 0 && isset($_GET['teamId'])) {
 		$_SESSION['teamId'] = $_GET['teamId'];
 		$teamId = $_SESSION['teamId'];
-		$sql = "SELECT * from team WHERE id='$teamId' AND user_id='$id'";
-		$result = mysqli_query($conn, $sql);
-		if ($row = mysqli_fetch_array($result)) {
-			$_SESSION['teamId'] = $row['id'];
-			$_SESSION['teamName'] = $row['name'];
+		$stmt = $conn->prepare("SELECT * from user WHERE team_id = :teamid AND owner_id = :id");
+		$stmt->bindParam(':teamid',$teamId);
+		$stmt->bindParam(':id',$id);
+		$stmt->execute();
+
+		$stmt2 = $conn->prepare("SELECT * from team WHERE id = :teamid AND user_id = :id");
+		$stmt2->bindParam(':teamid',$teamId);
+		$stmt2->bindParam(':id',$id);
+		$stmt2->execute();
+		if ($row2 = $stmt2->fetch()) {
+		$_SESSION['teamName'] = $row2['name'];
+		}
+		if ($row = $stmt->fetch()) {
+			$_SESSION['teamId'] = $row['team_id'];
+			$_SESSION['teamUid'] = $row['uid'];
 		}
 		else  {
 			unset($_SESSION['teamId']);
-			unset($_SESSION['teamName']);
+			unset($_SESSION['teamUid']);
 			set_error_handler('error');
 		}
 	}
 	else {
 		if (isset($_GET['teamId'])) {
 			$teamId = $_SESSION['teamId'];
-			$sql = "SELECT * from user WHERE team_id='$teamId'";
-			$result = mysqli_query($conn, $sql);
-			$row = mysqli_fetch_array($result);
+			$stmt = $conn->prepare("SELECT * from user WHERE team_id = :teamid");
+			$stmt->bindParam(':teamid',$teamId);
+			$stmt->execute();
+			$row = $stmt->fetch();
 			if ($_GET['teamId'] == $row['team_id']) {
 				$_SESSION['teamId'] = $_GET['teamId'];
-				$sql = "SELECT * from team WHERE id='$teamId'";
-				$result = mysqli_query($conn, $sql);
-				if ($row = mysqli_fetch_array($result)) {
+				$stmt = $conn->prepare("SELECT * from team WHERE id = :teamid");
+				$stmt->bindParam(':teamid',$teamId);
+				$stmt->execute();
+				if ($row = $stmt->fetch()) {
 					$_SESSION['teamName'] = $row['name'];
 				}
 			}
@@ -1298,10 +1484,11 @@ function editTeam()
 	$i = 1;
 	$id = $_SESSION['id'];
 	$teamId = $_SESSION['teamId'];
-	$sql = "SELECT * FROM player WHERE team_id='$teamId'";
-	$result = mysqli_query($conn, $sql);
+	$stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
+	$stmt->bindParam(':teamid',$teamId);
+	$stmt->execute();
 	echo "<table class='u-full-width'>";
-	while ($row = mysqli_fetch_array($result)) {
+	while ($row = $stmt->fetch()) {
 		$showId = $row['id'];
 		$showFirst = $row['firstName'];
 		$showLast = $row['lastName'];
@@ -1345,7 +1532,7 @@ function error()
 	header("Location: error.php");
 }
 
-function userData()
+function userData($mod)
 { 	include 'dbh.php';
 	if(!isset($_SESSION)) {
 	session_start();
@@ -1354,17 +1541,32 @@ function userData()
 	$teamId = "";
 	if (isset($_SESSION['teamId'])) {
 	$teamId = $_SESSION['teamId'];
+	$teamUid = $_SESSION['teamUid'];
+	$teamName = $_SESSION['teamName'];
 	}
-	$sql = "SELECT * FROM user WHERE team_id='$teamId'";
-	$result = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_assoc($result);
+	$stmt = $conn->prepare("SELECT * FROM user WHERE team_id = :teamid");
+	$stmt->bindParam(':teamid',$teamId);
+	$stmt->execute();
+	$row = $stmt->fetch();
 	$userName = $row['uid'];
 	$type = $row['type'];
+  if ($mod == 'view') {
 	echo '<tr>';
-	echo '<td class="bold">Käyttäjänimi</td>';
+	echo '<td class="bold">Käyttäjänimi:</td>';
 	echo '<td>' . $userName . '</td>';
 	echo '</tr>';
-
+}
+if (isset($_SESSION['teamId'])) {
+	echo '<tr>';
+	echo '<td class="bold">Joukkueen nimi:</td>';
+	if ($mod == 'view') {
+	echo '<td>' . $teamName . '</td>';
+} else {
+	echo '<td><input type="text" name="name" value="' . $teamName . '"</td>';
+}
+	echo '</tr>';
+}
+if ($mod == 'view') {
 	echo '<tr>';
 	echo '<td class="bold">Tilintyyppi:</td>';
 	if ($type == 1) {
@@ -1373,7 +1575,7 @@ function userData()
 	else {
 		echo '<td>Seurataso</td>';
 	}
-
+}
 	echo '</tr>';
 }
 function setMatchText() {
@@ -1433,6 +1635,10 @@ if (isset($_POST['savePlayer'])) {
 	savePlayer();
 }
 
+if (isset($_POST['saveUser'])) {
+	saveUser();
+}
+
 if (isset($_POST['saveTeam'])) {
 	saveTeam();
 }
@@ -1457,6 +1663,10 @@ if (isset($_GET['removeVisitor'])) {
 	removeVisitor();
 }
 
+if (isset($_POST['removeTeam'])) {
+	removeTeam();
+}
+
 if (isset($_POST['createEvent'])) {
 	createEvent();
 }
@@ -1477,8 +1687,24 @@ if (isset($_POST['logOut'])) {
 	logOut();
 }
 
-if (isset($_POST['logoUpload'])) {
-	logoUpload();
+if (isset($_POST['fileUpload'])) {
+	fileUpload();
+}
+
+if (isset($_POST['adUpload1'])) {
+	fileUpload('ad1');
+}
+
+if (isset($_POST['adUpload2'])) {
+	fileUpload('ad2');
+}
+
+if (isset($_POST['adUpload3'])) {
+	fileUpload('ad3');
+}
+
+if (isset($_POST['adUpload4'])) {
+	fileUpload('ad4');
 }
 
 if (isset($_GET['sendActivation'])) {

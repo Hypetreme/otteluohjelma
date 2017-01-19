@@ -1,15 +1,17 @@
 <?php
   session_start();
   include 'dbh.php';
+if (!isset($_SESSION['id'])) {
+header("Location: index.php");
+  }
+if (($_SESSION['type']==0)) {
 unset($_SESSION['teamId']);
-unset($_SESSION['teamName']);
-  if (!isset($_SESSION['id'])) {
-    header("Location: index.php");
-  }
-  if (($_SESSION['type']!=0)) {
-      $teamId = $_SESSION['teamId'];
-    header("Location: team.php?teamId=$teamId");
-  }
+unset($_SESSION['teamUid']);
+} else {
+$teamId = $_SESSION['teamId'];
+header("Location: profile.php");
+exit();
+}
   if (isset($_SESSION['eventId'])) {
     unset($_SESSION['homeName']);
     unset($_SESSION['visitorName']);
@@ -46,18 +48,23 @@ unset($_SESSION['teamName']);
       uidField.name = "uid";
       uidField.id = "uid";
 
+     var fakeField = document.createElement("input");
+     fakeField.style = "display:none";
+
+     var fakeField2 = document.createElement("input");
+     fakeField2.style = "display:none";
+     fakeField2.type = "password";
+
       var emailField = document.createElement("input");
       emailField.type = "text";
       emailField.name = "email";
-      emailField.id = "emal";
-
-
-  mailField.autocomplete = ""
+      emailField.id = "email";
 
       var pwdField = document.createElement("input");
       pwdField.type = "password";
       pwdField.name = "pwd";
       pwdField.id = "pwd";
+
 
       var colorField = document.createElement("select");
         var colorOption1 = document.createElement("option");
@@ -70,7 +77,7 @@ unset($_SESSION['teamName']);
         colorOption3.value = "vihreä";
         colorOption3.text= "Vihreä";
 
-     colorField.appendChild(colorOption1);
+      colorField.appendChild(colorOption1);
       colorField.appendChild(colorOption2);
       colorField.appendChild(colorOption3);
 
@@ -92,6 +99,8 @@ unset($_SESSION['teamName']);
       document.getElementById('newrow').appendChild(emailH);
       document.getElementById('newrow').appendChild(emailField);
       document.getElementById('newrow').appendChild(pwdH);
+      document.getElementById('newrow').appendChild(fakeField);
+      document.getElementById('newrow').appendChild(fakeField2);
       document.getElementById('newrow').appendChild(pwdField);
       document.getElementById('newrow').appendChild(color);
       document.getElementById('newrow').appendChild(colorField);
@@ -110,9 +119,9 @@ unset($_SESSION['teamName']);
 
     <div class="row">
       <div class="twelve columns">
-
-        <form name="form" action="functions.php" method="POST">
+<form id="form" action="functions.php" method="POST">
           <table class='u-full-width'>
+
           <thead>
               <tr>
                 <th>Laji</th>
@@ -125,8 +134,10 @@ unset($_SESSION['teamName']);
             $count = listTeams();
             echo '<input type="hidden" id="ref" value="'.$count.'">';
           ?>
+
           <tr id="newTr" style="display: none;">
             <td><img style="width: 35px; height: 35px; vertical-align: middle;" src="images/default_team.png"></td>
+
             <td><span id="newrow"></span></td>
             <td></td>
           </tr>
@@ -137,10 +148,9 @@ unset($_SESSION['teamName']);
           <a href="#" id="iconAddTeam" onclick="addInput()">
             <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
           </a>
-          <input style="display:none" class="button-primary" name="register" type="submit" id="btnSave" value="Tallenna">
+          <input form="form" style="display:none" class="button-primary" name="register" type="submit" id="btnSave" value="Tallenna">
+          </form>
         </div>
-
-      </form>
     </div>
 
   </div>

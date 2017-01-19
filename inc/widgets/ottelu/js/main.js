@@ -1,15 +1,15 @@
 $(function(){
     // piilotetaan kaikki paitsi etusivu
     $(".players, .stats, .favourites, .share").hide();
-  
+
     //kun linkkiä painaa ensin piilotetaan kaikki ja sitten näytetään valinta
     $('nav ul li a').on("click", function(){
       $(".home, .players, .stats, .favourites, .share").hide();
-      var sL = $(this).attr("name"); 
+      var sL = $(this).attr("name");
       var active = $("."+sL);
       $(active).fadeIn();
     });
-  
+
 });
 
 
@@ -19,8 +19,8 @@ $(function(){
    }, 5000);*/
 
 //Haetaan JSON -tiedosto
-$.getJSON("../../../files/overview27.json", function(json) {
-  
+$.getJSON("../../../files/overview11.json", function(json) {
+
   console.log(json);
  //Asetetaan tapahtuman tiedot
   var eventName = json.eventinfo[0];
@@ -33,29 +33,28 @@ $.getJSON("../../../files/overview27.json", function(json) {
   document.getElementById("gamePlace").innerHTML="<h1>"+eventPlace+"</h1>";
   document.getElementById("homeTeam").innerHTML="<h3 style='text-transform: uppercase'>"+homeTeam+"</h3>";
   document.getElementById("visitorTeam").innerHTML="<h3 style='text-transform: uppercase'>"+visitorTeam+"</h3>";
-  
+
   var number, first, last, li, node, i, len;
   //Tulostetaan kotijoukkueen pelaajat listaan
   for (i = 0, len = json.teams.home.players.length; i < len; i++) {
-  number = json.teams.home.players[i].number;  
+  number = json.teams.home.players[i].number;
   first = json.teams.home.players[i].first;
   last = json.teams.home.players[i].last;
-    
+
   li = document.createElement("li");
-  node = document.createTextNode(number+" "+first+" " +last);  
-  li.appendChild(node);    
+  node = document.createTextNode(number+" "+first+" " +last);
+  li.appendChild(node);
   document.getElementById("playerListHome").appendChild(li);
   }
   //Tulostetaan vierasjoukkueen pelaajat listaan
   for (i = 0, len = json.teams.home.players.length; i < len; i++) {
-  number = json.teams.visitors.players[i].number;  
+  number = json.teams.visitors.players[i].number;
   first = json.teams.visitors.players[i].first;
   last = json.teams.visitors.players[i].last;
-    
+
   li = document.createElement("li");
-  node = document.createTextNode(number+" "+first+" " +last);  
-  li.appendChild(node);    
+  node = document.createTextNode(number+" "+first+" " +last);
+  li.appendChild(node);
   document.getElementById("playerListVisitors").appendChild(li);
   }
 });
-

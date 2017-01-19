@@ -24,6 +24,7 @@
           Sähköposti:
         </label>
         <input type="text" name="email">
+        <input type="text" style="display:none">
       </div>
     </div>
     <div class="row">
@@ -31,6 +32,7 @@
         <label for="pwd">
           Salasana:
         </label>
+        <input type="password" style="display:none">
         <input type="password" name="pwd">
       </div>
       <div class="six columns">

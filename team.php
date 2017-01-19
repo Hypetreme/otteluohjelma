@@ -115,17 +115,17 @@
   </script>
 
   <div class="container">
+    <form name="form" action="functions.php" method="POST">
     <div class="row">
       <div class="twelve columns">
          <h4>
-          <span><?php echo $_SESSION['teamName'];?></span>
+          <span><?php echo $_SESSION['teamUid'];?></span>
           <a id="iconEdit" style="display: inline;" href="edit.php">
             <i class="material-icons">mode edit</i>
           </a>
         </h4>
       </div>
       <div class="twelve columns">
-        <form name="form" action="functions.php" method="POST">
           <table class='u-full-width'>
             <thead>
               <tr>
@@ -147,7 +147,6 @@
               <td id="lastRow" style="padding:0; margin:0 "></td>
             </tr>
           </table>
-
           <div class="row">
             <div class="twelve columns" style="text-align:left">
               <a href="#" id="iconAddPlayer" onclick="addInput()">
@@ -160,7 +159,9 @@
 
             <input style="display:none"class="button-primary" name="savePlayer" type="submit" id="btnSave" value="Tallenna">
             </div>
-        </form><!-- end of form -->
+
           </div>
   </div>
+  </form>
+</div>
   <?php include('inc/footer.php'); ?>

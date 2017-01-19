@@ -2,7 +2,7 @@
   session_start();
   include ('dbh.php');
   if (isset($_SESSION['teamId'])) {
-  $teamid = $_SESSION['teamId'];
+  $teamId = $_SESSION['teamId'];
 }
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
@@ -17,6 +17,7 @@
     unset($_SESSION['home']);
     unset($_SESSION['visitors']);
     unset($_SESSION['saved']);
+    unset($_SESSION['matchText']);
   }
   include ('functions.php');
   include ('inc/header.php');
@@ -57,7 +58,7 @@
           <tbody>
             <tr>
               <td><input type="file" name="file" id="file"></td>
-              <td><input type="submit" value="Tallenna logo" name="logoUpload"></td>
+              <td><input type="submit" value="Tallenna logo" name="fileUpload"></td>
             </tr>
           </tbody>
         </form>
@@ -71,10 +72,13 @@
         <table class="u-full-width">
           <tbody>
             <tr>
-              <?php userData(); ?>
+              <?php userData('view'); ?>
             </tr>
           </body>
         </table>
+      <ul class="navbar-list">
+      <li class="navbar-item"><button onclick="window.location='edit_user.php'">Muokkaa</button></li>
+    </ul>
       </div>
     </div>
 
