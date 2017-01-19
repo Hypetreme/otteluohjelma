@@ -14,14 +14,17 @@
     echo '<div class="row" style="background-color: #f7f7f7;">';
   }
     ?>
-    <?php
-    $profile = 'profile.php?back';
-    $url     =   'location.href="'.$profile.'"';
-    if (isset($_SESSION['teamId']) && $_SESSION['type'] == 0) {
-    echo '<button class="button-primary" style="float:left;" onclick='.$url.'>Takaisin seuraan</button>';
-  }
-?>
+    <div class="one column" style="text-align:center;position: relative;">
+  <div style="margin-left:10px;display:inline-block;">
+  <?php
+  $profile = 'profile.php?back';
+  $url     =   'location.href="'.$profile.'"';
+  if (isset($_SESSION['teamId']) && $_SESSION['type'] == 0) {
+  echo '<button class="button-primary" style="float:left;" onclick='.$url.'>Takaisin seuraan</button>';
+}
+?></div></div>
       <div class="container">
+
         <ul class="navbar-list">
           <?php
           include ('dbh.php');
@@ -64,7 +67,7 @@
               $profileName = $teamUid;
             }else{
               $profileLink = $url;
-              $profileFile = "images/logos/joukkueet.png";
+              $profileFile = "images/logos/joukkue.png";
               $profileName = $teamUid;
             }
           }else{

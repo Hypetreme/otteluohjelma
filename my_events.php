@@ -4,7 +4,7 @@
     header("Location: index.php");
   }
   if (isset($_SESSION['teamId'])) {
-  $teamid = $_SESSION['teamid'];
+  $teamId = $_SESSION['teamId'];
 }
 if (isset($_SESSION['eventId'])) {
 unset($_SESSION['homeName']);

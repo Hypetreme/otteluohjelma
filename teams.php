@@ -22,6 +22,7 @@ exit();
     unset($_SESSION['home']);
     unset($_SESSION['visitors']);
     unset($_SESSION['saved']);
+    unset($_SESSION['matchText']);
   }
   include('inc/header.php');
   include('functions.php');

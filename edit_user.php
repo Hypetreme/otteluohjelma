@@ -2,7 +2,7 @@
   session_start();
   include ('dbh.php');
   if (isset($_SESSION['teamId'])) {
-  $teamid = $_SESSION['teamId'];
+  $teamId = $_SESSION['teamId'];
 }
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
@@ -47,7 +47,7 @@
       <?php
        if (isset($_SESSION['teamId'])) {
       echo '<li class="navbar-item"><input style="background-color:gray;color:white"type="submit" name="removeTeam" value="Poista joukkue">';
-      } ?>  
+      } ?>
 
       </form>
     </ul>

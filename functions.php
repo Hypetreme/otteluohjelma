@@ -258,7 +258,23 @@ function fileUpload($mod) {
 		$allowed_file_types = array('.jpg','.jpeg','.png','.gif');
 
 			// Rename file
-			if (!$_SESSION['type'] == 0) {
+
+			if (isset($_SESSION['teamId'])) {
+			 if ($mod =='ad1') {
+			 $newfilename = 's_'. $teamUid . $teamId .'_ad1'. $file_ext;
+			 } else if ($mod =='ad2') {
+			$newfilename = 's_'. $teamUid . $teamId .'_ad2'. $file_ext;
+		} else if ($mod =='ad3') {
+			 $newfilename = 's_'. $teamUid . $teamId .'_ad3'. $file_ext;
+		 }else if ($mod =='ad4') {
+				 $newfilename = 's_'. $teamUid . $teamId .'_ad4'. $file_ext;
+			 }
+			 else {
+				$newfilename = $teamUid . $teamId . $file_ext;
+
+		 }
+		 }
+			else {
 				if ($mod =='ad1') {
 			$newfilename = 'j_'. $teamUid . $teamId .'_ad1'. $file_ext;
 				}
@@ -272,19 +288,6 @@ function fileUpload($mod) {
 			$newfilename = 'j_'. $teamUid . $teamId .'_ad4'. $file_ext;
 							}
 				else {
-			$newfilename = $teamUid . $teamId . $file_ext;
-		}
-		} else {
-			if ($mod =='ad1') {
-			$newfilename = 's_'. $teamUid . $teamId .'_ad1'. $file_ext;
-			} else if ($mod =='ad2') {
-		 $newfilename = 's_'. $teamUid . $teamId .'_ad2'. $file_ext;
-	 } else if ($mod =='ad3') {
-			$newfilename = 's_'. $teamUid . $teamId .'_ad3'. $file_ext;
-		}else if ($mod =='ad4') {
-				$newfilename = 's_'. $teamUid . $teamId .'_ad4'. $file_ext;
-			}
-      else {
 			$newfilename = $uid . $id . $file_ext;
 		}
 		}
@@ -295,7 +298,11 @@ function fileUpload($mod) {
 			unlink($_FILES["file"]["tmp_name"]);
 			echo '<script type="text/javascript">';
 			echo 'alert("Kuva ei ole sallitussa muodossa!");';
+			if ($mod =='ad1' || $mod =='ad2' || $mod =='ad3' || $mod =='ad4') {
+			echo 'document.location.href = "ads.php";';
+		} else {
 			echo 'document.location.href = "profile.php";';
+		}
 			echo '</script>';
 			//echo "Only these file types are allowed for upload: " . implode(', ',$allowed_file_types);
 
@@ -305,7 +312,11 @@ function fileUpload($mod) {
 			// file selection error
 			echo '<script type="text/javascript">';
 			echo 'alert("Valitse ladattava logo!");';
+			if ($mod =='ad1' || $mod =='ad2' || $mod =='ad3' || $mod =='ad4') {
+			echo 'document.location.href = "ads.php";';
+		} else {
 			echo 'document.location.href = "profile.php";';
+		}
 			echo '</script>';
 		}
 		elseif ($filesize > 200000)
@@ -313,7 +324,11 @@ function fileUpload($mod) {
 			// file size error
 			echo '<script type="text/javascript">';
 			echo 'alert("Kuvan tiedostokoko on liian iso!");';
+			if ($mod =='ad1' || $mod =='ad2' || $mod =='ad3' || $mod =='ad4') {
+			echo 'document.location.href = "ads.php";';
+		} else {
 			echo 'document.location.href = "profile.php";';
+		}
 			echo '</script>';
 		}
 		else
@@ -523,7 +538,13 @@ function saveUser()
 		echo 'alert("Salasana on väärin!");';
 		echo 'document.location.href = "edit_user.php"';
 		echo '</script>';
-	} else {
+	} else if (empty($teamName) || ctype_space($teamName)) {
+			echo '<script type="text/javascript">';
+			echo 'alert("Et syöttänyt joukkueen nimeä!");';
+			echo 'document.location.href = "edit_user.php";';
+			echo '</script>';
+}
+		else {
 if (!empty($_POST['name'])) {
 			$stmt = $conn->prepare("UPDATE team SET name = :teamname WHERE id = :teamid");
 			$stmt->bindParam(':teamname',$teamName);
@@ -1688,7 +1709,7 @@ if (isset($_POST['logOut'])) {
 }
 
 if (isset($_POST['fileUpload'])) {
-	fileUpload();
+	fileUpload(null);
 }
 
 if (isset($_POST['adUpload1'])) {

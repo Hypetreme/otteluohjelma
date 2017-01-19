@@ -2,7 +2,7 @@
   session_start();
   include ('dbh.php');
   if (isset($_SESSION['teamId'])) {
-  $teamid = $_SESSION['teamId'];
+  $teamId = $_SESSION['teamId'];
 }
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
@@ -57,10 +57,10 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.jpg';
 ?>
 
   <div class="container">
-    <div class="row">
+    <div style="margin-top:-120px" class="row">
       <div class="twelve columns" style="text-align:center">
-        <h5 id="adHeader"></h5>
-        <span id="upload" style="visibility:hidden">
+        <h5 style="margin-bottom:0" id="adHeader">&nbsp;</h5>
+        <span id="upload" style="visibility:hidden;">
         <table class="u-full-width">
         <form action="functions.php" method="POST" enctype="multipart/form-data">
           <tbody>
@@ -76,7 +76,7 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.jpg';
     </div>
     <div class="row">
       <div class="twelve columns" style="text-align:center">
-        <h4>
+        <h4 style="margin-bottom:0">
           Mainokset
         </h4>
       </div>
@@ -154,7 +154,7 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.jpg';
     });
 $("#adHeader").css({"color":"black"});
 document.getElementById('adHeader').innerHTML="Mainoskuva "+element.id;
-document.getElementById('upload').style="visibility:visible";
+document.getElementById('upload').style="visibility:visible;";
 document.getElementById('submitAd').name="adUpload"+element.id;
 var adValue = 1;
 }
