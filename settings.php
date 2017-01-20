@@ -7,7 +7,6 @@
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
   }
-  if (isset($_SESSION['eventId'])) {
     unset($_SESSION['homeName']);
     unset($_SESSION['visitorName']);
     unset($_SESSION['eventId']);
@@ -18,7 +17,6 @@
     unset($_SESSION['visitors']);
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
-  }
   include ('functions.php');
   include ('inc/header.php');
 ?>
@@ -35,17 +33,18 @@
           $url = "";
           if (isset($_SESSION['teamId'])) {
             $team = 'team.php?teamId='.$_SESSION['teamId'];
-            $ads = 'ads.php';
             $url = 'location.href="'.$team.'"';
-            $url3 = 'location.href="'.$ads.'"';
           }
+            $ads = 'ads.php';
+            $url3 = 'location.href="'.$ads.'"';
           $events = 'my_events.php';
           $url2 = 'location.href="'.$events.'"';
           if (isset($_SESSION['teamId'])) {
             echo '<li class="navbar-item"><button onclick='.$url.'>Kokoonpano</button></li>';
             echo '<li class="navbar-item"><button onclick='.$url2.'>Tapahtumasi</button></li>';
+            }
             echo '<li class="navbar-item"><button onclick='.$url3.'>Aseta Mainospaikat</button></li>';
-          }
+
         ?>
       </ul>
     </div>

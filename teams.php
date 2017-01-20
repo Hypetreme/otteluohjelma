@@ -7,12 +7,12 @@ header("Location: index.php");
 if (($_SESSION['type']==0)) {
 unset($_SESSION['teamId']);
 unset($_SESSION['teamUid']);
+unset($_SESSION['teamName']);
 } else {
 $teamId = $_SESSION['teamId'];
 header("Location: profile.php");
 exit();
 }
-  if (isset($_SESSION['eventId'])) {
     unset($_SESSION['homeName']);
     unset($_SESSION['visitorName']);
     unset($_SESSION['eventId']);
@@ -23,7 +23,6 @@ exit();
     unset($_SESSION['visitors']);
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
-  }
   include('inc/header.php');
   include('functions.php');
 ?>

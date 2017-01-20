@@ -29,8 +29,12 @@ include 'functions.php';
   <h3 style="color:white;padding-top:5px">4</h3>
   </div></a>
 
-  <a href="#" style="text-decoration:none"><div id="section5" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <a href="event5.php" style="text-decoration:none"><div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
   <h3 style="color:white;padding-top:5px">5</h3>
+  </div></a>
+
+  <a href="#" style="text-decoration:none"><div id="section6" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <h3 style="color:white;padding-top:5px">6</h3>
   </div></a>
 
   </div>

@@ -113,6 +113,10 @@ include 'functions.php';
   <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide5" value="5">
   </div>
 
+  <div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide6" value="6">
+  </div>
+
   </div>
   </div>
 

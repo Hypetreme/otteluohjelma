@@ -8,7 +8,6 @@
   if (!isset($_SESSION['id'])) {
     header("Location: index.php");
   }
-  if (isset($_SESSION['eventId'])) {
     unset($_SESSION['homeName']);
     unset($_SESSION['visitorName']);
     unset($_SESSION['eventId']);
@@ -19,10 +18,10 @@
     unset($_SESSION['visitors']);
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
-  }
   if (isset($_GET['back'])) {
     unset($_SESSION['teamId']);
     unset($_SESSION['teamUid']);
+    unset($_SESSION['teamName']);
   }
   include ('functions.php');
   getTeamName();

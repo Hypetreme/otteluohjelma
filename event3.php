@@ -86,7 +86,7 @@ include 'functions.php';
   <h3 style="color:white;padding-top:5px">2</h3>
   </div></a>
 
-  <a href="event3.php" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <a href="#" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
   <h3 style="color:white;padding-top:5px">3</h3>
   </div></a>
 
@@ -95,13 +95,16 @@ include 'functions.php';
   </div>
 
   <div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="visitors2" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name ="setVisitorTeamGuide5" value ="5">
+  <input form="visitors2" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setVisitorTeamGuide5" value="5">
+  </div>
+
+  <div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
+  <input form="visitors2" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name ="setVisitorTeamGuide6" value ="6">
   </div>
 
   </div>
   </div>
     <div class="row">
-<br>
       <div class="twelve columns" style="text-align: center">
         <h4>
           <span>Lisää vierasjoukkueen tiedot</span>

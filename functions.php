@@ -246,6 +246,7 @@ function fileUpload($mod) {
 	if(isset($_SESSION['id'])) {
 	$id = $_SESSION['id'];
 	$uid = $_SESSION['uid'];
+	$ownerId = $_SESSION['ownerId'];
 	if(isset($_SESSION['teamId'])) {
 	$teamId =	$_SESSION['teamId'];
 	$teamUid =	$_SESSION['teamUid'];
@@ -259,33 +260,43 @@ function fileUpload($mod) {
 
 			// Rename file
 
-			if (isset($_SESSION['teamId'])) {
+			if (!isset($_SESSION['homeName']) && isset($_SESSION['teamId'])) {
 			 if ($mod =='ad1') {
-			 $newfilename = 's_'. $teamUid . $teamId .'_ad1'. $file_ext;
+			 $newfilename = 'j_'. $teamUid . $teamId .'_ad1'. $file_ext;
 			 } else if ($mod =='ad2') {
-			$newfilename = 's_'. $teamUid . $teamId .'_ad2'. $file_ext;
+			$newfilename = 'j_'. $teamUid . $teamId .'_ad2'. $file_ext;
 		} else if ($mod =='ad3') {
-			 $newfilename = 's_'. $teamUid . $teamId .'_ad3'. $file_ext;
+			 $newfilename = 'j_'. $teamUid . $teamId .'_ad3'. $file_ext;
 		 }else if ($mod =='ad4') {
-				 $newfilename = 's_'. $teamUid . $teamId .'_ad4'. $file_ext;
+				 $newfilename = 'j_'. $teamUid . $teamId .'_ad4'. $file_ext;
 			 }
 			 else {
 				$newfilename = $teamUid . $teamId . $file_ext;
 
 		 }
+		 } else if (isset($_SESSION['homeName']) && isset($_SESSION['teamId'])) {
+			 if ($mod =='ad1') {
+			 $newfilename = 'e_'. $teamUid . $teamId .'_ad1'. $file_ext;
+			 } else if ($mod =='ad2') {
+			$newfilename = 'e_'. $teamUid . $teamId .'_ad2'. $file_ext;
+		} else if ($mod =='ad3') {
+			 $newfilename = 'e_'. $teamUid . $teamId .'_ad3'. $file_ext;
+		 }else if ($mod =='ad4') {
+				 $newfilename = 'e_'. $teamUid . $teamId .'_ad4'. $file_ext;
+			 }
 		 }
 			else {
 				if ($mod =='ad1') {
-			$newfilename = 'j_'. $teamUid . $teamId .'_ad1'. $file_ext;
+			$newfilename = 's_'. $ownerId .'_ad1'. $file_ext;
 				}
         else if ($mod =='ad2') {
-			$newfilename = 'j_'. $teamUid . $teamId .'_ad2'. $file_ext;
+			$newfilename = 's_'. $ownerId .'_ad2'. $file_ext;
 					}
 				else if ($mod =='ad3') {
-			$newfilename = 'j_'. $teamUid . $teamId .'_ad3'. $file_ext;
+			$newfilename = 's_'. $ownerId .'_ad3'. $file_ext;
 						}
 				else if ($mod =='ad4') {
-			$newfilename = 'j_'. $teamUid . $teamId .'_ad4'. $file_ext;
+			$newfilename = 's_'. $ownerId .'_ad4'. $file_ext;
 							}
 				else {
 			$newfilename = $uid . $id . $file_ext;
@@ -337,15 +348,19 @@ function fileUpload($mod) {
 			move_uploaded_file($_FILES["file"]["tmp_name"], "images/ads/" . $newfilename);
 			echo '<script type="text/javascript">';
 			echo 'alert("Kuvan lataus onnistui.");';
-			echo 'document.location.href = "ads.php";';
-			echo '</script>';
-				} else {
-			move_uploaded_file($_FILES["file"]["tmp_name"], "images/logos/" . $newfilename);
-			echo '<script type="text/javascript">';
-			echo 'alert("Logon lataus onnistui.");';
-			echo 'document.location.href = "profile.php";';
-			echo '</script>';
+			if (isset($_SESSION['homeName'])) {
+			echo 'document.location.href = "event5.php";';
+		} else {
+		echo 'document.location.href = "ads.php";';
 		}
+			echo '</script>';
+		} else {
+	move_uploaded_file($_FILES["file"]["tmp_name"], "images/logos/" . $newfilename);
+	echo '<script type="text/javascript">';
+	echo 'alert("Kuvan lataus onnistui.");';
+	echo 'document.location.href = "profile.php";';
+	echo '</script>';
+}
 		}
 }}
 function logIn()
@@ -391,7 +406,7 @@ function logIn()
 		$_SESSION['id'] = $id;
 		$_SESSION['uid'] = $uid;
 		$_SESSION['type'] = $type;
-		$_SESSION['ownerId'] = $id;
+		$_SESSION['ownerId'] = $ownerId;
 
 if ($type == 0) {
 	header("Location: profile.php");
@@ -777,13 +792,7 @@ function setEventInfo($mod)
 	if(!isset($_SESSION)) {
 	session_start(); }
 	include 'dbh.php';
-	if (empty($_POST['eventName']) || empty($_POST['eventPlace']) || empty($_POST['eventDate'])) {
- 	echo '<script type="text/javascript">';
- 	echo 'alert("Täytä kaikki tapahtuman tiedot!");';
- 	echo 'document.location.href = "event1.php"';
- 	echo '</script>';
- 	exit();
- }
+
 $_SESSION['eventName'] = $_POST['eventName'];
 $_SESSION['eventPlace'] = $_POST['eventPlace'];
 $_SESSION['eventDate'] = $_POST['eventDate'];
@@ -794,6 +803,9 @@ else if ($mod == "4"){
 	header("Location:event4.php");
 }
 else if ($mod == "5"){
+	header("Location:event5.php");
+}
+else if ($mod == "6"){
 	header("Location:event_overview.php?c");
 }
 
@@ -806,13 +818,6 @@ function setHomeTeam($mod) {
 	session_start(); }
 	include 'dbh.php';
 
-	if (!isset($_SESSION['eventName']) && !isset($_SESSION['eventPlace']) && !isset($_SESSION['eventDate'])) {
-			echo '<script type="text/javascript">';
-			echo 'alert("Täytä kaikki tapahtuman tiedot!");';
-			echo 'document.location.href = "event1.php"';
-			echo '</script>';
-			exit();
-		}
 	$i = 0;
 	unset($_SESSION['saved']);
 	if (isset($_POST['firstName']) && isset($_POST['lastName']) && isset($_POST['number'])) {
@@ -832,23 +837,20 @@ function setHomeTeam($mod) {
 		$_SESSION['saved']['home']['number'][$i] = $value;
 		$i++;
 	}
-
+	}
 	$eventId = $_SESSION['eventId'];
+
 	if ($mod == '4') {
 	header("Location:event4.php");
 }
-	else if ($mod == '5') {
+else if ($mod == '5') {
+header("Location:event5.php");
+}
+	else if ($mod == '6') {
 	header("Location:event_overview.php?c");
 } else {
 	header("Location:event3.php");
 }
-}
-else {
-		echo '<script type="text/javascript">';
-		echo 'alert("Lisää vähintään yksi pelaaja!");';
-		echo 'document.location.href = "event2.php"';
-		echo '</script>';
-	}
 }
 
 function setVisitorTeam($mod)
@@ -858,32 +860,16 @@ function setVisitorTeam($mod)
 if ($_POST['visitorName']) {
 $_SESSION['visitorName'] = $_POST['visitorName'];
 }
-if(!isset($_SESSION['saved'])) {
-	echo '<script type="text/javascript">';
-	echo 'alert("Lisää vähintään yksi pelaaja!");';
-	echo 'document.location.href = "event2.php"';
-	echo '</script>';
-}
-else if (!$_POST['visitorName']) {
-			echo '<script type="text/javascript">';
-			echo 'alert("Aseta vierasjoukkueen nimi!");';
-			echo 'document.location.href = "event3.php"';
-			echo '</script>';
-		}
-else if(!isset($_SESSION['visitors'])) {
-	echo '<script type="text/javascript">';
-	echo 'alert("Lisää vähintään yksi vierasjoukkueen pelaaja!");';
-	echo 'document.location.href = "event3.php"';
-	echo '</script>';
-}
- else {
 	 if ($mod == '5') {
+	  header("Location:event5.php");
+	 }
+	 else if ($mod == '6') {
 		header("Location:event_overview.php?c");
 	} else {
 			header("Location:event4.php");
 		}
 }
-}
+
 function showHome()
 {
 	if(!isset($_SESSION)) {
@@ -984,18 +970,6 @@ function listVisitors()
 {
 	if(!isset($_SESSION)) {
 	session_start(); }
-	if (!isset($_SESSION['saved']) && !isset($_SESSION['visitors']) && !isset($_SESSION['home'])) {
-		echo '<script type="text/javascript">';
-		echo 'alert("Lisää vähintään yksi pelaaja!");';
-		echo 'document.location.href = "event2.php"';
-		echo '</script>';
-	}
-	else if (empty($_SESSION['eventName']) && empty($_SESSION['eventPlace']) && empty($_SESSION['eventDate'])) {
-		echo '<script type="text/javascript">';
-		echo 'alert("Täytä kaikki tapahtuman tiedot!");';
-		echo 'document.location.href = "event1.php"';
-		echo '</script>';
-	}
 	if (isset($_SESSION['eventId'])) {
 	$eventId = $_SESSION['eventId'];
 }
@@ -1026,12 +1000,6 @@ function listHome()
 	if(!isset($_SESSION)) {
 	session_start(); }
 	include 'dbh.php';
-	if (empty($_SESSION['eventName']) && empty($_SESSION['eventPlace']) && empty($_SESSION['eventDate'])) {
-	  echo '<script type="text/javascript">';
-		echo 'alert("Täytä kaikki tapahtuman tiedot!");';
-		echo 'document.location.href = "event1.php"';
-		echo '</script>';
-	}
 
 	$id = $_SESSION['id'];
 	if (isset($_SESSION['teamId'])) {
@@ -1214,6 +1182,7 @@ function createEvent()
 	$eventPlace = $_SESSION['eventPlace'];
 	$eventDate = $_SESSION['eventDate'];
 	$matchText = $_SESSION['matchText'];
+
 	$date = date_create($eventDate);
 	$realDate = date_format($date, "Y-m-d");
 	$overview = array(
@@ -1222,7 +1191,8 @@ function createEvent()
 			$eventPlace,
 			$eventDate,
 			$matchText
-		) ,
+		) , 'ads' => array(),
+
 		'teams' => array(
 			'home' => array(
 				$teamName,
@@ -1324,6 +1294,20 @@ function createEvent()
 		$eventId = $row['id'];
 	}
 
+	// Mainoksien tallennus
+	$i = 0;
+	foreach($_SESSION['ads'] as $key => $value) {
+	$filename = $value;
+	$file_basename = substr($filename, 0, strripos($filename, '.')); // get file extention
+	$file_ext = substr($filename, strripos($filename, '.')); // get file name
+	$newfilename = $eventId . "_ad". ($i+1) . $file_ext;
+	$overview['ads'][$i] = $newfilename;
+	copy($filename, "images/ads/event/" . $newfilename);
+	if (strpos($filename, 'e_') !== false) {
+	unlink($filename);
+}
+	$i++;
+}
 	// luodaan json
 
 	$json = json_encode($overview);
@@ -1340,7 +1324,6 @@ function createEvent()
 		$fail = "FAILED TO UPLOAD FILE";
 		echo "<script type='text/javascript'>alert('$fail');</script>";
 	}
-
 	fclose($fp);
 
 	// Tyhjennetään Tapahtumamuuttujat
@@ -1355,6 +1338,10 @@ function createEvent()
 	unset($_SESSION['home']);
 	unset($_SESSION['visitors']);
 	unset($_SESSION['saved']);
+	unset($_SESSION['ad1']);
+	unset($_SESSION['ad2']);
+	unset($_SESSION['ad3']);
+	unset($_SESSION['ad4']);
 	echo "<script>window.location.href='my_events.php'</script>";
 }
 
@@ -1363,7 +1350,6 @@ function listTeams()
 	if(!isset($_SESSION)) {
 	session_start(); }
 	include 'dbh.php';
-
 	$i = 1;
 	$id = $_SESSION['id'];
 	if (isset($_SESSION['teamId'])) {
@@ -1380,11 +1366,16 @@ function listTeams()
 	$stmt2 = $conn->prepare("SELECT * from user WHERE team_id='$teamId'");
 	$stmt2->execute();
   $row2 = $stmt2->fetch();
+	$showName = $row2['uid'];
 
-
-		$showName = $row2['uid'];
+	$fileName = 'images/logos/'.$showName.$teamId.'.jpg';
+	if (file_exists($fileName)){
+	$logo = 'images/logos/'.$showName.$teamId.'.jpg';
+} else {
+	$logo = "images/default_team.png";
+}
 		echo '<tr style="min-height: 80px; height: 80px;">';
-		echo '<td><img style="width: 35px; height: 35px; vertical-align: middle;" src="images/default_team.png"></td>';
+		echo '<td><img style="width: 35px; height: 35px; vertical-align: middle;" src="'.$logo.'"></td>';
 		if ($row2['activated'] == 1) {
 			echo '<td><a style="text-decoration:none;" href="profile.php?teamId=' . $showId . '">' . $showName . '</a></td>';
 			echo '<td><i style="color: #003400;" class="material-icons">check_circle</i></td>';
@@ -1599,17 +1590,44 @@ if ($mod == 'view') {
 }
 	echo '</tr>';
 }
-function setMatchText() {
+function setMatchText($mod) {
 	if(!isset($_SESSION)) {
 	session_start();
 	}
 if ($_POST['matchText']) {
 	$_SESSION['matchText'] = $_POST['matchText'];
-} header("Location: event_overview.php?c");
 }
-
+if ($mod == "6"){
+	header("Location: event_overview.php?c");
+}
+else {
+	header("Location:event5.php");
+}
+}
+function setEventAds() {
+	if(!isset($_SESSION)) {
+	session_start();
+	}
+	if (!empty($_POST['ad1'])) {
+	$_SESSION['ads'][0] = $_POST['ad1'];
+}
+  if (!empty($_POST['ad2'])) {
+	$_SESSION['ads'][1] = $_POST['ad2'];
+}
+	if (!empty($_POST['ad3'])) {
+	$_SESSION['ads'][2] = $_POST['ad3'];
+}
+	if (!empty($_POST['ad4'])) {
+	$_SESSION['ads'][3] = $_POST['ad4'];
+}
+ header("Location:event_overview.php?c");
+}
 if (isset($_POST['setMatchText'])){
 	setMatchText();
+}
+
+if (isset($_POST['setMatchTextGuide6'])){
+	setMatchText('6');
 }
 
 if (isset($_POST['setEventInfo'])){
@@ -1628,6 +1646,10 @@ if (isset($_POST['setEventInfoGuide5'])){
 	setEventInfo('5');
 }
 
+if (isset($_POST['setEventInfoGuide6'])){
+	setEventInfo('6');
+}
+
 if (isset($_POST['setHomeTeam'])) {
 	setHomeTeam();
 }
@@ -1636,8 +1658,12 @@ if (isset($_POST['setHomeTeamGuide4'])) {
 	setHomeTeam('4');
 }
 
-if (isset($_POST['setHomeTeamGuide5'])) {
-	setHomeTeam('5');
+if (isset($_POST['setHomeTeamGuide5'])){
+	setEventInfo('5');
+}
+
+if (isset($_POST['setHomeTeamGuide6'])) {
+	setHomeTeam('6');
 }
 
 if (isset($_POST['setVisitorTeam'])) {
@@ -1646,6 +1672,14 @@ if (isset($_POST['setVisitorTeam'])) {
 
 if (isset($_POST['setVisitorTeamGuide5'])) {
 	setVisitorTeam('5');
+}
+
+if (isset($_POST['setVisitorTeamGuide6'])) {
+	setVisitorTeam('6');
+}
+
+if (isset($_POST['setEventAds'])) {
+	setEventAds();
 }
 
 if (isset($_POST['addVisitor'])) {

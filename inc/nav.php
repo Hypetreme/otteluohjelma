@@ -9,20 +9,22 @@
       </div>
     </div>
     <?php if ($_SESSION['type'] == 0) {
-    echo '<div class="row" style="background-color: #BFD0D6;">';
-  } else {
-    echo '<div class="row" style="background-color: #f7f7f7;">';
-  }
+      echo '<div class="row" style="background-color: #BFD0D6;">';
+    } else {
+      echo '<div class="row" style="background-color: #f7f7f7;">';
+    }
     ?>
     <div class="one column" style="text-align:center;position: relative;">
-  <div style="margin-left:10px;display:inline-block;">
-  <?php
-  $profile = 'profile.php?back';
-  $url     =   'location.href="'.$profile.'"';
-  if (isset($_SESSION['teamId']) && $_SESSION['type'] == 0) {
-  echo '<button class="button-primary" style="float:left;" onclick='.$url.'>Takaisin seuraan</button>';
-}
-?></div></div>
+      <div style="margin-left:10px;display:inline-block;">
+        <?php
+          $profile  = 'profile.php?back';
+          $url  = 'location.href="'.$profile.'"';
+          if (isset($_SESSION['teamId']) && $_SESSION['type'] == 0) {
+            echo '<button class="button-primary" style="float:left;" onclick='.$url.'>Takaisin seuraan</button>';
+          }
+        ?>
+      </div>
+    </div>
       <div class="container">
 
         <ul class="navbar-list">
@@ -157,6 +159,13 @@
 
           .nav-joukkueet {
            display: none;
+            position: absolute;
+            top: 10px;
+            left: 0px;
+            height: 42px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            width: 155px;
           }
         </style>
 
@@ -173,11 +182,13 @@
           <li class="navbar-item"><a class="navbar-link" onclick="location.href='goodbye.php'">Kirjaudu ulos</a></li>
         </div>
 
-        <select id="nav-joukkueet" name="nav-joukkueet" class="nav-joukkueet">
-          <option value="joukkue1" selected disabled>Current</option>
-          <option value="joukkue2">Joukkue2</option>
-          <option value="joukkue3">Joukkue3</option>
-          <option value="joukkue4">Joukkue4</option>
+        <select id="nav-joukkueet" name="nav-joukkueet" class="nav-joukkueet" onchange="location = this.value;">
+          <option value="current" selected disabled>Valitse joukkue</option>
+          <?php
+            foreach($result as $row){
+              echo "<option value='profile.php?teamId=".$row['id']."'>".$row['name']."</option>";
+            }
+          ?>
         </select>
 
       </ul>
