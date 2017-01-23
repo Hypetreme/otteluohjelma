@@ -12,70 +12,54 @@ $teamId   =  $_SESSION['teamId'];
 $teamUid   =  $_SESSION['teamUid'];
 $ownerId = $_SESSION['ownerId'];
 
-$fileName1s = 'images/ads/s_'.$ownerId.'_ad1.jpg';
-$fileName2s = 'images/ads/s_'.$ownerId.'_ad2.jpg';
-$fileName3s = 'images/ads/s_'.$ownerId.'_ad3.jpg';
-$fileName4s = 'images/ads/s_'.$ownerId.'_ad4.jpg';
+$fileName1s = 'images/ads/s_'.$ownerId.'_ad1.png';
+$fileName2s = 'images/ads/s_'.$ownerId.'_ad2.png';
+$fileName3s = 'images/ads/s_'.$ownerId.'_ad3.png';
+$fileName4s = 'images/ads/s_'.$ownerId.'_ad4.png';
 
-$fileName1j = 'images/ads/j_'.$teamUid.$teamId.'_ad1.jpg';
-$fileName2j = 'images/ads/j_'.$teamUid.$teamId.'_ad2.jpg';
-$fileName3j = 'images/ads/j_'.$teamUid.$teamId.'_ad3.jpg';
-$fileName4j = 'images/ads/j_'.$teamUid.$teamId.'_ad4.jpg';
+$fileName1j = 'images/ads/j_'.$teamUid.$teamId.'_ad1.png';
+$fileName2j = 'images/ads/j_'.$teamUid.$teamId.'_ad2.png';
+$fileName3j = 'images/ads/j_'.$teamUid.$teamId.'_ad3.png';
+$fileName4j = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
 
-$fileName1e = 'images/ads/e_'.$teamUid.$teamId.'_ad1.jpg';
-$fileName2e = 'images/ads/e_'.$teamUid.$teamId.'_ad2.jpg';
-$fileName3e = 'images/ads/e_'.$teamUid.$teamId.'_ad3.jpg';
-$fileName4e = 'images/ads/e_'.$teamUid.$teamId.'_ad4.jpg';
+$fileName1e = 'images/ads/e_'.$teamUid.$teamId.'_ad1.png';
+$fileName2e = 'images/ads/e_'.$teamUid.$teamId.'_ad2.png';
+$fileName3e = 'images/ads/e_'.$teamUid.$teamId.'_ad3.png';
+$fileName4e = 'images/ads/e_'.$teamUid.$teamId.'_ad4.png';
 
 if (file_exists($fileName1e)){
-$ad1 = 'images/ads/e_'.$teamUid.$teamId.'_ad1.jpg';
+$ad1 = 'images/ads/e_'.$teamUid.$teamId.'_ad1.png';
 } else if (file_exists($fileName1s)){
-$ad1 = 'images/ads/s_'.$ownerId.'_ad1.jpg';
+$ad1 = 'images/ads/s_'.$ownerId.'_ad1.png';
 } else if (isset($_SESSION['teamId']) && file_exists($fileName1j)){
-$ad1 = 'images/ads/j_'.$teamUid.$teamId.'_ad1.jpg';
+$ad1 = 'images/ads/j_'.$teamUid.$teamId.'_ad1.png';
 }
 if (file_exists($fileName2e)){
-$ad2 = 'images/ads/e_'.$teamUid.$teamId.'_ad2.jpg';
+$ad2 = 'images/ads/e_'.$teamUid.$teamId.'_ad2.png';
 } else if (file_exists($fileName2s)){
-$ad2 = 'images/ads/s_'.$ownerId.'_ad2.jpg';
+$ad2 = 'images/ads/s_'.$ownerId.'_ad2.png';
 } else if (isset($_SESSION['teamId']) && file_exists($fileName2j)){
-$ad2 = 'images/ads/j_'.$teamUid.$teamId.'_ad2.jpg';
+$ad2 = 'images/ads/j_'.$teamUid.$teamId.'_ad2.png';
 }
 if (file_exists($fileName3e)){
-$ad3 = 'images/ads/e_'.$teamUid.$teamId.'_ad3.jpg';
+$ad3 = 'images/ads/e_'.$teamUid.$teamId.'_ad3.png';
 } else if (file_exists($fileName3s)){
-$ad3 = 'images/ads/s_'.$ownerId.'_ad3.jpg';
+$ad3 = 'images/ads/s_'.$ownerId.'_ad3.png';
 } else if (isset($_SESSION['teamId']) && file_exists($fileName3j)){
-$ad3 = 'images/ads/j_'.$teamUid.$teamId.'_ad3.jpg';
+$ad3 = 'images/ads/j_'.$teamUid.$teamId.'_ad3.png';
 }
 if (file_exists($fileName4e)){
-$ad4 = 'images/ads/e_'.$teamUid.$teamId.'_ad4.jpg';
+$ad4 = 'images/ads/e_'.$teamUid.$teamId.'_ad4.png';
 } else if (file_exists($fileName4s)){
-$ad4 = 'images/ads/s_'.$ownerId.'_ad4.jpg';
+$ad4 = 'images/ads/s_'.$ownerId.'_ad4.png';
 } else if (isset($_SESSION['teamId']) && file_exists($fileName4j)){
-$ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.jpg';
+$ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
 }
 ?>
-<style>
-/*.dropdown {
-    position: relative;
-    display: inline-block;
-}
+<link rel="stylesheet" type="text/css" href="css/cropit.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="js/jquery.cropit.js"></script>
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}*/
-</style>
 <div class="container">
   <div class="row" id="guide">
     <div class="twelve columns" style="text-align: center;">
@@ -116,81 +100,31 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.jpg';
   </div>
   <div class="row">
     <div class="twelve columns" style="text-align: center;">
-      <?php /*if (empty($ad1) && empty($ad2) && empty($ad3) && empty($ad4)) {
-        echo '<h4 style="color:gray">Sinulla ei ole mainoksia asetettuna.</h4>';
-      } else {
-    echo '<div id="Etusivu1" class="dropdown" style="display: inline-block;">
-        <button>Etusivu 1</button>
-        <div class="dropdown-content">';
-        if (!empty($ad1)){
-            echo '<div id="1" style="height:100px;background-size:100% 100%;background-image: url('.$ad1.');"></div>';
-          } if (!empty($ad2)){
-            echo '<div id="2" style="height:100px;background-size:100% 100%;background-image: url('.$ad2.');"></div>';
-          } if (!empty($ad3)){
-            echo '<div id="3" style="height:100px;background-size:100% 100%;background-image: url('.$ad3.');"></div>';
-          } if (!empty($ad4)){
-            echo '<div id="4" style="height:100px;background-size:100% 100%;background-image: url('.$ad4.');"></div>';
-          }
-        echo '</div></div>';
-      echo '<div id="Etusivu2" class="dropdown" style="display: inline-block;">
-        <button>Etusivu 2</button>
-        <div class="dropdown-content">';
-        if (!empty($ad1)){
-            echo '<div id="1" style="height:100px;background-size:100% 100%;background-image: url('.$ad1.');"></div>';
-          } if (!empty($ad2)){
-            echo '<div id="2" style="height:100px;background-size:100% 100%;background-image: url('.$ad2.');"></div>';
-          } if (!empty($ad3)){
-            echo '<div id="3" style="height:100px;background-size:100% 100%;background-image: url('.$ad3.');"></div>';
-          } if (!empty($ad4)){
-            echo '<div id="4" style="height:100px;background-size:100% 100%;background-image: url('.$ad4.');"></div>';
-          }
-       echo '</div></div>';
-      echo '<div class="row">';
-      echo '<div style="background-image: url('.$ad1.');background-repeat:no-repeat;background-size:100% 100%;text-align:center;border-style:solid;width:20%;height:100px;display:inline-block;"></div>';
-      echo '<div style="background-image: url('.$ad2.');background-repeat:no-repeat;background-size:100% 100%;text-align:center;border-style:solid;width:20%;height:100px;display:inline-block;"></div>';
-      echo '</div>';
-      echo '<div id="Kokoonpano1" class="dropdown" style="display: inline-block;">';
-        echo '<div class="button">Kokoonpano 1</div>
-        <div class="dropdown-content">';
-        if (!empty($ad1)){
-            echo '<div id="1" style="height:100px;background-size:100% 100%;background-image: url('.$ad1.');"></div>';
-          } if (!empty($ad2)){
-            echo '<div id="2" style="height:100px;background-size:100% 100%;background-image: url('.$ad2.');"></div>';
-          } if (!empty($ad3)){
-            echo '<div id="3" style="height:100px;background-size:100% 100%;background-image: url('.$ad3.');"></div>';
-          } if (!empty($ad4)){
-            echo '<div id="4" style="height:100px;background-size:100% 100%;background-image: url('.$ad4.');"></div>';
-          }
-        echo '</div></div>';
-      echo '<div id="Kokoonpano 2" class="dropdown" style="display: inline-block;">';
-        echo '<div class="button">Kokoonpano 2</div>
-        <div class="dropdown-content">';
-        if (!empty($ad1)){
-            echo '<div id="1" style="height:100px;background-size:100% 100%;background-image: url('.$ad1.');"></div>';
-          } if (!empty($ad2)){
-            echo '<div id="2" style="height:100px;background-size:100% 100%;background-image: url('.$ad2.');"></div>';
-          } if (!empty($ad3)){
-            echo '<div id="3" style="height:100px;background-size:100% 100%;background-image: url('.$ad3.');"></div>';
-          } if (!empty($ad4)){
-            echo '<div id="4" style="height:100px;background-size:100% 100%;background-image: url('.$ad4.');"></div>';
-          }
-       echo '</div></div>';
-     }*/
-      ?>
       <h5 style="margin-bottom:0" id="adHeader">&nbsp;</h5>
       <span id="upload" style="visibility:hidden;">
-      <table class="u-full-width">
-      <form action="functions.php" method="POST" enctype="multipart/form-data">
-        <tbody>
-          <tr>
-            <td><input type="file" name="file" id="file"></td>
-            <td><input id="submitAd" type="submit" value="Tallenna Mainos" name="adUpload"></td>
-          </tr>
-        </tbody>
-      </form>
-      </table>
-    </span>
+
+      <form method="POST" enctype="multipart/form-data">
+      <tbody>
+      <tr>
+    <div class="image-editor" id="crop">
+<div style="display:inline-block">
+      <div class="cropit-image-preview"><div class="error-msg"></div></div>
     </div>
+      <input style="display:inline-block" type="file" class="cropit-image-input">
+
+    <div class="row" style="text-align:left">
+      <input style="display:inline-block;margin-left:190px" type="range" class="cropit-image-zoom-input">
+      <p style="display:inline-block" class="image-size-label">
+        Zoomaus
+      </p>
+    </div>
+
+      <input type="hidden" name="image-data" class="hidden-image-data" />
+      <button id="submitAd" type="submit">Tallenna</button>
+</div>
+        </form>
+    </span>
+  </div>
   </div>
 
   <div style="margin-left:auto ;margin-right:auto;width:375px;height:709px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
@@ -243,6 +177,36 @@ echo '<div onclick="addAd(this);" id="4" style="border-width:1px;position:absolu
 </div>
 
 <script>
+$(function() {
+  $(function() {
+  $('.image-editor').cropit();
+
+  $('form').submit(function() {
+    // Move cropped image data to hidden input
+
+    var imageData = $('.image-editor').cropit('export');
+    $('.hidden-image-data').val(imageData);
+
+    // Print HTTP request params
+    var formValue = $(this).serialize();
+
+$.ajax({
+   type: 'post',
+   data: formValue,
+   url: 'functions.php',
+   success: function(data){
+   $('#result-data').text('New file in: images/'+data);
+   $('#crop').show();
+  }
+
+});
+
+    // Prevent the form from actually submitting
+    //return false;
+  });
+});
+});
+
 $("#1, #2, #3, #4").on("mouseenter focus", function(){
   if(!$(this).hasClass('active')){
   $(this).css({"border-color":"orange"});

@@ -1,6 +1,11 @@
 
 <div class="players">
   <div class="container">
+    <div id="ad1" class="row">
+      <div class="twelve columns">
+        asdasdas
+      </div>
+    </div>
     <div class="row">
       <div class="twelve columns">
           <h1 class="title">Pelaajat</h1>

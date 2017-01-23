@@ -1,0 +1,41 @@
+.cropit-image-preview .error-msg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    color: #fff;
+    background: rgba(210,65,72,0.8);
+    line-height: 1.5;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -webkit-transition: opacity 0.25s;
+    -moz-transition: opacity 0.25s;
+    -o-transition: opacity 0.25s;
+    -ms-transition: opacity 0.25s;
+    transition: opacity 0.25s;
+}
+
+.cropit-image-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 340px;
+        height: 55px;
+        cursor: move;
+      }
+
+      .image-size-label {
+        margin-top: 10px;
+      }
+
+      input, .export {
+        display: block;
+      }
+
+      button {
+        margin-top: 10px;
+      }
