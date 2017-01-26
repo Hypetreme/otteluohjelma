@@ -8,6 +8,9 @@ include ('inc/header.php');
 include 'functions.php';
 ?>
 
+<!-- Theme included stylesheets -->
+<link href="//cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">
+
   <div class="container">
   <?php if (!isset($_GET['eventId'])) {
     echo '<div class="row" id="guide">
@@ -88,7 +91,9 @@ include 'functions.php';
         <span>Ennakkoteksti</span>
       </h4>
       <span><?php if (isset($_SESSION['matchText'])) {
-        echo $_SESSION['matchText']; }
+        echo '<div id="editor" class="twelve columns" style="min-height:200px">';
+        echo '</div>';
+      }
         ?></span>
     </div>
     </div>
@@ -102,7 +107,7 @@ include 'functions.php';
        if (isset($_GET['eventId'])) {
       $eventId = $_GET['eventId'];
     }
-      $url = "event4.php";
+      $url = "event5.php";
       $url2 = "event1.php";
         if (isset($_GET['c'])) {
        echo "<button class='button-primary' type='button' value='Takaisin' onclick='window.location=\"$url\"'/>";
@@ -125,4 +130,20 @@ include 'functions.php';
     </div>
 
   </div>
+  <!-- Main Quill library -->
+  <script src="//cdn.quilljs.com/1.2.0/quill.js"></script>
+  <script>
+  var options = {
+    modules: {
+    toolbar: null
+  },
+    readOnly: true,
+    scrollingContainer: true,
+    theme: 'snow'
+  };
+  var editor = new Quill('#editor', options);
+  <?php
+  echo 'editor.setContents ('.$_SESSION['matchText'].');';
+  echo '</script>';
+  ?>
   <?php include('inc/footer.php'); ?>

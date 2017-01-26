@@ -7,6 +7,10 @@ header("Location: index.php");
 
 include ('inc/header.php');
 ?>
+
+<!-- Theme included stylesheets -->
+<link href="//cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">
+
 <div class="container">
   <div class="row" id="guide">
     <div class="twelve columns" style="text-align: center;">
@@ -47,11 +51,10 @@ include ('inc/header.php');
   </div>
 <form id="form" action="functions.php" method="POST">
   <div class="row">
-    <div class="twelve columns" style="text-align: center;">
-      <textarea style="resize:vertical; max-width:400px; min-height:200px;max-height:400px; min-width:400px;"name="matchText"><?php
-      if (isset($_SESSION['matchText'])) {
-         echo $_SESSION['matchText']; }
-        ?></textarea></div>
+    <div id="toolbar"></div>
+    <div id="editor" class="twelve columns" style="min-height:200px"></div>
+    <input name="matchText" type="hidden">
+    <input name="plainMatchText" type="hidden">
     </div>
 
   <div class="row">
@@ -64,5 +67,56 @@ include ('inc/header.php');
 
 </div>
 
+<!-- Main Quill library -->
+<script src="//cdn.quilljs.com/1.2.0/quill.js"></script>
+
+<script>
+
+var quill = new Quill('#editor', {
+  modules: {
+    toolbar: [
+      ['bold', 'italic','underline'],
+      ['link', 'blockquote', 'image', 'video'],
+      [{ 'header': 1 }, { 'header': 2 }],
+    ]
+  },
+  placeholder: 'Lisää ennakkoteksti...',
+  theme: 'snow'
+});
+
+var form = document.querySelector('form');
+form.onsubmit = function() {
+
+  // Lisätään formin tiedot piilotettuun kenttään
+  var matchText = document.querySelector('input[name=matchText]');
+  matchText.value = JSON.stringify(quill.getContents());
+  console.log(matchText.value);
+  var plainMatchText = document.querySelector('input[name=plainMatchText]');
+  plainMatchText.value = JSON.stringify(quill.getText());
+
+  /*var obj = JSON.parse(matchText.value);
+  console.log(obj);
+  console.log("Submitted", $(form).serialize(), $(form).serializeArray());*/
+};
+var matchText = document.querySelector('input[name=matchText]');
+</script>
+<?php
+if (isset($_SESSION['matchText'])) {
+echo '<script>';
+echo 'quill.setContents ('.$_SESSION['matchText'].');';
+echo '</script>';
+}
+?>
+<script>
+
+var quill = new Quill('#editor', {
+  modules: {
+    toolbar: [
+      ['bold', 'italic','underline'],
+      ['link', 'blockquote', 'image', 'video']
+    ]
+  },
+  theme: 'snow'
+});
 
   <?php include('inc/footer.php'); ?>

@@ -12,7 +12,7 @@ body {
 .overlay {
   background-color: rgba(0,0,0,0.6);
   height: 100%;
-  position: absolute;
+  position: fixed;
   width: 100%;
 }
 
@@ -24,6 +24,7 @@ body {
 
 .jaakiekko {
   background-image: url('../images/jaakiekko.jpg');
+  background-attachment: fixed;
 }
 
 header {
@@ -67,7 +68,7 @@ nav ul li a {
 }
 
 nav ul li a:active,
-nav ul li a:focus, 
+nav ul li a:focus,
 nav ul li a:hover {
   background-color: #dc1313;
   color: #fff;
@@ -98,5 +99,5 @@ h1.title {
   font-weight: 100;
   color: #fff;
   font-size: 20px;
-   
+
 }

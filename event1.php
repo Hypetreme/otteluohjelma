@@ -79,7 +79,7 @@ datePicker();
 
   <div class="row">
     <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
-      <button class="button-primary" type="button" value="Takaisin" onclick="window.location='my_events.php'"/>Takaisin</button>
+      <button class="button-primary" type="button" value="Takaisin" onclick="window.location='profile.php'"/>Takaisin</button>
       <input class="button-primary" type="submit" name="setEventInfo" id="btnEvent1" value="Seuraava">
 </form>
     </div>

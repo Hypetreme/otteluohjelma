@@ -7,53 +7,74 @@ header("Location: index.php");
 include ('inc/header.php');
 include ('functions.php');
 
-$ad1 = $ad2 = $ad3 = $ad4 = "";
+$ad1 = $ad2 = $ad3 = $ad4 = 'images/default_ad.png';
+$teamId = $teamUid = "";
+if (isset($_SESSION['teamId'])) {
 $teamId   =  $_SESSION['teamId'];
 $teamUid   =  $_SESSION['teamUid'];
+}
+
 $ownerId = $_SESSION['ownerId'];
 
+// Seuran asettamat mainokset
 $fileName1s = 'images/ads/s_'.$ownerId.'_ad1.png';
 $fileName2s = 'images/ads/s_'.$ownerId.'_ad2.png';
 $fileName3s = 'images/ads/s_'.$ownerId.'_ad3.png';
 $fileName4s = 'images/ads/s_'.$ownerId.'_ad4.png';
 
+// Joukkueen asettamat mainokset
 $fileName1j = 'images/ads/j_'.$teamUid.$teamId.'_ad1.png';
 $fileName2j = 'images/ads/j_'.$teamUid.$teamId.'_ad2.png';
 $fileName3j = 'images/ads/j_'.$teamUid.$teamId.'_ad3.png';
 $fileName4j = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
 
-$fileName1e = 'images/ads/e_'.$teamUid.$teamId.'_ad1.png';
-$fileName2e = 'images/ads/e_'.$teamUid.$teamId.'_ad2.png';
-$fileName3e = 'images/ads/e_'.$teamUid.$teamId.'_ad3.png';
-$fileName4e = 'images/ads/e_'.$teamUid.$teamId.'_ad4.png';
+// Seuran asettamat mainokset tapahtumanluonnissa (väiaikaiset)
+$fileName1es = 'images/ads/e_'.$ownerId.'_ad1.png';
+$fileName2es = 'images/ads/e_'.$ownerId.'_ad2.png';
+$fileName3es = 'images/ads/e_'.$ownerId.'_ad3.png';
+$fileName4es = 'images/ads/e_'.$ownerId.'_ad4.png';
 
-if (file_exists($fileName1e)){
-$ad1 = 'images/ads/e_'.$teamUid.$teamId.'_ad1.png';
+// Joukkueen asettamat mainokset tapahtumanluonnissa (väiaikaiset)
+$fileName1ej = 'images/ads/e_'.$teamUid.$teamId.'_ad1.png';
+$fileName2ej = 'images/ads/e_'.$teamUid.$teamId.'_ad2.png';
+$fileName3ej = 'images/ads/e_'.$teamUid.$teamId.'_ad3.png';
+$fileName4ej = 'images/ads/e_'.$teamUid.$teamId.'_ad4.png';
+
+if (file_exists($fileName1es)){
+$ad1 = $fileName1es;
+} else if (file_exists($fileName1ej)){
+$ad1 = $fileName1ej;
 } else if (file_exists($fileName1s)){
-$ad1 = 'images/ads/s_'.$ownerId.'_ad1.png';
+$ad1 = $fileName1s;
 } else if (isset($_SESSION['teamId']) && file_exists($fileName1j)){
-$ad1 = 'images/ads/j_'.$teamUid.$teamId.'_ad1.png';
+$ad1 = $fileName1j;
 }
-if (file_exists($fileName2e)){
-$ad2 = 'images/ads/e_'.$teamUid.$teamId.'_ad2.png';
+if (file_exists($fileName2es)){
+$ad2 = $fileName2es;
+} else if (file_exists($fileName2ej)){
+$ad2 = $fileName2ej;
 } else if (file_exists($fileName2s)){
-$ad2 = 'images/ads/s_'.$ownerId.'_ad2.png';
+$ad2 = $fileName2s;
 } else if (isset($_SESSION['teamId']) && file_exists($fileName2j)){
-$ad2 = 'images/ads/j_'.$teamUid.$teamId.'_ad2.png';
+$ad2 = $fileName2j;
 }
-if (file_exists($fileName3e)){
-$ad3 = 'images/ads/e_'.$teamUid.$teamId.'_ad3.png';
+if (file_exists($fileName3es)){
+$ad3 = $fileName3es;
+} else if (file_exists($fileName3ej)){
+$ad3 = $fileName3ej;
 } else if (file_exists($fileName3s)){
-$ad3 = 'images/ads/s_'.$ownerId.'_ad3.png';
+$ad3 = $fileName1s;
 } else if (isset($_SESSION['teamId']) && file_exists($fileName3j)){
-$ad3 = 'images/ads/j_'.$teamUid.$teamId.'_ad3.png';
+$ad3 = $fileName3j;
 }
-if (file_exists($fileName4e)){
-$ad4 = 'images/ads/e_'.$teamUid.$teamId.'_ad4.png';
+if (file_exists($fileName4es)){
+$ad4 = $fileName4es;
+} else if (file_exists($fileName4ej)){
+$ad4 = $fileName4ej;
 } else if (file_exists($fileName4s)){
-$ad4 = 'images/ads/s_'.$ownerId.'_ad4.png';
+$ad4 = $fileName4s;
 } else if (isset($_SESSION['teamId']) && file_exists($fileName4j)){
-$ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
+$ad4 = $fileName4j;
 }
 ?>
 <link rel="stylesheet" type="text/css" href="css/cropit.css">
@@ -130,28 +151,35 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
   <div style="margin-left:auto ;margin-right:auto;width:375px;height:709px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
   <div class="row">
     <div class="twelve columns" style="text-align:center">
-    <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 340px;height: 595px;border-style: solid;top: 61px;">
-      <?php
-      if (file_exists($fileName1s) || file_exists($fileName1j)){
-      echo '<div class="reserved" onclick="notify(this);" id="1" style="border-width:3px;border-color:red;border-style:solid;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad1.');">AD 1</div>';
+      <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 680px;solid;top: 59px;">
+        <?php
+        if (file_exists($fileName1s) || file_exists($fileName1j)){
+        echo '<div class="reserved" onclick="notify(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
+      } else {
+        echo '<div onclick="addAd(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
+      }
+      echo '<div style="color:white"><h2>Pelaajat</h2></div>';
+      echo '<div style="color:white"><h3>Kotijoukkue</h3></div>';
+      echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
+      echo '<div style="color:white"><h5>Pelaaja Kaksi</h5></div>';
+      if (file_exists($fileName2s) || file_exists($fileName2j)){
+      echo '<div class="reserved" onclick="notify(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
     } else {
-      echo '<div onclick="addAd(this);" id="1" style="border-width:1px;border-style:solid;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad1.');">AD 1</div>';
+      echo '<div onclick="addAd(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
     }
-    if (file_exists($fileName2s) || file_exists($fileName2j)){
-    echo '<div class="reserved" onclick="notify(this);" id="2" style="border-width:3px;border-color:red;border-style:solid;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad2.');">AD 2</div>';
-  } else {
-    echo '<div onclick="addAd(this);" id="2" style="border-width:1px;border-style:solid;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad2.');">AD 2</div>';
-  }
-  if (file_exists($fileName3s) || file_exists($fileName3j)){
+      echo '<div style="color:white"><h3>Vierasjoukkue</h3></div>';
+      echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
+      echo '<div style="color:white"><h5>Pelaaja Kaksi</h5></div>';
+  /*if (file_exists($fileName3s) || file_exists($fileName3j)){
   echo '<div class="reserved" onclick="notify(this);" id="3" style="border-width:3px;border-color:red;position:absolute;bottom:9.5%;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad3.');">AD 3</div>';
 } else {
-  echo '<div onclick="addAd(this);" id="3" style="border-width:3px;border-color:red;position:absolute;bottom:9.5%;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad3.');">AD 3</div>';
+  echo '<div onclick="addAd(this);" id="3" style="border-width:3px;position:absolute;bottom:9.5%;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad3.');">AD 3</div>';
 }
 if (file_exists($fileName4s) || file_exists($fileName4j)){
-echo '<div class="reserved" onclick="notify(this);" id="4" style="border-width:1px;position:absolute;bottom:0;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad4.');">AD 4</div>';
+echo '<div class="reserved" onclick="notify(this);" id="4" style="border-width:3px;border-color:red;position:absolute;bottom:0;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad4.');">AD 4</div>';
 } else {
 echo '<div onclick="addAd(this);" id="4" style="border-width:1px;position:absolute;bottom:0;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad4.');">AD 4</div>';
-}
+}*/
       ?>
     </div>
     </div>
@@ -210,50 +238,47 @@ $.ajax({
 $("#1, #2, #3, #4").on("mouseenter focus", function(){
   if(!$(this).hasClass('active')){
   $(this).css({"border-color":"orange"});
+  $(this).css({"border-style":"solid"});
   $(this).css({"border-width":"3px"});
 }
 });
 $("#1, #2, #3, #4").on("mouseleave", function(){
    if(!$(this).hasClass('active')){
-  $(this).css({"border-color":"black"});
-  $(this).css({"border-width":"1px"});
+  $(this).css({"border-style":""});
+  $(this).css({"border-width":""});
 }
 if($(this).hasClass('reserved')){
 $(this).css({"border-color":"red"});
 $(this).css({"border-width":"3px"});
 }
 });
+
 function addAd(element) {
-  $(function(){
-      $("#1").removeClass('active')
-      if(!$("#1").hasClass('reserved')){
-      $("#1").css({"background-color":"white"});
-      $("#1").css({"border-color":"black"});
-      $("#1").css({"border-width":"1px"});
-    }
-      $("#2").removeClass('active')
-      if(!$("#2").hasClass('reserved')){
-      $("#2").css({"background-color":"white"});
-      $("#2").css({"border-color":"black"});
-      $("#2").css({"border-width":"1px"});
-      }
-      $("#3").removeClass('active')
-      if(!$("#3").hasClass('reserved')){
-      $("#3").css({"background-color":"white"});
-      $("#3").css({"border-color":"black"});
-      $("#3").css({"border-width":"1px"});
-      }
-      $("#4").removeClass('active')
-      if(!$("#4").hasClass('reserved')){
-      $("#4").css({"background-color":"white"});
-      $("#4").css({"border-color":"black"});
-      $("#4").css({"border-width":"1px"});
-      }
-      $(element).addClass('active')
-      $(element).css({"background-color":"white"});
-      $(element).css({"border-color":"#2def30"});
-      $(element).css({"border-width":"3px"});
-  });
+$(function(){
+  $("#1").removeClass('active')
+  if(!$("#1").hasClass('reserved')){
+  $("#1").css({"border-color":"black"});
+  $("#1").css({"border-width":"0px"});
+}
+  $("#2").removeClass('active')
+  if(!$("#2").hasClass('reserved')){
+  $("#2").css({"border-color":"black"});
+  $("#2").css({"border-width":"0px"});
+  }
+  $("#3").removeClass('active')
+  if(!$("#3").hasClass('reserved')){
+  $("#3").css({"border-color":"black"});
+  $("#3").css({"border-width":"0px"});
+  }
+  $("#4").removeClass('active')
+  if(!$("#4").hasClass('reserved')){
+  $("#4").css({"border-color":"black"});
+  $("#4").css({"border-width":"0px"});
+  }
+  $(element).addClass('active')
+  $(element).css({"border-color":"#2def30"});
+  $(element).css({"border-width":"3px"});
+});
 $("#adHeader").css({"color":"black"});
 document.getElementById('adHeader').innerHTML="Mainoskuva "+element.id;
 document.getElementById('upload').style="visibility:visible;";
@@ -263,25 +288,21 @@ var adValue = 1;
 function notify(element) {
 $("#1").removeClass('active')
 if(!$("#1").hasClass('reserved')){
-$("#1").css({"background-color":"white"});
 $("#1").css({"border-color":"black"});
 $("#1").css({"border-width":"1px"});
 }
 $("#2").removeClass('active')
 if(!$("#2").hasClass('reserved')){
-$("#2").css({"background-color":"white"});
 $("#2").css({"border-color":"black"});
 $("#2").css({"border-width":"1px"});
 }
 $("#3").removeClass('active')
 if(!$("#3").hasClass('reserved')){
-$("#3").css({"background-color":"white"});
 $("#3").css({"border-color":"black"});
 $("#3").css({"border-width":"1px"});
 }
 $("#4").removeClass('active')
 if(!$("#4").hasClass('reserved')){
-$("#4").css({"background-color":"white"});
 $("#4").css({"border-color":"black"});
 $("#4").css({"border-width":"1px"});
 }

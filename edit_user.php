@@ -45,7 +45,7 @@
       <ul class="navbar-list">
       <li class="navbar-item"><input type="submit" name="saveUser" value="Tallenna">
       <?php
-       if (isset($_SESSION['teamId'])) {
+       if ($_SESSION['type'] == 0 && isset($_SESSION['teamId'])) {
       echo '<li class="navbar-item"><input style="background-color:gray;color:white"type="submit" name="removeTeam" value="Poista joukkue">';
       } ?>
 

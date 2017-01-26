@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 23, 2017 at 03:14 PM
+-- Generation Time: Jan 26, 2017 at 03:14 PM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -40,7 +40,7 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`id`, `owner_id`, `user_id`, `team_id`, `name`, `date`) VALUES
-(1, 1, 11, 8, 'LÃ¤tkÃ¤peli', '2017-01-27');
+(5, 1, 1, 8, 'Pelo', '2017-01-31');
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,8 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`id`, `user_id`, `team_id`, `firstName`, `lastName`, `number`) VALUES
-(1, 1, 8, 'Janne', 'Karppinen', 47);
+(1, 1, 8, 'Janne', 'Karppinen', 47),
+(2, 1, 8, 'Hannu', 'Karpo', 76);
 
 -- --------------------------------------------------------
 
@@ -109,7 +110,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `owner_id`, `type`, `uid`, `email`, `pwd`, `hash`, `team_id`, `activated`) VALUES
 (1, 1, 0, 'admin', 'janne.karppinen@appstudios.fi', '$2a$08$fqz3EkuUnunA/a7MWorU9.xEIZtM20rQpv8xFF/TYENPHbYH.5PSq', '6ecbdd6ec859d284dc13885a37ce8d81', 0, 1),
 (11, 1, 1, 'Sammakot', 'hypetremethewanderer@gmail.com', '$2a$08$Cr1nnhuln.0c5AMkJUMZyO1KnEwdjG70crG/7x15fVavjFlcbC.Em', 'd82c8d1619ad8176d665453cfb2e55f0', 8, 1),
-(14, 1, 1, 'RedWings', 'hypetremethewanderer@gmail.com', '$2a$08$G.an8sBSI/8pdEyC6ch2a.6qgPJeL/nRs71T3uvhN8dhKrVReSatu', '3988c7f88ebcb58c6ce932b957b6f332', 13, 1);
+(14, 1, 1, 'RedWings', 'hypetremethewanderer@gmail.com', '$2a$08$G.an8sBSI/8pdEyC6ch2a.6qgPJeL/nRs71T3uvhN8dhKrVReSatu', '3988c7f88ebcb58c6ce932b957b6f332', 13, 0);
 
 --
 -- Indexes for dumped tables
@@ -149,12 +150,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `team`
 --

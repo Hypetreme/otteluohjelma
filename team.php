@@ -16,6 +16,8 @@
     unset($_SESSION['visitors']);
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
+    unset($_SESSION['plainMatchText']);
+    unset($_SESSION['ads']);
 ?>
 
 
@@ -163,9 +165,9 @@
                 <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
               </a>
 
-              <a href="#" id="iconAddPlayer" class="addPlayer">
+              <!--<a href="#" id="iconAddPlayer" class="addPlayer">
                 Lisää pelaaja
-              </a>
+              </a>-->
 
             <input style="display:none"class="button-primary" name="savePlayer" type="submit" id="btnSave" value="Tallenna">
             </div>

@@ -17,6 +17,8 @@
     unset($_SESSION['visitors']);
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
+    unset($_SESSION['plainMatchText']);
+    unset($_SESSION['ads']);
   include ('functions.php');
   include ('inc/header.php');
 ?>

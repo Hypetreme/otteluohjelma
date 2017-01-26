@@ -21,14 +21,17 @@
   include ('functions.php');
   include ('inc/header.php');
 
-  $ad1 = $ad2 = $ad3 = $ad4 = "";
+  $ad1 = $ad2 = $ad3 = $ad4 = 'images/default_ad.png';
 
   $ownerId = $_SESSION['ownerId'];
+
+  // Seuran asettamat mainokset
   $fileName1s = 'images/ads/s_'.$ownerId.'_ad1.png';
   $fileName2s = 'images/ads/s_'.$ownerId.'_ad2.png';
   $fileName3s = 'images/ads/s_'.$ownerId.'_ad3.png';
   $fileName4s = 'images/ads/s_'.$ownerId.'_ad4.png';
 
+  // Joukkueen asettamat mainokset
   if (isset($_SESSION['teamId'])) {
   $teamId   =  $_SESSION['teamId'];
   $teamUid   =  $_SESSION['teamUid'];
@@ -108,31 +111,38 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
       </div>
 
     </div>
-    <div style="margin-left:auto ;margin-right:auto;width:375px;height:709px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
+    <div style="margin-left:auto ;margin-right:auto;width:360px;height:680px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
     <div class="row">
       <div class="twelve columns" style="text-align:center">
-      <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 340px;height: 595px;border-style: solid;top: 61px;">
+      <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 680px;solid;top: 59px;">
         <?php
         if ($_SESSION['type'] == '1' && file_exists($fileName1s)){
-        echo '<div class="reserved" onclick="notify(this);" id="1" style="border-width:3px;border-color:red;border-style:solid;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad1.');">AD 1</div>';
+        echo '<div class="reserved" onclick="notify(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
       } else {
-        echo '<div onclick="addAd(this);" id="1" style="border-width:1px;border-style:solid;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad1.');">AD 1</div>';
+        echo '<div onclick="addAd(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
       }
+      echo '<div style="color:white"><h2>Pelaajat</h2></div>';
+      echo '<div style="color:white"><h3>Kotijoukkue</h3></div>';
+      echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
+      echo '<div style="color:white"><h5>Pelaaja Kaksi</h5></div>';
       if ($_SESSION['type'] == '1' && file_exists($fileName2s)){
-      echo '<div class="reserved" onclick="notify(this);" id="2" style="border-width:3px;border-color:red;border-style:solid;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad2.');">AD 2</div>';
+      echo '<div class="reserved" onclick="notify(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
     } else {
-      echo '<div onclick="addAd(this);" id="2" style="border-width:1px;border-style:solid;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad2.');">AD 2</div>';
+      echo '<div onclick="addAd(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
     }
-    if ($_SESSION['type'] == '1' && file_exists($fileName3s)){
-    echo '<div class="reserved" onclick="notify(this);" id="3" style="border-width:3px;border-color:red;position:absolute;bottom:9.5%;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad3.');">AD 3</div>';
+      echo '<div style="color:white"><h3>Vierasjoukkue</h3></div>';
+      echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
+      echo '<div style="color:white"><h5>Pelaaja Kaksi</h5></div>';
+    /*if ($_SESSION['type'] == '1' && file_exists($fileName3s)){
+    echo '<div class="reserved" onclick="notify(this);" id="3" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad3.'"></div>';
   } else {
-    echo '<div onclick="addAd(this);" id="3" style="border-width:1px;position:absolute;bottom:9.5%;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad3.');">AD 3</div>';
+    echo '<div onclick="addAd(this);" id="3" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad3.'"></div>';
   }
   if ($_SESSION['type'] == '1' && file_exists($fileName4s)){
-  echo '<div class="reserved" onclick="notify(this);" id="4" style="border-width:1px;position:absolute;bottom:0;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad4.');">AD 4</div>';
+  echo '<div class="reserved" onclick="notify(this);" id="4" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad4.'"></div>';
 } else {
-  echo '<div onclick="addAd(this);" id="4" style="border-width:1px;position:absolute;bottom:0;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad4.');">AD 4</div>';
-}
+  echo '<div onclick="addAd(this);" id="4" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad4.'"></div>';
+}*/
         ?>
       </div>
       </div>
@@ -161,8 +171,7 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
      data: formValue,
      url: 'functions.php',
      success: function(data){
-     $('#result-data').text('New file in: images/'+data);
-     $('#crop').show();
+     console.log('New file in: images/'+data);
     }
 
  });
@@ -176,13 +185,14 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
       $("#1, #2, #3, #4").on("mouseenter focus", function(){
         if(!$(this).hasClass('active')){
         $(this).css({"border-color":"orange"});
+        $(this).css({"border-style":"solid"});
         $(this).css({"border-width":"3px"});
       }
       });
       $("#1, #2, #3, #4").on("mouseleave", function(){
          if(!$(this).hasClass('active')){
-        $(this).css({"border-color":"black"});
-        $(this).css({"border-width":"1px"});
+        $(this).css({"border-style":""});
+        $(this).css({"border-width":""});
       }
       if($(this).hasClass('reserved')){
       $(this).css({"border-color":"red"});
@@ -194,30 +204,25 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
     $(function(){
         $("#1").removeClass('active')
         if(!$("#1").hasClass('reserved')){
-        $("#1").css({"background-color":"white"});
         $("#1").css({"border-color":"black"});
-        $("#1").css({"border-width":"1px"});
+        $("#1").css({"border-width":"0px"});
       }
         $("#2").removeClass('active')
         if(!$("#2").hasClass('reserved')){
-        $("#2").css({"background-color":"white"});
         $("#2").css({"border-color":"black"});
-        $("#2").css({"border-width":"1px"});
+        $("#2").css({"border-width":"0px"});
         }
         $("#3").removeClass('active')
         if(!$("#3").hasClass('reserved')){
-        $("#3").css({"background-color":"white"});
         $("#3").css({"border-color":"black"});
-        $("#3").css({"border-width":"1px"});
+        $("#3").css({"border-width":"0px"});
         }
         $("#4").removeClass('active')
         if(!$("#4").hasClass('reserved')){
-        $("#4").css({"background-color":"white"});
         $("#4").css({"border-color":"black"});
-        $("#4").css({"border-width":"1px"});
+        $("#4").css({"border-width":"0px"});
         }
         $(element).addClass('active')
-        $(element).css({"background-color":"white"});
         $(element).css({"border-color":"#2def30"});
         $(element).css({"border-width":"3px"});
     });
@@ -230,25 +235,21 @@ var adValue = 1;
 function notify(element) {
 $("#1").removeClass('active')
 if(!$("#1").hasClass('reserved')){
-$("#1").css({"background-color":"white"});
 $("#1").css({"border-color":"black"});
 $("#1").css({"border-width":"1px"});
 }
 $("#2").removeClass('active')
 if(!$("#2").hasClass('reserved')){
-$("#2").css({"background-color":"white"});
 $("#2").css({"border-color":"black"});
 $("#2").css({"border-width":"1px"});
 }
 $("#3").removeClass('active')
 if(!$("#3").hasClass('reserved')){
-$("#3").css({"background-color":"white"});
 $("#3").css({"border-color":"black"});
 $("#3").css({"border-width":"1px"});
 }
 $("#4").removeClass('active')
 if(!$("#4").hasClass('reserved')){
-$("#4").css({"background-color":"white"});
 $("#4").css({"border-color":"black"});
 $("#4").css({"border-width":"1px"});
 }
@@ -257,7 +258,7 @@ $(element).css({"border-color":"red"});
 $(element).css({"border-width":"3px"});
 }
 $("#adHeader").css({"color":"red"});
-document.getElementById('adHeader').innerHTML="Mainospaikka on jo asetettu!";
+document.getElementById('adHeader').innerHTML="Seurasi on asettanut mainospaikan!";
 document.getElementById('upload').style="visibility:hidden";
 document.getElementById('submitAd').name="adUpload";
 }

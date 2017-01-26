@@ -16,14 +16,14 @@
         <label for="uid">
           Käyttäjänimi:
         </label>
-        <input type="text" name="uid">
+        <input type="text" id="uid" name="uid">
       </div>
 
       <div class="six columns">
         <label for="email">
           Sähköposti:
         </label>
-        <input type="text" name="email">
+        <input type="text" id="email" name="email">
         <input type="text" style="display:none">
       </div>
     </div>
@@ -33,7 +33,7 @@
           Salasana:
         </label>
         <input type="password" style="display:none">
-        <input type="password" name="pwd">
+        <input type="password" id="pwd" name="pwd">
       </div>
       <div class="six columns">
         <label for="pwdConfirm">
@@ -65,11 +65,40 @@
           <option value="koripallo">Koripallo</option>
         </select>
       </div>
+      <span id="error" style="font-weight:bold;font-size:20px;color:red">&nbsp;</span>
       <div class="twelve columns">
         <input class="button-primary" name="register" type="submit" value="Rekisteröidy">
       </div>
     </form>
   </div>
 </div>
+<script>
+$('form').submit(function(event){
+    var error = document.getElementById("error");
+    event.preventDefault(); // stop the form from submitting
+    var username = $('#uid').val();
+    var emailaddress = $('#email').val();
+    var pass = $('#pwd').val();
+    var passconfirm = $('#pwdConfirm').val();
+    var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm }, function(data) {
+      if(data){
+        console.log(data);
+      }
+        if (data == "uidEmpty"){
+        error.innerHTML="Et syöttänyt käyttäjätunnusta!";
+      } else if (data == "pwdEmpty"){
+      error.innerHTML="Et syöttänyt salasanaa!";
+      } else if (data == "uidShort"){
+      error.innerHTML="Käyttäjätunnuksen on oltava vähintään 4 merkkiä pitkä!";
+      } else if (data == "pwdShort"){
+        error.innerHTML="Salasanan on oltava vähintään 4 merkkiä pitkä!";
+      } else if (data == "emailInvalid"){
+        error.innerHTML="Syötä sähköposti oikeassa muodossa!";
+      } else if (data == "success"){
+        window.location.href = "index.php";
+        }
 
+    });
+});
+</script>
 <?php include ('inc/footer.php'); ?>
