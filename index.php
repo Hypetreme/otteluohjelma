@@ -31,18 +31,17 @@
         </label>
         <input type="password" id="pwd" name="pwd">
       </div>
-      <span id="error" style="font-weight:bold;font-size:20px;color:red">&nbsp;</span>
       <div class="twelve columns">
         <input class="button-primary" id="logIn" name="logIn" id="submit" type="submit" value="Login">
         <input class="button-primary" type="button" value="Register" onclick="window.location.href='register.php'">
       </div>
     </form>
+    <span id="msg" class="msgError"></span>
   </div>
 </div>
 <script>
 
 $('form').submit(function(event){
-    var error = document.getElementById("error");
     event.preventDefault(); // stop the form from submitting
     var username = $('#uid').val();
     var pass = $('#pwd').val();
@@ -50,13 +49,7 @@ $('form').submit(function(event){
       if(data){
         console.log(data);
       }
-        if (data == "pwdWrong"){
-        error.innerHTML="Käyttäjätunnus tai salasana on väärin!";
-      }else if (data == "notActivated"){
-        error.innerHTML="Käyttäjätunnusta ei ole aktivoitu!";
-      } else if (data == "success"){
-        window.location.href = "profile.php";
-        }
+      message(data);
 
     });
 });

@@ -8,10 +8,10 @@ function register()
 	$email = $_POST['email'];
 	$pwd = $_POST['pwd'];
 	$uid = strip_tags($uid);
-	$stmt = $conn->prepare("SELECT * FROM user WHERE uid = username");
+	$stmt = $conn->prepare("SELECT * FROM user WHERE uid = :username");
 	$stmt->bindParam(":username", $uid);
 	$stmt->execute();
-	$result = $stmt->fetchAll();
+	$result = $stmt->fetch();
 	if ($result) {
 		echo 'duplicate';
 	}
@@ -94,22 +94,15 @@ function register()
 		} }
 
 	if(sendEmail('reg',$uid,$pwd,$email,$hash) == FALSE) {
-		echo '<script type="text/javascript">';
-		echo 'alert("Käyttäjä rekisteröity! Sähköpostia ei voitu lähettää.");';
-		echo '</script>';
+		echo 'emailFail';
 	} else {
-		echo '<script type="text/javascript">';
-		echo 'alert("Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.");';
-		echo '</script>';
-	}
-} if (isset($_SESSION['id'])) {
-	echo '<script type="text/javascript">';
-	echo 'document.location.href = "teams.php";';
-	echo '</script>';
+
+ if (isset($_SESSION['id'])) {
+	echo 'teamSuccess';
 } else {
-  /*echo '<script type="text/javascript">';
-  echo 'document.location.href = "index.php";';
-  echo '</script>';*/
+  echo 'userSuccess';
+}
+}
 }
 }
 function sendEmail($mod,$uid,$pwd,$email,$hash) {
@@ -411,10 +404,10 @@ function logIn()
 		$_SESSION['ownerId'] = $ownerId;
 
 if ($type == 0) {
-	echo 'success';
+	echo 'loginSuccess';
 		}
 		else {
-			echo 'success';
+			echo 'loginSuccess';
 			$stmt = $conn->prepare("SELECT * FROM user WHERE id = :id");
 			$stmt->bindParam(':id',$id);
 			$stmt->execute();
