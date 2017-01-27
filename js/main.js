@@ -87,49 +87,91 @@ function message(data) {
   var errorSymbol = '<i class="material-icons" style="margin-right:10px;vertical-align:-5px">warning</i>';
   var successSymbol = '<i class="material-icons" style="margin-right:10px;vertical-align:-5px">check</i>';
 
+  $("#msg").fadeIn().css("display", "inline-block");
+  setTimeout(function () {
+   $("#msg").fadeOut();
+}, 3000);
+
     // Login
-    if (data == "pwdWrong"){
-    msg.style="visibility:initial";
+  if (data == "pwdWrong"){
     msg.innerHTML=errorSymbol+"Käyttäjätunnus tai salasana on väärin!";
   } else if (data == "notActivated"){
-    msg.style="visibility:initial";
     msg.innerHTML=errorSymbol+"Käyttäjätunnusta ei ole aktivoitu!";
   } else if (data == "loginSuccess"){
-    msg.style="visibility:initial";
     msg.className="msgSuccess";
-    msg.innerHTML=successSymbol+"Salasana oikein!";
-    setTimeout(function () {
+    $("#msg").css("display", "none");
    window.location.href = "profile.php";
-}, 1500);
     }
    // Register
-   else if (data == "duplicate"){
-   msg.style="visibility:initial";
-   msg.innerHTML=errorSymbol+"Käyttäjänimi on jo olemassa!";
+     else if (data == "duplicate"){
+     msg.innerHTML=errorSymbol+"Käyttäjänimi on jo olemassa!";
    } else if (data == "uidEmpty"){
-     msg.style="visibility:initial";
      msg.innerHTML=errorSymbol+"Et syöttänyt käyttäjänimeä!";
    } else if (data == "pwdEmpty"){
-     msg.style="visibility:initial";
      msg.innerHTML=errorSymbol+"Et syöttänyt salasanaa!";
    } else if (data == "uidShort"){
-     msg.style="visibility:initial";
      msg.innerHTML=errorSymbol+"Käyttäjänimen on oltava vähintään 4 merkkiä pitkä!";
    } else if (data == "pwdShort"){
-     msg.style="visibility:initial";
      msg.innerHTML=errorSymbol+"Salasanan on oltava vähintään 4 merkkiä pitkä!";
    } else if (data == "emailInvalid"){
-     msg.style="visibility:initial";
      msg.innerHTML=errorSymbol+"Syötä sähköposti oikeassa muodossa!";
    } else if (data == "emailFail"){
-     msg.style="visibility:initial";
      msg.innerHTML=errorSymbol+"Käyttäjä rekisteröity! Sähköpostia ei voitu lähettää.";
    } else if (data == "userSuccess"){
-     msg.style="visibility:initial";
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.";
      setTimeout(function () {
     window.location.href = "index.php";
  }, 4000);
+   } else if (data == "teamSuccess"){
+     msg.className="msgSuccess";
+     msg.innerHTML=successSymbol+"Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.";
+     setTimeout(function () {
+    window.location.href = "teams.php";
+ }, 4000);
    }
+  // Advertisements
+     else if (data == "adEmpty"){
+     msg.innerHTML=errorSymbol+"Valitse ladattava kuva!";
+     }
+     else if (data == "adSuccess"){
+     msg.className="msgSuccess";
+     msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
+     setTimeout(function () {
+    window.location.href = "ads.php";
+ }, 2000);
+}
+ // User data
+ else if (data == "teamPwdWrong"){
+ msg.innerHTML=errorSymbol+"Salasana on väärin!";
+ }
+ else if (data == "teamEmpty"){
+ msg.innerHTML=errorSymbol+"Syötä joukkueen nimi!";
+ } else if (data == "nameChangeSuccess"){
+ msg.className="msgSuccess";
+ msg.innerHTML=successSymbol+"Joukkueen nimi muutettu!";
+ setTimeout(function () {
+window.location.href = "settings.php";
+}, 2000);
+} else if (data == "teamRemoveSuccess"){
+msg.className="msgSuccess";
+msg.innerHTML=successSymbol+"Joukkue poistettu!";
+setTimeout(function () {
+window.location.href = "settings.php";
+}, 2000);
+}
+ // Event
+ else if (data == "event1Empty"){
+ msg.innerHTML=errorSymbol+"Täytä kaikki tapahtuman tiedot!";
+ } else if (data == "event1Success"){
+   msg.className="msgSuccess";
+   $("#msg").css("display", "none");
+ window.location.href = "event2.php";
+ } else if (data == "event2Empty"){
+ msg.innerHTML=errorSymbol+"Lisää vähintään yksi pelaaja!";
+ } else if (data == "event2Success"){
+   msg.className="msgSuccess";
+   $("#msg").css("display", "none");
+ window.location.href = "event3.php";
+ }
 }

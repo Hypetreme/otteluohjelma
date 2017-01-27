@@ -3,7 +3,7 @@ $(function() {
     getStuff();
 
     // piilotetaan kaikki paitsi etusivu
-    $(".players, .stats, .favourites, .share").hide();
+    $(".players, .stats, .favourites, .share, .menu").hide();
 
     //kun linkkiä painaa ensin piilotetaan kaikki ja sitten näytetään valinta
     $('nav ul li a').on("click", function() {
@@ -17,9 +17,11 @@ $(function() {
 
 //Haetaan -tiedosto
 function getStuff() {
+  var url = window.location.href;
+  var eventId = url.substring(url.indexOf('=')+1);
     var jsonIssue = {};
     $.ajax({
-        url: "../../../files/overview5.json",
+        url: "../../../files/overview"+eventId+".json",
         async: "false",
         dataType: 'json',
         success: function(json){

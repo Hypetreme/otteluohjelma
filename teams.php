@@ -122,6 +122,7 @@ exit();
     <div class="row">
       <div class="twelve columns">
 <form id="form" action="functions.php" method="POST">
+  <span style="float:left" id="msg" class="msgError"></span>
           <table class='u-full-width'>
 
           <thead>
@@ -156,7 +157,21 @@ exit();
     </div>
 
   </div>
-
+  <script>
+  $('form').submit(function(event){
+      event.preventDefault(); // stop the form from submitting
+      var username = $('#uid').val();
+      var emailaddress = $('#email').val();
+      var pass = $('#pwd').val();
+      var passconfirm = $('#pwdConfirm').val();
+      var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm }, function(data) {
+        if(data){
+          console.log(data);
+        }
+          message(data);
+      });
+  });
+  </script>
 
   <?php
     include ('inc/footer.php');

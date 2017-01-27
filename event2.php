@@ -71,6 +71,7 @@ include 'functions.php';
       var value = move.querySelectorAll("td")[2].innerHTML;
       first.type = "hidden";
       first.name = "firstName["+c+"]"
+      first.id = "firstName";
       first.value = value;
 
       var last = document.createElement("input");
@@ -119,7 +120,11 @@ include 'functions.php';
 
   </div>
   </div>
-
+  <div class="row">
+    <div class="twelve columns">
+      <span id="msg" class="msgError"></span>
+    </div>
+  </div>
 
     <div class="row">
       <div class="twelve columns" style="text-align: center;">
@@ -144,7 +149,7 @@ include 'functions.php';
         <h5>
           <span>Tapahtuman pelaajat</span>
         </h5>
-<form id="home" action="functions.php" method="POST">
+<form name="form" id="home" action="functions.php" method="POST">
           <table class="u-full-width">
           <?php
           listHome();
@@ -163,6 +168,19 @@ include 'functions.php';
           </div>
         </div>
     </div>
+    <script>
+    $('form').submit(function(event){
+        event.preventDefault(); // stop the form from submitting
+        var player = $('#firstName').val();
+        console.log(player);
+        var finish = $.post("functions.php", { setHomeTeam: 'hometeam', firstName: player }, function(data) {
+          if(data){
+            console.log(data);
+          }
+          message(data);
 
+        });
+    });
+    </script>
 
   <?php include('inc/footer.php'); ?>

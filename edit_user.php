@@ -38,22 +38,52 @@
               <?php userData('edit'); ?>
             <tr>
 <td class="bold">Vahvista salasana:</td>
-              <td><input type="password" name="pwd" ></td></tr>
+              <td><input type="password" id="pwd" name="pwd" ></td></tr>
             </tr>
           </body>
         </table>
       <ul class="navbar-list">
-      <li class="navbar-item"><input type="submit" name="saveUser" value="Tallenna">
+      <li class="navbar-item"><input type="submit" name="editUser" id="editUser" value="Tallenna">
       <?php
        if ($_SESSION['type'] == 0 && isset($_SESSION['teamId'])) {
-      echo '<li class="navbar-item"><input style="background-color:gray;color:white"type="submit" name="removeTeam" value="Poista joukkue">';
+      echo '<li class="navbar-item"><input style="background-color:gray;color:white"type="submit" id="removeTeam" name="removeTeam" value="Poista joukkue">';
       } ?>
 
       </form>
     </ul>
       </div>
     </div>
+    <div class="row">
+      <div class="twelve columns">
+        <span id="msg" class="msgError"></span>
+      </div>
+    </div>
+    <script>
+    $('#editUser').click(function(event){
+        event.preventDefault(); // stop the form from submitting
+        var teamname = $('#name').val();
+        var pass = $('#pwd').val();
+        var finish = $.post("functions.php", { editUser: 'edit', pwd: pass, name: teamname }, function(data) {
+          if(data){
+            console.log(data);
+          }
+          message(data);
 
+        });
+    });
+    $('#removeTeam').click(function(event){
+        event.preventDefault(); // stop the form from submitting
+        var teamname = $('#name').val();
+        var pass = $('#pwd').val();
+        var finish = $.post("functions.php", { removeTeam: 'remove', pwd: pass }, function(data) {
+          if(data){
+            console.log(data);
+          }
+          message(data);
+
+        });
+    });
+    </script>
 
   <?php
     include ('inc/footer.php');

@@ -82,12 +82,13 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
 
       <div class="row" style="text-align:left">
         <input style="display:inline-block;margin-left:190px" type="range" class="cropit-image-zoom-input">
-        <p style="display:inline-block" class="image-size-label">
+        <p style="margin-right:50px;display:inline-block" class="image-size-label">
           Zoomaus
         </p>
+        <span id="msg" class="msgError"></span>
       </div>
 
-        <input type="hidden" name="image-data" class="hidden-image-data" />
+        <input type="hidden" name="imgData" class="hidden-imgData" />
         <button id="submitAd" type="submit">Tallenna</button>
 </div>
           </form>
@@ -157,29 +158,39 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
     $(function() {
     $('.image-editor').cropit();
 
-    $('form').submit(function() {
+    $('form').submit(function(event){
       // Move cropped image data to hidden input
 
       var imageData = $('.image-editor').cropit('export');
-      $('.hidden-image-data').val(imageData);
+      $('.hidden-imgData').val(imageData);
 
       // Print HTTP request params
-      var formValue = $(this).serialize();
+      //var formValue = $(this).serialize();
 
-  $.ajax({
+
+          event.preventDefault(); // stop the form from submitting
+          var ad = $('#submitAd').val();
+          var finish = $.post("functions.php", { imgData: imageData , submitAd: ad }, function(data) {
+            if(data){
+              console.log(data);
+            }
+            message(data);
+
+          });
+      });
+  /*$.ajax({
      type: 'post',
      data: formValue,
      url: 'functions.php',
      success: function(data){
-     console.log('New file in: images/'+data);
+     //console.log('New file in: images/'+data);
     }
 
- });
+ });*/
 
       // Prevent the form from actually submitting
       //return false;
     });
-  });
   });
 
       $("#1, #2, #3, #4").on("mouseenter focus", function(){
@@ -229,7 +240,7 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
 $("#adHeader").css({"color":"black"});
 document.getElementById('adHeader').innerHTML="Mainoskuva "+element.id;
 document.getElementById('upload').style="visibility:visible;";
-document.getElementById('submitAd').name="adUpload"+element.id;
+document.getElementById('submitAd').value=element.id;
 var adValue = 1;
 }
 function notify(element) {
@@ -263,7 +274,6 @@ document.getElementById('upload').style="visibility:hidden";
 document.getElementById('submitAd').name="adUpload";
 }
   </script>
-
   <?php
     include ('inc/footer.php');
   ?>

@@ -45,7 +45,11 @@ datePicker();
 
 </div>
 </div>
-
+<div class="row">
+  <div class="twelve columns">
+    <span id="msg" class="msgError"></span>
+  </div>
+</div>
   <div class="row">
     <div class="twelve columns" style="text-align: center;">
       <h4>
@@ -54,17 +58,17 @@ datePicker();
     </div>
 
   </div>
-<form id="info" action="functions.php" method="POST">
+<form name="form" id="info" action="functions.php" method="POST">
   <div class="row">
     <div class="twelve columns">
       <label for="eventName">Tapahtuman nimi:</label>
-      <input type="text" name="eventName" value="<?php
+      <input type="text" name="eventName" id="eventName" value="<?php
       if (isset($_SESSION['eventName'])) {
       echo $_SESSION['eventName'];
     }
         ?>">
       <label for="eventPlace">Tapahtuman paikka:</label>
-      <input type="text" name="eventPlace" value="<?php
+      <input type="text" name="eventPlace" id="eventPlace" value="<?php
       if (isset($_SESSION['eventPlace'])) {
          echo $_SESSION['eventPlace']; }
         ?>">
@@ -86,6 +90,20 @@ datePicker();
   </div>
 
 </div>
+<script>
+$('form').submit(function(event){
+    event.preventDefault(); // stop the form from submitting
+    var eventname = $('#eventName').val();
+    var eventplace = $('#eventPlace').val();
+    var eventdate = $('#eventDate').val();
+    var finish = $.post("functions.php", { setEventInfo: "eventinfo", eventName : eventname, eventPlace : eventplace, eventDate : eventdate}, function(data) {
+      if(data){
+        console.log(data);
+      }
+      message(data);
 
+    });
+});
+</script>
 
   <?php include('inc/footer.php'); ?>

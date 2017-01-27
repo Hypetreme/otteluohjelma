@@ -1,4 +1,5 @@
 <?php
+
   include('inc/header.php');
 ?>
 
@@ -36,11 +37,19 @@
         <input class="button-primary" type="button" value="Register" onclick="window.location.href='register.php'">
       </div>
     </form>
-    <span id="msg" class="msgError"></span>
+
+
   </div>
+
+  <div class="row">
+    <div class="twelve columns">
+      <span id="msg" class="msgError"></span>
+    </div>
+  </div>
+
+
 </div>
 <script>
-
 $('form').submit(function(event){
     event.preventDefault(); // stop the form from submitting
     var username = $('#uid').val();

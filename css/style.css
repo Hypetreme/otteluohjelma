@@ -170,18 +170,18 @@ header {
   color: #555;
 }
 #msg {
-  visibility:hidden;
-  display:inline-block;
-  margin-top:5px;
+  position:fixed;
+  display: none;
   padding:15px;
   border-radius:8px;
   color: white;
   font-weight: bold;
   font-size: 22px;
-  line-height: 20px;
   font-weight:bold;
   font-size:15px;
-  color:white
+  width:30%;
+  z-index:999;
+  left:35%;
 }
 .msgError {
   background-color: #e80000;
