@@ -43,6 +43,11 @@ include 'functions.php';
   </div>
   </div>'; }
   ?>
+  <div class="row">
+    <div class="twelve columns">
+      <span id="msg" class="msgError"></span>
+    </div>
+  </div>
     <div class="row">
 <br>
       <div class="twelve columns" style="text-align: center;">
@@ -76,8 +81,11 @@ include 'functions.php';
             ?></span>
         </h4>
         <h5>
-          <span><?php
+          <span><?php if (isset($_SESSION['visitorName'])) {
             echo $_SESSION['visitorName'];
+          } else {
+            echo '<h4 style="color:gray">Lisää vierasjoukkueen nimi!</h4>';
+          }
             ?></span>
         </h5>
           <table class="u-full-width">
@@ -91,15 +99,14 @@ include 'functions.php';
         <span>Ennakkoteksti</span>
       </h4>
       <span><?php if (isset($_SESSION['matchText'])) {
-        echo '<div id="editor" class="twelve columns" style="min-height:200px">';
+        echo '<div id="editor" class="twelve columns" style="border:none;min-height:200px">';
         echo '</div>';
+      } else {
+        echo '<h3 style="color:gray">Ei ennakkotekstiä</h3>';
       }
         ?></span>
     </div>
     </div>
-
-        <input type="hidden" name="eventName" value= "<?php echo $_SESSION['eventName'];?>">
-        <input type="hidden" name="eventdate" value= "<?php echo $_SESSION['eventDate'];?>">
     </div>
     <div class="row">
       <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
@@ -112,10 +119,11 @@ include 'functions.php';
         if (isset($_GET['c'])) {
        echo "<button class='button-primary' type='button' value='Takaisin' onclick='window.location=\"$url\"'/>";
        echo "Takaisin</button>";
+       if ((isset($_SESSION['saved']) || isset($_SESSION['home'])) && $_SESSION['visitorName'] && $_SESSION['visitors']) {
        echo "<form style='display: inline;padding: 5px' action='functions.php' method='POST'>";
-       echo "<button class='button-primary' type='submit' name='createEvent' id='btncreateEvent' value='Tallenna'>";
+       echo "<button class='button-primary' type='submit' name='createEvent' id='createEvent' value='Tallenna'>";
        echo "Tallenna</button>";
-       echo "</form>";
+       echo "</form>"; }
      } else if (isset($_GET['eventId'])) {
        echo "<form style='display: inline;padding: 5px' action='functions.php?removeEvent=".$eventId."' method='POST'>";
        echo "<button style='border-color:gray;background-color:gray;' class='button-primary' name='removeEvent' type='submit' id='btnremoveEvent' value='Poista'>";
@@ -130,6 +138,20 @@ include 'functions.php';
     </div>
 
   </div>
+  <script>
+  $('#createEvent').click(function(event){
+      event.preventDefault(); // stop the form from submitting
+      var finish = $.post("functions.php", { createEvent: "createEvent"}, function(data) {
+        if(data){
+          var eventId = data.substring(data.indexOf('=')+1);
+          data = data.substring(0, data.indexOf('='));
+          console.log(eventId);
+        }
+        message(data,eventId);
+
+      });
+  });
+  </script>
   <!-- Main Quill library -->
   <script src="//cdn.quilljs.com/1.2.0/quill.js"></script>
   <script>
@@ -143,7 +165,9 @@ include 'functions.php';
   };
   var editor = new Quill('#editor', options);
   <?php
+  if (isset($_SESSION['matchText'])) {
   echo 'editor.setContents ('.$_SESSION['matchText'].');';
+}
   echo '</script>';
   ?>
   <?php include('inc/footer.php'); ?>

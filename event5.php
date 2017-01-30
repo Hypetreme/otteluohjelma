@@ -124,7 +124,7 @@ $ad4 = $fileName4j;
       <h5 style="margin-bottom:0" id="adHeader">&nbsp;</h5>
       <span id="upload" style="visibility:hidden;">
 
-      <form method="POST" enctype="multipart/form-data">
+      <form id="uploadAd" method="POST" enctype="multipart/form-data">
       <tbody>
       <tr>
     <div class="image-editor" id="crop">
@@ -138,9 +138,10 @@ $ad4 = $fileName4j;
       <p style="display:inline-block" class="image-size-label">
         Zoomaus
       </p>
+      <span id="msg" class="msgError"></span>
     </div>
 
-      <input type="hidden" name="image-data" class="hidden-image-data" />
+      <input type="hidden" name="imgData" class="hidden-imgData" />
       <button id="submitAd" type="submit">Tallenna</button>
 </div>
         </form>
@@ -190,14 +191,15 @@ echo '<div onclick="addAd(this);" id="4" style="border-width:1px;position:absolu
   <div class="row">
     <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
 
-<form id="form" action="functions.php" method="POST">
-      <?php echo'<input type="hidden" name="ad1" value="'.$ad1.'">';
+<form id ="form" action="functions.php" method="POST">
+      <?php
+       echo'<input type="hidden" name="ad1" value="'.$ad1.'">';
        echo'<input type="hidden" name="ad2" value="'.$ad2.'">';
        echo'<input type="hidden" name="ad3" value="'.$ad3.'">';
        echo'<input type="hidden" name="ad4" value="'.$ad4.'">';
       ?>
       <button class="button-primary" type="button" value="Takaisin" onclick="window.location='event4.php'"/>Takaisin</button>
-      <input class="button-primary" type="submit" name="setEventAds" id="btnEvent5" value="Seuraava">
+      <input class="button-primary" type="submit" name="setEventAds" value="Seuraava">
 </form>
     </div>
   </div>
@@ -209,30 +211,39 @@ $(function() {
   $(function() {
   $('.image-editor').cropit();
 
-  $('form').submit(function() {
+  $('#submitAd').click(function(event){
     // Move cropped image data to hidden input
 
     var imageData = $('.image-editor').cropit('export');
-    $('.hidden-image-data').val(imageData);
+    $('.hidden-imgData').val(imageData);
 
     // Print HTTP request params
-    var formValue = $(this).serialize();
+    //var formValue = $(this).serialize();
 
-$.ajax({
+
+        event.preventDefault(); // stop the form from submitting
+        var ad = $('#submitAd').val();
+        var finish = $.post("functions.php", { imgData: imageData , submitAd: ad }, function(data) {
+          if(data){
+            console.log(data);
+          }
+          message(data);
+
+        });
+    });
+/*$.ajax({
    type: 'post',
    data: formValue,
    url: 'functions.php',
    success: function(data){
-   $('#result-data').text('New file in: images/'+data);
-   $('#crop').show();
+   //console.log('New file in: images/'+data);
   }
 
-});
+});*/
 
     // Prevent the form from actually submitting
     //return false;
   });
-});
 });
 
 $("#1, #2, #3, #4").on("mouseenter focus", function(){
@@ -282,7 +293,7 @@ $(function(){
 $("#adHeader").css({"color":"black"});
 document.getElementById('adHeader').innerHTML="Mainoskuva "+element.id;
 document.getElementById('upload').style="visibility:visible;";
-document.getElementById('submitAd').name="adUpload"+element.id;
+document.getElementById('submitAd').value=element.id;
 var adValue = 1;
 }
 function notify(element) {

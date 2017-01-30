@@ -14,7 +14,7 @@ include 'functions.php';
     function addInput() {
       document.getElementById('newTr').style="display:table-row;height:61px";
       document.getElementById('iconAddPlayer').style="display:none";
-      document.getElementById('btnSave').style="display:block";
+      document.getElementById('addVisitor').style="display:block";
       var num = document.getElementById('ref').value.match(/\d+/)[0];
       var finalNum = +num + count - 1;
 
@@ -91,18 +91,23 @@ include 'functions.php';
   </div></a>
 
   <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="visitors2" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name ="setVisitorTeam" value ="4">
+  <input form="visitors2" id="btnEvent4" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="4">
   </div>
 
   <div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="visitors2" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setVisitorTeamGuide5" value="5">
+  <input form="visitors2" id="btnEvent5" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="5">
   </div>
 
   <div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="visitors2" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name ="setVisitorTeamGuide6" value ="6">
+  <input form="visitors2" id="btnEvent6" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="6">
   </div>
 
   </div>
+  </div>
+  <div class="row">
+    <div class="twelve columns">
+      <span id="msg" class="msgError"></span>
+    </div>
   </div>
     <div class="row">
       <div class="twelve columns" style="text-align: center">
@@ -111,7 +116,7 @@ include 'functions.php';
         </h4>
         <form id="visitors2" action="functions.php" method="POST">
        <label for="visitorName">Vierasjoukkueen nimi:</label>
-      <input type="text" name="visitorName" value="<?php
+      <input type="text" id="visitorName" name="visitorName" value="<?php
       if (isset($_SESSION['visitorName'])) {
          echo $_SESSION['visitorName'];
        }
@@ -137,9 +142,6 @@ include 'functions.php';
           $count = listVisitors();
           ?>
 
-        <input type="hidden" name="eventName" value= "<?php echo $_GET['eventName'];?>">
-        <input type="hidden" name="eventDate" value= "<?php echo $_GET['eventDate'];?>">
-
     </div>
 <?php
         echo'<input type="hidden" id="ref" value="'.$count.'">';
@@ -158,17 +160,49 @@ include 'functions.php';
    <a href="#" id="iconAddPlayer"  onclick="addInput()">
     <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
   </a>
-  <input style="display:none"class="button-primary" name="addVisitor" type="submit" id="btnSave" value="Tallenna">
+  <input style="display:none"class="button-primary" name="addVisitor" type="submit" id="addVisitor" value="Tallenna">
 </form>
 </div>
 </div>
 <div class="row">
       <div class="twelve columns" style='text-align:center;padding-top:50px'>
 <button class="button-primary" type="button" value="Takaisin" onclick="window.location='event2.php'"/>Takaisin</button>
-<input form="visitors2" class="button-primary" type="submit" name="setVisitorTeam" value="Seuraava">
+<input form="visitors2" class="button-primary" type="submit" id="btnEvent4" name="setVisitorTeam" value="Seuraava">
 
       </div>
     </div>
 </div>
+<script>
+$('#btnEvent4, #btnEvent5, #btnEvent6').click(function(event){
+    var selected = ($(this).attr("id"));
+    event.preventDefault(); // stop the form from submitting
+    var visitor = $('#visitorName').val();
+    var first = $('#firstName').val();
+    var last = $('#lastName').val();
+    var num = $('#number').val();
+    var finish = $.post("functions.php", { setVisitorTeam: "visitors", visitorName: visitor }, function(data) {
+      if(data){
+        console.log(data);
+      }
+      message(data,selected);
 
+    });
+});
+
+$('#addVisitor').click(function(event){
+    var selected = ($(this).attr("id"));
+    event.preventDefault(); // stop the form from submitting
+    var visitor = $('#visitorName').val();
+    var first = $('#firstName').val();
+    var last = $('#lastName').val();
+    var num = $('#number').val();
+    var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num}, function(data) {
+      if(data){
+        console.log(data);
+      }
+      message(data,selected);
+
+    });
+});
+</script>
   <?php include('inc/footer.php'); ?>

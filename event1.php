@@ -24,23 +24,23 @@ datePicker();
   </div></a>
 
 <div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name ="setEventInfo" value ="2">
+<input form="info" id="btnEvent2" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="2">
 </div>
 
 <div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide3" value="3">
+<input form="info" id="btnEvent3" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="3">
 </div>
 
 <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide4" value="4">
+<input form="info" id="btnEvent4" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="4">
 </div>
 
 <div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide5" value="5">
+<input form="info" id="btnEvent5" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="5">
 </div>
 
 <div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="info" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setEventInfoGuide6" value="6">
+<input form="info" id="btnEvent6" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="6">
 </div>
 
 </div>
@@ -84,14 +84,15 @@ datePicker();
   <div class="row">
     <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
       <button class="button-primary" type="button" value="Takaisin" onclick="window.location='profile.php'"/>Takaisin</button>
-      <input class="button-primary" type="submit" name="setEventInfo" id="btnEvent1" value="Seuraava">
+      <input class="button-primary" type="submit" name="setEventInfo" id="btnEvent2" value="Seuraava">
 </form>
     </div>
   </div>
 
 </div>
 <script>
-$('form').submit(function(event){
+$('#btnEvent1, #btnEvent2, #btnEvent3, #btnEvent4, #btnEvent5, #btnEvent6').click(function(event){
+  var selected = ($(this).attr("id"));
     event.preventDefault(); // stop the form from submitting
     var eventname = $('#eventName').val();
     var eventplace = $('#eventPlace').val();
@@ -100,7 +101,7 @@ $('form').submit(function(event){
       if(data){
         console.log(data);
       }
-      message(data);
+      message(data,selected);
 
     });
 });

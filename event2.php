@@ -64,20 +64,25 @@ include 'functions.php';
       var num = document.createElement("input");
       var value = move.querySelectorAll("td")[1].innerHTML;
       num.type = "hidden";
-      num.name = "number["+c+"]"
+      num.name = "number"+c+"";
+      num.id = "number"+c+"";
+      num.className = "numbers";
       num.value = value;
 
       var first = document.createElement("input");
       var value = move.querySelectorAll("td")[2].innerHTML;
       first.type = "hidden";
-      first.name = "firstName["+c+"]"
-      first.id = "firstName";
+      first.name = "firstName"+c+"";
+      first.id = "firstName"+c+"";
+      first.className = "firstnames";
       first.value = value;
 
       var last = document.createElement("input");
       var value = move.querySelectorAll("td")[3].innerHTML;
       last.type = "hidden";
-      last.name = "lastName["+c+"]"
+      last.name = "lastName"+c+"";
+      last.id = "lastName"+c+"";
+      last.className = "lastnames";
       last.value = value;
 
       element.appendChild(num);
@@ -103,19 +108,19 @@ include 'functions.php';
   </div></a>
 
   <div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeam" value="3">
+  <input form="home" id="btnEvent3" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="3">
   </div>
 
   <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide4" value="4">
+  <input form="home" id="btnEvent4" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="4">
   </div>
 
   <div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide5" value="5">
+  <input form="home" id="btnEvent5" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="5">
   </div>
 
   <div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="home" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setHomeTeamGuide6" value="6">
+  <input form="home" id="btnEvent6" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="6">
   </div>
 
   </div>
@@ -163,21 +168,27 @@ include 'functions.php';
           <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
          <input class="button-primary" type="button" value="Takaisin" onclick="window.location='event1.php'"/>
 
-            <input class="button-primary" type="submit" name="setHomeTeam" id="btnEvent2" value="Seuraava">
+            <input class="button-primary" type="submit" name="setHomeTeam" id="btnEvent3" value="Seuraava">
             </form>
           </div>
         </div>
     </div>
     <script>
-    $('form').submit(function(event){
+    $('#btnEvent3, #btnEvent4, #btnEvent5, #btnEvent6').click(function(event){
+        var selected = ($(this).attr("id"));
         event.preventDefault(); // stop the form from submitting
-        var player = $('#firstName').val();
-        console.log(player);
-        var finish = $.post("functions.php", { setHomeTeam: 'hometeam', firstName: player }, function(data) {
+        var numbers = $('input:hidden.numbers').serializeArray();
+        var firstnames = $('input:hidden.firstnames').serializeArray();
+        var lastnames = $('input:hidden.lastnames').serializeArray();
+        var first = $('#firstName').val();
+        var last = $('#lastName').val();
+        var num = $('#number').val();
+      //console.log(players);
+        var finish = $.post("functions.php", { setHomeTeam: 'hometeam', homeNumbers: numbers, homeFirstNames: firstnames, homeLastNames: lastnames }, function(data) {
           if(data){
             console.log(data);
           }
-          message(data);
+          message(data,selected);
 
         });
     });

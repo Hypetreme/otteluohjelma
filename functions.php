@@ -744,18 +744,11 @@ function addVisitor()
 			}
 			$_SESSION['visitors']['number'][$i] = $_POST['number'];
 
-	} else {
-		echo '<script type="text/javascript">';
-		echo 'alert("Täytä kaikki pelaajan tiedot!");';
-		echo 'document.location.href = "event3.php";';
-		echo '</script>';
-		exit();
 	}
 	if (!empty($_POST['visitorName'])) {
   $_SESSION['visitorName'] = $_POST['visitorName'];
 }
-	$eventId = $_SESSION['eventId'];
-	header("Location:event3.php");
+	echo 'event3PlayerSuccess';
 }
 
 function setEventInfo($mod)
@@ -767,22 +760,7 @@ function setEventInfo($mod)
 $_SESSION['eventName'] = $_POST['eventName'];
 $_SESSION['eventPlace'] = $_POST['eventPlace'];
 $_SESSION['eventDate'] = $_POST['eventDate'];
-if ($mod == "3"){
-	header("Location:event3.php");
-}
-else if ($mod == "4"){
-	header("Location:event4.php");
-}
-else if ($mod == "5"){
-	header("Location:event5.php");
-}
-else if ($mod == "6"){
-	header("Location:event_overview.php?c");
-}
-
-else  {
 	echo "event1Success";
-}
 }
 function setHomeTeam($mod) {
 	if(!isset($_SESSION)) {
@@ -791,24 +769,23 @@ function setHomeTeam($mod) {
 
 	$i = 0;
 	unset($_SESSION['saved']);
-	if (isset($_POST['firstName']) && isset($_POST['lastName']) && isset($_POST['number'])) {
-	foreach($_POST['firstName'] as $value) {
-		$_SESSION['saved']['home']['firstName'][$i] = $value;
+	foreach( $_POST['homeNumbers'] as $value) {
+    $_SESSION['saved']['home']['number'][$i] = $_POST['homeNumbers'][$i]['value'];
 		$i++;
 	}
 
 	$i = 0;
-	foreach($_POST['lastName'] as $value) {
-		$_SESSION['saved']['home']['lastName'][$i] = $value;
+	foreach( $_POST['homeFirstNames'] as $value) {
+		$_SESSION['saved']['home']['firstName'][$i] = $_POST['homeFirstNames'][$i]['value'];
 		$i++;
 	}
 
 	$i = 0;
-	foreach($_POST['number'] as $value) {
-		$_SESSION['saved']['home']['number'][$i] = $value;
+	foreach( $_POST['homeLastNames'] as $value) {
+		$_SESSION['saved']['home']['lastName'][$i] = $_POST['homeLastNames'][$i]['value'];
 		$i++;
 	}
-	}
+
 	//$eventId = $_SESSION['eventId'];
 
 	if ($mod == '4') {
@@ -837,13 +814,12 @@ $_SESSION['visitorName'] = $_POST['visitorName'];
 	 else if ($mod == '6') {
 		header("Location:event_overview.php?c");
 	} else {
-			header("Location:event4.php");
+		  echo 'event3Success';
 		}
 }
 function validateEvent() {
 	if(!isset($_SESSION)) {
 	session_start(); }
-
 	if (isset($_SESSION['eventId'])) {
 	$eventId = $_SESSION['eventId'];
 	}
@@ -854,27 +830,30 @@ function validateEvent() {
 		exit();
 	} }
 	if (isset($_POST['setHomeTeam'])) {
-	if (empty($_POST['firstName'])){
+	if (empty($_POST['homeNumbers'])){
 		echo 'event2Empty';
+		return false;
 		exit();
 	} }
-	if (isset($_POST['setVisitorTeam']) && !isset($_POST['visitors'])) {
-		echo '<script type="text/javascript">';
-		echo 'alert("Lisää vähintään yksi vierasjoukkueen pelaaja!");';
-		echo 'document.location.href = "event3.php"';
-		echo '</script>';
+	if (isset($_POST['setVisitorTeam'])) {
+	if (!isset($_SESSION['visitors'])) {
+		echo 'event3TeamEmpty';
+		return false;
 		exit();
-	}
-	if (isset($_POST['visitorName']) && !isset($_POST['visitorName'])) {
-		echo '<script type="text/javascript">';
-		echo 'alert("Aseta vierasjoukkueen nimi!");';
-		echo 'document.location.href = "event3.php"';
-		echo '</script>';
+	} }
+	if (isset($_POST['setVisitorTeam'])) {
+	if (empty($_POST['visitorName'])) {
+		echo 'event3NameEmpty';
+		return false;
 		exit();
-	} else {
+	} }
+	if (isset($_POST['addVisitor'])) {
+	if (empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['number'])) {
+		echo 'event3PlayerEmpty';
+		return false;
+		exit();
+	} }
 		return true;
-	}
-
 }
 function showHome()
 {
@@ -902,6 +881,7 @@ function showHome()
 		}
 	}
 	else {
+		if (isset($_SESSION['home'])) {
 		foreach($_SESSION['home']['firstName'] as $value) {
 			$showFirst = $_SESSION['home']['firstName'][$i];
 			$showLast = $_SESSION['home']['lastName'][$i];
@@ -916,6 +896,9 @@ function showHome()
 			echo '</tr>';
 			$i++;
 		}
+	} else {
+		echo '<h4 style="color:gray">Lisää kotijoukkueen pelaajat!</h4>';
+	}
 	}
 }
 
@@ -942,7 +925,10 @@ function showVisitors()
 		echo '</tr>';
 		$i++;
 	}
-} }
+} else {
+	echo '<h4 style="color:gray">Lisää vierasjoukkueen pelaajat!</h4>';
+}
+}
 
 function listVisitors()
 {
@@ -963,9 +949,9 @@ function listVisitors()
 		echo '<td class="all" style="text-transform: capitalize;" id="first' . $i . '">' . $showFirst . '</td>';
 		echo '<td class="all" style="text-transform: capitalize;" id="last' . $i . '">' . $showLast . '</td>';
 		echo '<td><a href="functions.php?removeVisitor=' . $i . '" id="iconRemove"><i class="material-icons">delete</i></a></td>';
-		echo '<input type="hidden" name="number[' . $i . ']" value="' . $showNum . '">';
-		echo '<input type="hidden" name="firstName[' . $i . ']" value="' . $showFirst . '">';
-		echo '<input type="hidden" name="lastName[' . $i . ']" value="' . $showLast . '">';
+		/*echo '<input type="hidden" id="number" name="number[' . $i . ']" value="' . $showNum . '">';
+		echo '<input type="hidden" id="firstName" name="firstName[' . $i . ']" value="' . $showFirst . '">';
+		echo '<input type="hidden" id="lastName" name="lastName[' . $i . ']" value="' . $showLast . '">';*/
 		echo '</tr>';
 		$i++;
 	} 	}
@@ -1013,9 +999,9 @@ function listHome()
 		echo '<td class="all" id="number' . $i . '">' . $showNum . '</td>';
 		echo '<td class="all" style="text-transform: capitalize;" id="first' . $i . '">' . $showFirst . '</td>';
 		echo '<td class="all" style="text-transform: capitalize;" id="last' . $i . '">' . $showLast . '</td>';
-		echo '<input type="hidden" id="number" name="number[' . $i . ']" value="' . $showNum . '">';
-		echo '<input type="hidden" id="firstName" name="firstName[' . $i . ']" value="' . $showFirst . '">';
-		echo '<input type="hidden" id="lastName" name="lastName[' . $i . ']" value="' . $showLast . '">';
+		echo '<input class="numbers" type="hidden" name="number' . $i . '" value="' . $showNum . '">';
+		echo '<input class="firstnames" type="hidden" name="firstName' . $i . '" value="' . $showFirst . '">';
+		echo '<input class="lastnames" type="hidden" name="lastName' . $i . '" value="' . $showLast . '">';
 		echo '</tr>';
 		$i++;
 	}
@@ -1081,6 +1067,7 @@ function listEvents($mod)
 		else {
 			echo '<td><img src="default_team.png"></td>';
 			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
+			echo "<td><a target='_blank' href='inc/widgets/ottelu/index.php?eventId=". $showId ."'><i class='material-icons'>input</i></a></td>";
 		}
 		echo "</tr>";
 		$i++;
@@ -1163,7 +1150,10 @@ function createEvent()
 	$eventPlace = $_SESSION['eventPlace'];
 	$eventDate = $_SESSION['eventDate'];
 	$matchText = $_SESSION['matchText'];
+	$plainMatchText = "";
+	if (isset($_SESSION['plainMatchText'])) {
 	$plainMatchText = $_SESSION['plainMatchText'];
+}
 
 	$date = date_create($eventDate);
 	$realDate = date_format($date, "Y-m-d");
@@ -1278,12 +1268,21 @@ function createEvent()
 	}
 
 	// Vanhojen mainoksien poisto
+	if (file_exists('images/ads/event/' . $eventId . '_ad1.png')){
 	unlink('images/ads/event/' . $eventId . '_ad1.png');
+}
+  if (file_exists('images/ads/event/' . $eventId . '_ad2.png')){
 	unlink('images/ads/event/' . $eventId . '_ad2.png');
+}
+  if (file_exists('images/ads/event/' . $eventId . '_ad3.png')){
 	unlink('images/ads/event/' . $eventId . '_ad3.png');
+}
+  if (file_exists('images/ads/event/' . $eventId . '_ad4.png')){
 	unlink('images/ads/event/' . $eventId . '_ad4.png');
+}
 
 	// Mainoksien tallennus
+	if (isset($_SESSION['ads'])) {
 	$i = 0;
 	foreach($_SESSION['ads'] as $key => $value) {
 	$filename = $value;
@@ -1297,6 +1296,7 @@ function createEvent()
 }
 	$i++;
 }
+}
 	// luodaan json
 
 	$json = json_encode($overview);
@@ -1306,12 +1306,10 @@ function createEvent()
 	$fp = fopen("files/overview" . $eventId . ".json", "wb");
 
 	if (fwrite($fp, $json)) {
-		$ok = "Tapahtuma tallennettu.";
-		echo "<script type='text/javascript'>alert('$ok');</script>";
+		echo 'createLink='.$eventId;
 	}
 	else {
-		$fail = "Tapahtumaa ei voitu tallentaa!";
-		echo "<script type='text/javascript'>alert('$fail');</script>";
+    echo 'eventFail';
 	}
 	fclose($fp);
 
@@ -1332,7 +1330,6 @@ function createEvent()
 	unset($_SESSION['ad2']);
 	unset($_SESSION['ad3']);
 	unset($_SESSION['ad4']);
-	echo "<script>window.location.href='profile.php'</script>";
 }
 
 function listTeams()
@@ -1584,7 +1581,8 @@ function setMatchText($mod) {
 	if(!isset($_SESSION)) {
 	session_start();
 	}
-if ($_POST['matchText']) {
+unset($_SESSION['matchText']);
+if ($_POST['matchText'] && !empty($_POST['matchText']) && $_POST['matchText'] != '{"ops":[{"insert":"\n"}]}') {
 	$_SESSION['matchText'] = $_POST['matchText'];
 	$_SESSION['plainMatchText'] = $_POST['plainMatchText'];
 }
@@ -1627,50 +1625,16 @@ if (isset($_POST['setEventInfo'])){
 	}
 }
 
-if (isset($_POST['setEventInfoGuide3'])){
-	setEventInfo('3');
-}
-
-if (isset($_POST['setEventInfoGuide4'])){
-	setEventInfo('4');
-}
-
-if (isset($_POST['setEventInfoGuide5'])){
-	setEventInfo('5');
-}
-
-if (isset($_POST['setEventInfoGuide6'])){
-	setEventInfo('6');
-}
-
 if (isset($_POST['setHomeTeam'])) {
 	if(validateEvent() != false) {
 		setHomeTeam(null);
 	}
 }
 
-if (isset($_POST['setHomeTeamGuide4'])) {
-	setHomeTeam('4');
-}
-
-if (isset($_POST['setHomeTeamGuide5'])){
-	setHomeTeam('5');
-}
-
-if (isset($_POST['setHomeTeamGuide6'])) {
-	setHomeTeam('6');
-}
-
 if (isset($_POST['setVisitorTeam'])) {
-	setVisitorTeam();
-}
-
-if (isset($_POST['setVisitorTeamGuide5'])) {
-	setVisitorTeam('5');
-}
-
-if (isset($_POST['setVisitorTeamGuide6'])) {
-	setVisitorTeam('6');
+	if(validateEvent() != false) {
+		setVisitorTeam(null);
+	}
 }
 
 if (isset($_POST['setEventAds'])) {
@@ -1678,7 +1642,9 @@ if (isset($_POST['setEventAds'])) {
 }
 
 if (isset($_POST['addVisitor'])) {
-	addVisitor();
+	if(validateEvent() != false) {
+		addVisitor();
+	}
 }
 
 if (isset($_POST['savePlayer'])) {
@@ -1759,6 +1725,5 @@ if (isset($_POST['submitAd']) && ($_POST['submitAd'])=="4") {
 
 if (isset($_GET['sendActivation'])) {
 	sendEmail('resend',$_POST['teamId'],null,null,null);
-	//print_r($_POST);
 }
 ?>

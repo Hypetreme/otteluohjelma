@@ -43,6 +43,7 @@ unset($_SESSION['visitors']);
               <tr>
                 <th>Laji</th>
                 <th>Nimi</th>
+                <th>Linkki</th>
                 <th>Tila</th>
               </tr>
             </thead>

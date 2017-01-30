@@ -92,15 +92,6 @@ $ad4 = 'images/ads/j_'.$teamUid.$teamId.'_ad4.png';
         <button id="submitAd" type="submit">Tallenna</button>
 </div>
           </form>
-
-        <!--<form action="functions.php" method="POST" enctype="multipart/form-data">
-          <tbody>
-            <tr>
-              <td><input type="file" name="file" id="file"></td>
-              <td><input id="submitAd" type="submit" value="Tallenna Mainos" name="adUpload"></td>
-            </tr>
-          </tbody>
-        </form>-->
       </span>
     </div>
     </div>

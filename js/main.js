@@ -82,15 +82,18 @@ function datePicker(){
   });
 
 }
-function message(data) {
+function message(data,selected) {
   var msg = document.getElementById("msg");
   var errorSymbol = '<i class="material-icons" style="margin-right:10px;vertical-align:-5px">warning</i>';
   var successSymbol = '<i class="material-icons" style="margin-right:10px;vertical-align:-5px">check</i>';
-
   $("#msg").fadeIn().css("display", "inline-block");
+
+  if (data != "createLink") {
   setTimeout(function () {
    $("#msg").fadeOut();
-}, 3000);
+}, 3000); } else {
+
+}
 
     // Login
   if (data == "pwdWrong"){
@@ -140,7 +143,14 @@ function message(data) {
      setTimeout(function () {
     window.location.href = "ads.php";
  }, 2000);
+} else if (data == "eventAdSuccess"){
+msg.className="msgSuccess";
+msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
+setTimeout(function () {
+window.location.href = "event5.php";
+}, 2000);
 }
+
  // User data
  else if (data == "teamPwdWrong"){
  msg.innerHTML=errorSymbol+"Salasana on väärin!";
@@ -166,12 +176,61 @@ window.location.href = "settings.php";
  } else if (data == "event1Success"){
    msg.className="msgSuccess";
    $("#msg").css("display", "none");
+
+if (selected == "btnEvent2") {
  window.location.href = "event2.php";
+ } else if (selected == "btnEvent3") {
+   window.location.href = "event3.php";
+ } else if (selected == "btnEvent4") {
+   window.location.href = "event4.php";
+ } else if (selected == "btnEvent5") {
+   window.location.href = "event5.php";
+ } else if (selected == "btnEvent6") {
+   window.location.href = "event_overview.php?c";
+ }
+
  } else if (data == "event2Empty"){
  msg.innerHTML=errorSymbol+"Lisää vähintään yksi pelaaja!";
  } else if (data == "event2Success"){
    msg.className="msgSuccess";
    $("#msg").css("display", "none");
- window.location.href = "event3.php";
+   if (selected == "btnEvent3") {
+    window.location.href = "event3.php";
+    } else if (selected == "btnEvent4") {
+      window.location.href = "event4.php";
+    } else if (selected == "btnEvent5") {
+      window.location.href = "event5.php";
+    } else if (selected == "btnEvent6") {
+      window.location.href = "event_overview.php?c";
+    }
+   }
+else if (data == "event3TeamEmpty"){
+ msg.innerHTML=errorSymbol+"Lisää vähintään yksi vierasjoukkueen pelaaja!";
+   } else if (data == "event3NameEmpty"){
+ msg.innerHTML=errorSymbol+"Lisää vierasjoukkueen nimi!";
+   } else if (data == "event3PlayerEmpty"){
+ msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
+   } else if (data == "event3PlayerSuccess"){
+     msg.className="msgSuccess";
+     $("#msg").css("display", "none");
+     window.location.href = "event3.php";
+   } else if (data == "event3Success"){
+   msg.className="msgSuccess";
+   $("#msg").css("display", "none");
+ if (selected == "btnEvent4") {
+    window.location.href = "event4.php";
+   } else if (selected == "btnEvent5") {
+    window.location.href = "event5.php";
+  } else if (selected == "btnEvent6") {
+    window.location.href = "event_overview.php?c";
+  }
+ }
+ else if (data == "eventFail") {
+  msg.innerHTML=errorSymbol+"Tapahtuman tallennus epäonnistui!";
+ }
+ else if (data == "createLink") {
+  msg.className="msgSuccess";
+  var url = "<a style='color:white' target='_blank' href='inc/widgets/ottelu/index.php?eventId="+selected+"'>Linkki</a>";
+  msg.innerHTML=successSymbol+"Tapahtuma tallennettu!<br>"+url;
  }
 }
