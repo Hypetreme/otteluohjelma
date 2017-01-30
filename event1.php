@@ -4,6 +4,9 @@ include 'dbh.php';
 if (!isset($_SESSION['id'])) {
 header("Location: index.php");
 }
+if (isset($_SESSION['eventCreated'])) {
+header("Location: profile.php");
+}
 
 include ('inc/header.php');
 ?>

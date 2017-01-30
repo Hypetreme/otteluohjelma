@@ -230,7 +230,8 @@ else if (data == "event3TeamEmpty"){
  }
  else if (data == "createLink") {
   msg.className="msgSuccess";
-  var url = "<a style='color:white' target='_blank' href='inc/widgets/ottelu/index.php?eventId="+selected+"'>Linkki</a>";
+  var url = "<a style='color:white' target='_blank' href='inc/widgets/ottelu/index.php?eventId="+selected+"'>Linkki katsojanäkymään</a>";
   msg.innerHTML=successSymbol+"Tapahtuma tallennettu!<br>"+url;
+  document.getElementById('createEvent').style="display:none";
  }
 }

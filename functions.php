@@ -1307,6 +1307,7 @@ function createEvent()
 
 	if (fwrite($fp, $json)) {
 		echo 'createLink='.$eventId;
+		$_SESSION['eventCreated'] = 1;
 	}
 	else {
     echo 'eventFail';

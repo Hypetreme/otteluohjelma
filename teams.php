@@ -25,6 +25,7 @@ exit();
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
     unset($_SESSION['ads']);
+    unset($_SESSION['eventCreated']);
   include('inc/header.php');
   include('functions.php');
 ?>

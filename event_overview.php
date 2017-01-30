@@ -4,6 +4,9 @@ include 'dbh.php';
 if (!isset($_SESSION['id'])) {
 header("Location: index.php");
 }
+if (isset($_SESSION['eventCreated'])) {
+header("Location: profile.php");
+}
 include ('inc/header.php');
 include 'functions.php';
 ?>
@@ -145,7 +148,7 @@ include 'functions.php';
         if(data){
           var eventId = data.substring(data.indexOf('=')+1);
           data = data.substring(0, data.indexOf('='));
-          console.log(eventId);
+          console.log(data);
         }
         message(data,eventId);
 

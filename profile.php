@@ -20,6 +20,7 @@
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
     unset($_SESSION['ads']);
+    unset($_SESSION['eventCreated']);
   if (isset($_GET['back'])) {
     unset($_SESSION['teamId']);
     unset($_SESSION['teamUid']);

@@ -4,6 +4,9 @@ include 'dbh.php';
 if (!isset($_SESSION['id'])) {
 header("Location: index.php");
 }
+if (isset($_SESSION['eventCreated'])) {
+header("Location: profile.php");
+}
 
 include ('inc/header.php');
 ?>
@@ -73,6 +76,7 @@ include ('inc/header.php');
 <script>
 
 var quill = new Quill('#editor', {
+  formats: ['bold','italic','underline','link', 'blockquote', 'image', 'video','header'],
   modules: {
     toolbar: [
       ['bold', 'italic','underline'],
@@ -81,8 +85,9 @@ var quill = new Quill('#editor', {
     ]
   },
   placeholder: 'Lisää ennakkoteksti...',
-  theme: 'snow'
+  theme: 'snow',
 });
+
 
 var form = document.querySelector('form');
 form.onsubmit = function() {
@@ -107,16 +112,5 @@ echo 'quill.setContents ('.$_SESSION['matchText'].');';
 echo '</script>';
 }
 ?>
-<script>
-
-var quill = new Quill('#editor', {
-  modules: {
-    toolbar: [
-      ['bold', 'italic','underline'],
-      ['link', 'blockquote', 'image', 'video']
-    ]
-  },
-  theme: 'snow'
-});
 
   <?php include('inc/footer.php'); ?>
