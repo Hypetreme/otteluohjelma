@@ -3,6 +3,7 @@
 ?>
 
 <div class="container">
+  <span id="msg" class="msgError"></span>
   <div class="row">
     <div class="twelve columns">
       <h1>
@@ -39,7 +40,7 @@
         <label for="pwdConfirm">
           Kirjoita salasana uudelleen:
         </label>
-        <input type="password" name="pwdConfirm">
+        <input type="password" id="pwdConfirm" name="pwdConfirm">
       </div>
     </div>
     <div class="row">
@@ -47,7 +48,7 @@
         <label for="taso">
           Valitse taso:
         </label>
-        <select name="taso">
+        <select id="level" name="level">
           <option disabled selected>Valitse</option>
           <option value="seura">Seura (11,99e/kk)</option>
           <option value="joukkue">Joukkue (6,99e/kk)</option>
@@ -69,7 +70,6 @@
         <input class="button-primary" name="register" type="submit" value="Rekisteröidy">
       </div>
     </form>
-    <span id="msg" class="msgError"></span>
   </div>
 </div>
 <script>
@@ -79,7 +79,8 @@ $('form').submit(function(event){
     var emailaddress = $('#email').val();
     var pass = $('#pwd').val();
     var passconfirm = $('#pwdConfirm').val();
-    var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm }, function(data) {
+    var level = $('#level').val();
+    var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm, regLevel: level}, function(data) {
       if(data){
         console.log(data);
       }

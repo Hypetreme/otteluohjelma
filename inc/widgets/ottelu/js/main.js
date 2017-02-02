@@ -21,7 +21,7 @@ function getStuff() {
   var eventId = url.substring(url.indexOf('=')+1);
     var jsonIssue = {};
     $.ajax({
-        url: "../../../files/overview"+eventId+".json",
+        url: "../../../files/overview_"+eventId+".json",
         async: "false",
         dataType: 'json',
         success: function(json){
@@ -37,21 +37,25 @@ function doSomething(jsonIssue){
   var eventDate = jsonIssue.eventinfo[2];
   //var jsonText = JSON.stringify(jsonIssue.eventinfo[3]);
   //var matchText = JSON.parse(jsonText);
+  if (jsonIssue.eventinfo[3] != "") {
   var jsonText = JSON.parse(jsonIssue.eventinfo[3]);
+}
   var homeTeam = jsonIssue.teams.home[0];
   var visitorTeam = jsonIssue.teams.visitors[0];
-  var ad1 = jsonIssue.ads[0];
-  var ad2 = jsonIssue.ads[1];
+  var ad1 = jsonIssue.ads.images[0];
+  var ad2 = jsonIssue.ads.images[1];
+  var adlink1 = jsonIssue.ads.links[0];
+  var adlink2 = jsonIssue.ads.links[1];
   document.getElementById("gameName").innerHTML = "<h1>" + eventName + "</h1>";
   document.getElementById("gameDate").innerHTML = "<h1>" + eventDate + "</h1>";
   document.getElementById("gamePlace").innerHTML = "<h1>" + eventPlace + "</h1>";
   document.getElementById("homeTeam").innerHTML = "<h3 style='text-transform: uppercase'>" + homeTeam + "</h3>";
   document.getElementById("visitorTeam").innerHTML = "<h3 style='text-transform: uppercase'>" + visitorTeam + "</h3>";
   if (ad1 != null) {
-  document.getElementById("gameAd1").innerHTML = "<img src='../../../images/ads/event/" + ad1 + "'>";
+  document.getElementById("gameAd1").innerHTML = "<a target='_blank' href=http://www."+ adlink1 +"><img src='../../../images/ads/event/" + ad1 + "'></a>";
 }
   if (ad2 != null) {
-  document.getElementById("gameAd2").innerHTML = "<img src='../../../images/ads/event/" + ad2 + "'>";
+  document.getElementById("gameAd2").innerHTML = "<a target='_blank' href=http://www."+ adlink2 +"><img src='../../../images/ads/event/" + ad2 + "'></a>";
 }
   var number, first, last, li, node, i, len;
   //Tulostetaan kotijoukkueen pelaajat listaan

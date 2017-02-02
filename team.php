@@ -18,7 +18,8 @@
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
     unset($_SESSION['ads']);
-    unset($_SESSION['eventCreated']);
+    unset($_SESSION['adlinks']);
+    unset($_SESSION['editEvent']);
 ?>
 
 
@@ -133,9 +134,6 @@
       <div class="twelve columns">
          <h4>
           <span><?php echo $_SESSION['teamUid'];?></span>
-          <a id="iconEdit" style="display: inline;" href="edit.php">
-            <i class="material-icons">mode edit</i>
-          </a>
         </h4>
       </div>
       <div class="twelve columns">
@@ -171,6 +169,7 @@
               </a>-->
 
             <input style="display:none"class="button-primary" name="savePlayer" type="submit" id="btnSave" value="Tallenna">
+            <input class="button-primary" type="button" value="Muokkaa" onclick="window.location.href='edit.php'">
             </div>
 
           </div>

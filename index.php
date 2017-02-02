@@ -6,6 +6,7 @@
 <!-- Tähän sitten se switchi -->
 
 <div class="container">
+  <span id="msg" class="msgError"></span>
   <div class="row">
     <div class="twelve columns">
       <h1>
@@ -43,7 +44,6 @@
 
   <div class="row">
     <div class="twelve columns">
-      <span id="msg" class="msgError"></span>
     </div>
   </div>
 

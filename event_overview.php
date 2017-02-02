@@ -4,7 +4,10 @@ include 'dbh.php';
 if (!isset($_SESSION['id'])) {
 header("Location: index.php");
 }
-if (isset($_SESSION['eventCreated'])) {
+if (isset($_GET['eventId'])) {
+$_SESSION['editEvent'] = true;
+}
+if (!isset($_SESSION['editEvent'])) {
 header("Location: profile.php");
 }
 include ('inc/header.php');
@@ -68,7 +71,11 @@ include 'functions.php';
         </h4>
         <h5>
           <span><?php
+            if (isset($_SESSION['homeName'])) {
             echo $_SESSION['homeName'];
+          } else {
+            echo $_SESSION['teamName'];
+          }
             ?></span>
         </h5>
          <table class="u-full-width">

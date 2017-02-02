@@ -62,7 +62,7 @@
 
           //if there is session teamId
           if (isset($_SESSION['teamId'])) {
-            $fileName = 'images/logos/'.$teamUid.$teamId.'.jpg';
+            $fileName = 'images/logos/'.$teamUid.$teamId.'.png';
             if (file_exists($fileName)){
               $profileLink = $url;
               $profileFile = $fileName;
@@ -73,7 +73,7 @@
               $profileName = $teamUid;
             }
           }else{
-            $fileName = 'images/logos/'.$uid.$id.'.jpg';
+            $fileName = 'images/logos/'.$uid.$id.'.png';
             if (file_exists($fileName)){
               $profileLink = $url;
               $profileFile = $fileName;

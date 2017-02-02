@@ -110,12 +110,16 @@ function message(data,selected) {
      msg.innerHTML=errorSymbol+"Käyttäjänimi on jo olemassa!";
    } else if (data == "uidEmpty"){
      msg.innerHTML=errorSymbol+"Et syöttänyt käyttäjänimeä!";
+   } else if (data == "uidInvalid"){
+     msg.innerHTML=errorSymbol+"Käyttäjänimi ei saa sisältää välilyöntejä!";
    } else if (data == "pwdEmpty"){
      msg.innerHTML=errorSymbol+"Et syöttänyt salasanaa!";
    } else if (data == "uidShort"){
      msg.innerHTML=errorSymbol+"Käyttäjänimen on oltava vähintään 4 merkkiä pitkä!";
    } else if (data == "pwdShort"){
      msg.innerHTML=errorSymbol+"Salasanan on oltava vähintään 4 merkkiä pitkä!";
+   } else if (data == "pwdMismatch"){
+     msg.innerHTML=errorSymbol+"Salasanat eivät täsmää!";
    } else if (data == "emailInvalid"){
      msg.innerHTML=errorSymbol+"Syötä sähköposti oikeassa muodossa!";
    } else if (data == "emailFail"){
@@ -134,10 +138,16 @@ function message(data,selected) {
  }, 4000);
    }
   // Advertisements
-     else if (data == "adEmpty"){
-     msg.innerHTML=errorSymbol+"Valitse ladattava kuva!";
-     }
-     else if (data == "adSuccess"){
+  else if (data == "imgEmpty"){
+  msg.innerHTML=errorSymbol+"Valitse ladattava kuva!";
+} else if (data == "imgInvalid"){
+  msg.innerHTML=errorSymbol+"Kuva ei ole sallitussa muodossa!";
+} else if (data == "imgSize"){
+  msg.innerHTML=errorSymbol+"Kuvan tiedostokoko on liian suuri!";
+} else if (data == "imgEmpty"){
+  msg.innerHTML=errorSymbol+"Valitse ladattava kuva!";
+}
+    else if (data == "adSuccess"){
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
      setTimeout(function () {
@@ -150,6 +160,13 @@ setTimeout(function () {
 window.location.href = "event5.php";
 }, 2000);
 }
+else if (data == "logoSuccess"){
+   msg.className="msgSuccess";
+   msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
+   setTimeout(function () {
+   window.location.href = "settings.php";
+   }, 2000);
+   }
 
  // User data
  else if (data == "teamPwdWrong"){
@@ -224,7 +241,19 @@ else if (data == "event3TeamEmpty"){
   } else if (selected == "btnEvent6") {
     window.location.href = "event_overview.php?c";
   }
- }
+} else if (data == "adlink1Invalid"){
+msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
+} else if (data == "adlink2Invalid"){
+ msg.innerHTML=errorSymbol+"Syötä 2. mainoksen linkki oikeassa muodossa!";
+} else if (data == "adlink3Invalid"){
+  msg.innerHTML=errorSymbol+"Syötä 3. mainoksen linkki oikeassa muodossa!";
+} else if (data == "adlink4Invalid"){
+   msg.innerHTML=errorSymbol+"Syötä 4. mainoksen linkki oikeassa muodossa!";
+} else if (data == "eventLinkSuccess"){
+  msg.className="msgSuccess";
+  $("#msg").css("display", "none");
+ window.location.href = "event_overview.php?c";
+}
  else if (data == "eventFail") {
   msg.innerHTML=errorSymbol+"Tapahtuman tallennus epäonnistui!";
  }

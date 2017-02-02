@@ -25,7 +25,8 @@ exit();
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
     unset($_SESSION['ads']);
-    unset($_SESSION['eventCreated']);
+    unset($_SESSION['adlinks']);
+    unset($_SESSION['editEvent']);
   include('inc/header.php');
   include('functions.php');
 ?>
@@ -68,6 +69,11 @@ exit();
       pwdField.name = "pwd";
       pwdField.id = "pwd";
 
+      var pwdConfirmField = document.createElement("input");
+      pwdConfirmField.type = "password";
+      pwdConfirmField.name = "pwdConfirm";
+      pwdConfirmField.id = "pwdConfirm";
+
 
       var colorField = document.createElement("select");
         var colorOption1 = document.createElement("option");
@@ -94,6 +100,9 @@ exit();
       var pwdH = document.createElement("label");
       pwdH.innerHTML = "Salasana:";
 
+      var pwdConfirmH = document.createElement("label");
+      pwdConfirmH.innerHTML = "Salasana uudelleen:";
+
       var color = document.createElement("label");
       color.innerHTML = "Valitse väri:";
 
@@ -105,6 +114,8 @@ exit();
       document.getElementById('newrow').appendChild(fakeField);
       document.getElementById('newrow').appendChild(fakeField2);
       document.getElementById('newrow').appendChild(pwdField);
+      document.getElementById('newrow').appendChild(pwdConfirmH);
+      document.getElementById('newrow').appendChild(pwdConfirmField);
       document.getElementById('newrow').appendChild(color);
       document.getElementById('newrow').appendChild(colorField);
     }

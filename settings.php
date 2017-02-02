@@ -19,12 +19,14 @@
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
     unset($_SESSION['ads']);
-    unset($_SESSION['eventCreated']);
+    unset($_SESSION['adlinks']);
+    unset($_SESSION['editEvent']);
   include ('functions.php');
   include ('inc/header.php');
 ?>
 
   <div class="container">
+    <span id="msg" class="msgError"></span>
     <div class="row">
       <div class="twelve columns">
         <h4>
@@ -59,8 +61,10 @@
         <form action="functions.php" method="post" enctype="multipart/form-data">
           <tbody>
             <tr>
-              <td><input type="file" name="file" id="file"></td>
+              <td><input type="file" onchange="loadData()"></td>
               <td><input type="submit" value="Tallenna logo" name="fileUpload"></td>
+              <!--<img src="" height="200" alt="Image preview...">-->
+              <input type="hidden" id="imgData">
             </tr>
           </tbody>
         </form>
@@ -83,7 +87,32 @@
     </ul>
       </div>
     </div>
+    <script>
+    $('form').submit(function(event){
 
+          event.preventDefault(); // stop the form from submitting
+          var logo = document.getElementById("imgData");
+          var finish = $.post("functions.php", { fileUpload: 'upload', imgData: logo.value }, function(data) {
+            if(data){
+              console.log(data);
+            }
+            message(data);
+          });
+      });
+      function loadData() {
+        var preview = document.querySelector('img');
+        var file    = document.querySelector('input[type=file]').files[0];
+        var logo = document.getElementById("imgData");
+        var reader  = new FileReader();
+      reader.addEventListener("load", function () {
+//preview.src = reader.result;
+logo.value = reader.result;
+}, false);
+if (file) {
+   reader.readAsDataURL(file);
+ }
+}
+    </script>
 
   <?php
     include ('inc/footer.php');

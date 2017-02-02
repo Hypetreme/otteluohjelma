@@ -4,7 +4,9 @@ include 'dbh.php';
 if (!isset($_SESSION['id'])) {
 header("Location: index.php");
 }
-if (isset($_SESSION['eventCreated'])) {
+$_SESSION['editEvent'] = true;
+$_SESSION['homeName'] = $_SESSION['teamName'];
+if (!isset($_SESSION['editEvent'])) {
 header("Location: profile.php");
 }
 
@@ -64,19 +66,19 @@ datePicker();
 <form name="form" id="info" action="functions.php" method="POST">
   <div class="row">
     <div class="twelve columns">
-      <label for="eventName">Tapahtuman nimi:</label>
+      <label for="eventName">Tapahtuman nimi</label>
       <input type="text" name="eventName" id="eventName" value="<?php
       if (isset($_SESSION['eventName'])) {
       echo $_SESSION['eventName'];
     }
         ?>">
-      <label for="eventPlace">Tapahtuman paikka:</label>
+      <label for="eventPlace">Tapahtuman paikka</label>
       <input type="text" name="eventPlace" id="eventPlace" value="<?php
       if (isset($_SESSION['eventPlace'])) {
          echo $_SESSION['eventPlace']; }
         ?>">
 
-      <label for="eventdate">Tapahtuman pvm:</label>
+      <label for="eventdate">Tapahtuman pvm</label>
       <input type="text" name="eventDate" id="eventDate" value="<?php
       if (isset($_SESSION['eventDate'])) {
          echo $_SESSION['eventDate']; }

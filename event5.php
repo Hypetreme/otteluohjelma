@@ -4,7 +4,7 @@ include 'dbh.php';
 if (!isset($_SESSION['id'])) {
 header("Location: index.php");
 }
-if (isset($_SESSION['eventCreated'])) {
+if (!isset($_SESSION['editEvent'])) {
 header("Location: profile.php");
 }
 include ('inc/header.php');
@@ -113,7 +113,7 @@ $ad4 = $fileName4j;
 
 </div>
 </div>
-
+  <span id="msg" class="msgError"></span>
   <div class="row">
     <div class="twelve columns" style="text-align: center;">
       <h4>
@@ -122,39 +122,33 @@ $ad4 = $fileName4j;
     </div>
 
   </div>
-  <div class="row">
-    <div class="twelve columns" style="text-align: center;">
+  <div class="row" style="float:left">
+    <div class="six columns" style="text-align: center;">
       <h5 style="margin-bottom:0" id="adHeader">&nbsp;</h5>
       <span id="upload" style="visibility:hidden;">
 
-      <form id="uploadAd" method="POST" enctype="multipart/form-data">
-      <tbody>
-      <tr>
-    <div class="image-editor" id="crop">
-<div style="display:inline-block">
-      <div class="cropit-image-preview"><div class="error-msg"></div></div>
-    </div>
-      <input style="display:inline-block" type="file" class="cropit-image-input">
-
-    <div class="row" style="text-align:left">
-      <input style="display:inline-block;margin-left:190px" type="range" class="cropit-image-zoom-input">
-      <p style="display:inline-block" class="image-size-label">
-        Zoomaus
-      </p>
-      <span id="msg" class="msgError"></span>
-    </div>
-
-      <input type="hidden" name="imgData" class="hidden-imgData" />
-      <button id="submitAd" type="submit">Tallenna</button>
+        <form id="form" method="POST" enctype="multipart/form-data">
+        <tbody>
+        <tr>
+          <div class="image-editor" id="crop">
+      <div style="display:inline-block">
+            <div class="cropit-image-preview"><div class="error-msg"></div></div>
+          </div>
+            <input style="display:inline-block" type="file" class="cropit-image-input">
+            <p style="margin:0;font-weight:bold;" class="image-size-label">
+              Zoomaus</p>
+            <input style="display:inline-block;" type="range" class="cropit-image-zoom-input">
+            <?php
+            listAdLinks();
+            ?>
+            <button id="submitAd" type="submit">Tallenna</button>
+    </form>
 </div>
-        </form>
     </span>
   </div>
-  </div>
 
-  <div style="margin-left:auto ;margin-right:auto;width:375px;height:709px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
-  <div class="row">
-    <div class="twelve columns" style="text-align:center">
+  <div style="float:left;margin-left:auto ;margin-right:auto;width:375px;height:709px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
+    <div class="six columns" style="text-align:center">
       <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 680px;solid;top: 59px;">
         <?php
         if (file_exists($fileName1s) || file_exists($fileName1j)){
@@ -188,45 +182,36 @@ echo '<div onclick="addAd(this);" id="4" style="border-width:1px;position:absolu
     </div>
     </div>
   </div>
-  </div>
+</div>
 </div>
 
   <div class="row">
     <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
-
-<form id ="form" action="functions.php" method="POST">
       <?php
-       echo'<input type="hidden" name="ad1" value="'.$ad1.'">';
-       echo'<input type="hidden" name="ad2" value="'.$ad2.'">';
-       echo'<input type="hidden" name="ad3" value="'.$ad3.'">';
-       echo'<input type="hidden" name="ad4" value="'.$ad4.'">';
+       echo'<input type="hidden" id="ad1" name="ad1" value="'.$ad1.'">';
+       echo'<input type="hidden" id="ad2" name="ad2" value="'.$ad2.'">';
+       echo'<input type="hidden" id="ad3" name="ad3" value="'.$ad3.'">';
+       echo'<input type="hidden" id="ad4" name="ad4" value="'.$ad4.'">';
       ?>
-      <button class="button-primary" type="button" value="Takaisin" onclick="window.location='event4.php'"/>Takaisin</button>
-      <input class="button-primary" type="submit" name="setEventAds" value="Seuraava">
-</form>
+      <button class="button-primary" type="button" onclick="window.location='event4.php'"/>Takaisin</button>
+      <button class="button-primary" type="button" id="btnEvent6" onclick="window.location='event_overview.php?c'"/>Seuraava</button>
     </div>
   </div>
 
 </div>
 
 <script>
-$(function() {
-  $(function() {
   $('.image-editor').cropit();
-
   $('#submitAd').click(function(event){
-    // Move cropped image data to hidden input
-
     var imageData = $('.image-editor').cropit('export');
     $('.hidden-imgData').val(imageData);
-
-    // Print HTTP request params
-    //var formValue = $(this).serialize();
-
-
-        event.preventDefault(); // stop the form from submitting
+      event.preventDefault(); // stop the form from submitting
         var ad = $('#submitAd').val();
-        var finish = $.post("functions.php", { imgData: imageData , submitAd: ad }, function(data) {
+        var adlink1 = $('#link1').val();
+        var adlink2 = $('#link2').val();
+        var adlink3 = $('#link3').val();
+        var adlink4 = $('#link4').val();
+        var finish = $.post("functions.php", { submitAd: ad, imgData: imageData , link1: adlink1, link2: adlink2, link3: adlink3, link4: adlink4 }, function(data) {
           if(data){
             console.log(data);
           }
@@ -234,20 +219,6 @@ $(function() {
 
         });
     });
-/*$.ajax({
-   type: 'post',
-   data: formValue,
-   url: 'functions.php',
-   success: function(data){
-   //console.log('New file in: images/'+data);
-  }
-
-});*/
-
-    // Prevent the form from actually submitting
-    //return false;
-  });
-});
 
 $("#1, #2, #3, #4").on("mouseenter focus", function(){
   if(!$(this).hasClass('active')){
@@ -297,7 +268,21 @@ $("#adHeader").css({"color":"black"});
 document.getElementById('adHeader').innerHTML="Mainoskuva "+element.id;
 document.getElementById('upload').style="visibility:visible;";
 document.getElementById('submitAd').value=element.id;
-var adValue = 1;
+document.getElementById('linkHeader').style="initial";
+document.getElementById('link1').style="display:none";
+document.getElementById('link2').style="display:none";
+document.getElementById('link3').style="display:none";
+document.getElementById('link4').style="display:none";
+if (element.id == 1) {
+document.getElementById('link1').style="display:inline-block";
+} else if (element.id == 2) {
+document.getElementById('link2').style="display:inline-block";
+}
+
+//Ladataan asetettu kuva esikatselua varten
+var url = document.getElementById(element.id).children[0].src;
+$('.image-editor').cropit();
+$('.image-editor').cropit('imageSrc', url);
 }
 function notify(element) {
 $("#1").removeClass('active')

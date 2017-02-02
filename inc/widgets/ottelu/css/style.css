@@ -101,3 +101,7 @@ h1.title {
   font-size: 20px;
 
 }
+#playerListHome, #playerListVisitors {
+  color: white;
+  font-size:25px;
+}

@@ -20,7 +20,8 @@
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
     unset($_SESSION['ads']);
-    unset($_SESSION['eventCreated']);
+    unset($_SESSION['adlinks']);
+    unset($_SESSION['editEvent']);
   if (isset($_GET['back'])) {
     unset($_SESSION['teamId']);
     unset($_SESSION['teamUid']);
@@ -62,10 +63,6 @@
               </tbody>
           </table>
        </div>
-       <div class="six columns">
-        <h5>Avatar</h5>
-        <!-- tähän -->
-     </div>
     </div>
 
     <div class="row">
@@ -91,9 +88,9 @@
     </div>
 
 <?php if (isset($_SESSION['teamId'])) {
-    echo '<form action="functions.php" method="POST">
-      <input name="newEvent" type="submit" value="Luo Tapahtuma">
-    </form>'; }
+    echo '<form action="functions.php" method="POST">';
+    echo '<input type="submit" name="fetchAds" value="Luo Tapahtuma">'; }
+    echo '</form>';
 ?>
     <?php
       include ('inc/footer.php');
