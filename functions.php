@@ -1080,7 +1080,6 @@ function eventData()
 	$_SESSION['editEvent'] = true;
 	$id = $_SESSION['id'];
 	$ownerId = $_SESSION['ownerId'];
-	$teamUid = $_SESSION['teamUid'];
 	$_SESSION['eventId'] = $_GET['eventId'];
 	$eventId = $_SESSION['eventId'];
 	if (isset($_SESSION['teamId'])) {
@@ -1681,10 +1680,11 @@ function setAdLinks() {
 	}
 	$ownerId = $_SESSION['ownerId'];
 
-  $pattern = '/(?:https?:\/\/)?(?:[a-zA-Z0-9.-]+?\.(?:[a-zA-Z])|\d+\.\d+\.\d+\.\d+)/';
+  //$pattern = '/(?:https?:\/\/)?(?:[a-zA-Z0-9.-]+?\.(?:[a-zA-Z])|\d+\.\d+\.\d+\.\d+)/';
+	$pattern2 = '(^www\.|^http:|\`|\~|\!|\@|\#|\$|^\%|\^|\&|\*|\(|\)|\+|\[|\{|\]|\}|\||\\|\'|\<|\,|^\.|\>|^\?|^\/|\"|\;|^\:|\s)i';
 
   if (!empty($_POST['link1']) && (!empty($_POST['imgData']) || isset($_SESSION['ads'][0]))) {
-  if (preg_match($pattern, $_POST['link1']) && !preg_match('/www/', $_POST['link1'])) {
+  if (!preg_match($pattern2, $_POST['link1'])) {
 	if (isset($_SESSION['editEvent'])) {
   $_SESSION['adlinks'][0] = $_POST['link1'];
 	} else {
@@ -1705,7 +1705,7 @@ function setAdLinks() {
   }
   }
   if (!empty($_POST['link2']) && (!empty($_POST['imgData']) || isset($_SESSION['ads'][1]))) {
-  if (preg_match($pattern, $_POST['link2'])) {
+  if (!preg_match($pattern2, $_POST['link2'])) {
 		if (isset($_SESSION['editEvent'])) {
 	  $_SESSION['adlinks'][1] = $_POST['link2'];
 		} else {

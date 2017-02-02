@@ -4,7 +4,7 @@
 <body>
  <?php
     $url = "$_SERVER[REQUEST_URI]";
-    if ($url != "/otteluohjelma/index.php" && $url != "/otteluohjelma/error.php" && strpos($url,"verify.php") == false && $url != "/otteluohjelma/register.php") {
+    if (($url != "/otteluohjelma/index.php" && $url != "/otteluohjelma/") && $url != "/otteluohjelma/error.php" && strpos($url,"verify.php") == false && $url != "/otteluohjelma/register.php") {
     echo "<header>";
     include('inc/nav.php');
     echo "</header>";
