@@ -39,3 +39,9 @@
       button {
         margin-top: 10px;
       }
+.cropit-preview.cropit-image-loading .spinner {
+        opacity: 1;
+      }
+.cropit-image-zoom-input[disabled] {
+        opacity: .2;
+      }

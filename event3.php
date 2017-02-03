@@ -94,15 +94,15 @@ include 'functions.php';
   </div></a>
 
   <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="visitors2" id="btnEvent4" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="4">
+  <input form="form" id="btnEvent4" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="4">
   </div>
 
   <div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="visitors2" id="btnEvent5" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="5">
+  <input form="form" id="btnEvent5" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="5">
   </div>
 
   <div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="visitors2" id="btnEvent6" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="6">
+  <input form="form" id="btnEvent6" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="6">
   </div>
 
   </div>
@@ -117,8 +117,8 @@ include 'functions.php';
         <h4>
           <span>Lisää vierasjoukkueen tiedot</span>
         </h4>
-        <form id="visitors2" action="functions.php" method="POST">
-       <label for="visitorName">Vierasjoukkueen nimi:</label>
+        <form id="form" action="functions.php" method="POST">
+       <label for="visitorName">Vierasjoukkueen nimi</label>
       <input type="text" id="visitorName" name="visitorName" value="<?php
       if (isset($_SESSION['visitorName'])) {
          echo $_SESSION['visitorName'];
@@ -130,7 +130,7 @@ include 'functions.php';
 
 
       <div class="twelve columns">
-        <form name="form" action="functions.php" method="POST">
+        <form name="players" action="functions.php" method="POST">
           <table class='u-full-width'>
             <thead>
               <tr>
@@ -170,7 +170,7 @@ include 'functions.php';
 <div class="row">
       <div class="twelve columns" style='text-align:center;padding-top:50px'>
 <button class="button-primary" type="button" value="Takaisin" onclick="window.location='event2.php'"/>Takaisin</button>
-<input form="visitors2" class="button-primary" type="submit" id="btnEvent4" name="setVisitorTeam" value="Seuraava">
+<input form="form" class="button-primary" type="submit" id="btnEvent4" name="setVisitorTeam" value="Seuraava">
 
       </div>
     </div>

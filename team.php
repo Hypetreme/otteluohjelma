@@ -129,6 +129,7 @@
   </script>
 
   <div class="container">
+    <span id="msg" class="msgError"></span>
     <form name="form" action="functions.php" method="POST">
     <div class="row">
       <div class="twelve columns">
@@ -169,11 +170,25 @@
               </a>-->
 
             <input style="display:none"class="button-primary" name="savePlayer" type="submit" id="btnSave" value="Tallenna">
-            <input class="button-primary" type="button" value="Muokkaa" onclick="window.location.href='edit.php'">
+            <button class="button-primary" type="button" onclick="window.location.href='edit.php'">Muokkaa</button>
             </div>
 
           </div>
   </div>
   </form>
 </div>
+<script>
+$('form').submit(function(event){
+    event.preventDefault(); // stop the form from submitting
+    var num = $('#number').val();
+    var firstname = $('#firstName').val();
+    var lastname = $('#lastName').val();
+    var finish = $.post("functions.php", { savePlayer: 'saveplayer', number: num, firstName: firstname, lastName: lastname }, function(data) {
+      if(data){
+        console.log(data);
+      }
+        message(data);
+    });
+});
+</script>
   <?php include('inc/footer.php'); ?>

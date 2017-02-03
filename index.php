@@ -23,13 +23,13 @@
       </div>
       <div class="twelve columns">
         <label for="uid">
-          Username:
+          Käyttäjänimi
         </label>
-        <input type="text" id="uid" name="uid">
+        <input class="styled" type="text" id="uid" name="uid">
       </div>
       <div class="twelve columns">
         <label for="pwd">
-          Password:
+          Salasana
         </label>
         <input type="password" id="pwd" name="pwd">
       </div>

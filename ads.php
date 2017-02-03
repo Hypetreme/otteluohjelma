@@ -85,16 +85,16 @@ $ad4 = $fileName4j;
         <tr>
           <div class="image-editor" id="crop">
       <div style="display:inline-block">
-            <div class="cropit-image-preview"><div class="error-msg"></div></div>
+            <div id="preview" class="cropit-image-preview"><div class="error-msg"></div></div>
           </div>
             <input style="display:inline-block" type="file" class="cropit-image-input">
-            <p style="margin:0;font-weight:bold;" class="image-size-label">
-              Zoomaus</p>
-            <input style="display:inline-block;" type="range" class="cropit-image-zoom-input">
+            <label for="zoom">Zoomaus</label>
+            <input id="zoom" style="display:inline-block;" type="range" class="cropit-image-zoom-input">
             <?php
             listAdLinks();
             ?>
-            <button id="submitAd" type="submit">Tallenna</button>
+            <input type="hidden" id="image-data" name="image-data" class="hidden-image-data" />
+            <button id="submitAd" class="button-primary" type="submit">Tallenna</button>
     </form>
     </div>
       </span>
@@ -104,32 +104,22 @@ $ad4 = $fileName4j;
       <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 680px;solid;top: 59px;">
         <?php
         if (file_exists($fileName1s) && isset($_SESSION['teamId'])){
-        echo '<div class="reserved" onclick="notify(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
+        echo '<div class="reserved" onclick="notify(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
       } else {
-        echo '<div onclick="addAd(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
+        echo '<div onclick="addAd(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
       }
       echo '<div style="color:white"><h2>Pelaajat</h2></div>';
       echo '<div style="color:white"><h3>Kotijoukkue</h3></div>';
       echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
       echo '<div style="color:white"><h5>Pelaaja Kaksi</h5></div>';
       if (file_exists($fileName2s) && isset($_SESSION['teamId'])){
-      echo '<div class="reserved" onclick="notify(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
+      echo '<div class="reserved" onclick="notify(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
     } else {
-      echo '<div onclick="addAd(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
+      echo '<div onclick="addAd(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
     }
       echo '<div style="color:white"><h3>Vierasjoukkue</h3></div>';
       echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
       echo '<div style="color:white"><h5>Pelaaja Kaksi</h5></div>';
-    /*if ($_SESSION['type'] == '1' && file_exists($fileName3s)){
-    echo '<div class="reserved" onclick="notify(this);" id="3" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad3.'"></div>';
-  } else {
-    echo '<div onclick="addAd(this);" id="3" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad3.'"></div>';
-  }
-  if ($_SESSION['type'] == '1' && file_exists($fileName4s)){
-  echo '<div class="reserved" onclick="notify(this);" id="4" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad4.'"></div>';
-} else {
-  echo '<div onclick="addAd(this);" id="4" style="margin-left:auto;margin-right:auto;text-align:center;border-width:0px;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad4.'"></div>';
-}*/
         ?>
       </div>
       </div>
@@ -139,22 +129,23 @@ $ad4 = $fileName4j;
   </div>
 
   <script>
-    $('form').submit(function(event){
-      var imageData = $('.image-editor').cropit('export');
-          event.preventDefault(); // stop the form from submitting
-          var ad = $('#submitAd').val();
-          var adlink1 = $('#link1').val();
-          var adlink2 = $('#link2').val();
-          var adlink3 = $('#link3').val();
-          var adlink4 = $('#link4').val();
-          var finish = $.post("functions.php", { submitAd: ad, imgData: imageData , link1: adlink1, link2: adlink2, link3: adlink3, link4: adlink4 }, function(data) {
-            if(data){
-              console.log(data);
-            }
-            message(data);
-          });
-      });
+var imageData = "";
+var url = "";
+$('.image-editor').cropit(
+    {
+      onImageError: function() {
+            $('#preview').css("background-image", "none");
+            imageData = "";
+            message('imgError');
 
+        },
+        onImageLoaded: function() {
+              $('#image-data').val("");
+              $('#image-data').val($('.image-editor').cropit('export'));
+              imageData = $('#image-data').val();
+          }
+    }
+);
 
       $("#1, #2, #3, #4").on("mouseenter focus", function(){
         if(!$(this).hasClass('active')){
@@ -165,8 +156,8 @@ $ad4 = $fileName4j;
       });
       $("#1, #2, #3, #4").on("mouseleave", function(){
          if(!$(this).hasClass('active')){
-        $(this).css({"border-style":""});
-        $(this).css({"border-width":""});
+        $(this).css({"border-color":"transparent"});
+        $(this).css({"border-width":"3px"});
       }
       if($(this).hasClass('reserved')){
       $(this).css({"border-color":"red"});
@@ -178,23 +169,19 @@ $ad4 = $fileName4j;
     $(function(){
         $("#1").removeClass('active')
         if(!$("#1").hasClass('reserved')){
-        $("#1").css({"border-color":"black"});
-        $("#1").css({"border-width":"0px"});
+        $("#1").css({"border-color":"transparent"});
       }
         $("#2").removeClass('active')
         if(!$("#2").hasClass('reserved')){
-        $("#2").css({"border-color":"black"});
-        $("#2").css({"border-width":"0px"});
+        $("#2").css({"border-color":"transparent"});
         }
         $("#3").removeClass('active')
         if(!$("#3").hasClass('reserved')){
-        $("#3").css({"border-color":"black"});
-        $("#3").css({"border-width":"0px"});
+        $("#3").css({"border-color":"transparent"});
         }
         $("#4").removeClass('active')
         if(!$("#4").hasClass('reserved')){
-        $("#4").css({"border-color":"black"});
-        $("#4").css({"border-width":"0px"});
+        $("#4").css({"border-color":"transparent"});
         }
         $(element).addClass('active')
         $(element).css({"border-color":"#2def30"});
@@ -214,33 +201,33 @@ document.getElementById('link1').style="display:inline-block;width:180px";
 } else if (element.id == 2) {
 document.getElementById('link2').style="display:inline-block;width:180px";
 }
+url = document.getElementById(element.id).children[0].src;
 
 //Ladataan asetettu kuva esikatselua varten
-var url = document.getElementById(element.id).children[0].src;
-$('.image-editor').cropit();
-$('.image-editor').cropit('imageSrc', url);
+$('#preview').css("background-image", "none");
+$('#image-data').val("");
+imageData = "";
 
+if (url != 'http://localhost/otteluohjelma/images/default_ad.png' && url != 'www.otteluohjelma.fi/login/images/default_ad.png' && url != 'otteluohjelma.fi/login/images/default_ad.png') {
+$('.image-editor').cropit('imageSrc', url);
+}
 }
 function notify(element) {
 $("#1").removeClass('active')
 if(!$("#1").hasClass('reserved')){
-$("#1").css({"border-color":"black"});
-$("#1").css({"border-width":"1px"});
+$("#1").css({"border-color":"transparent"});
 }
 $("#2").removeClass('active')
 if(!$("#2").hasClass('reserved')){
-$("#2").css({"border-color":"black"});
-$("#2").css({"border-width":"1px"});
+$("#2").css({"border-color":"transparent"});
 }
 $("#3").removeClass('active')
 if(!$("#3").hasClass('reserved')){
-$("#3").css({"border-color":"black"});
-$("#3").css({"border-width":"1px"});
+$("#3").css({"border-color":"transparent"});
 }
 $("#4").removeClass('active')
 if(!$("#4").hasClass('reserved')){
-$("#4").css({"border-color":"black"});
-$("#4").css({"border-width":"1px"});
+$("#4").css({"border-color":"transparent"});
 }
 if($(element).hasClass('reserved')){
 $(element).css({"border-color":"red"});
@@ -251,7 +238,24 @@ document.getElementById('adHeader').innerHTML="Seurasi on asettanut mainospaikan
 document.getElementById('upload').style="visibility:hidden";
 document.getElementById('submitAd').name="adUpload";
 }
-  </script>
+
+$('form').submit(function(event){
+      event.preventDefault(); // stop the form from submitting
+
+      var ad = $('#submitAd').val();
+      var adlink1 = $('#link1').val();
+      var adlink2 = $('#link2').val();
+      var adlink3 = $('#link3').val();
+      var adlink4 = $('#link4').val();
+      var finish = $.post("functions.php", { submitAd: ad, imgData: imageData , link1: adlink1, link2: adlink2, link3: adlink3, link4: adlink4 }, function(data) {
+        if(data){
+          console.log(data);
+        }
+        message(data);
+      });
+  });
+</script>
+
   <?php
     include ('inc/footer.php');
   ?>

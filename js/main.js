@@ -137,6 +137,14 @@ function message(data,selected) {
     window.location.href = "teams.php";
  }, 4000);
    }
+  // Players
+  else if (data == "savePlayerEmpty"){
+msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
+  } else if (data == "savePlayerSuccess"){
+    msg.className="msgSuccess";
+    $("#msg").css("display", "none");
+    window.location.href = "team.php";
+  }
   // Advertisements
   else if (data == "imgEmpty"){
   msg.innerHTML=errorSymbol+"Valitse ladattava kuva!";
@@ -146,14 +154,18 @@ function message(data,selected) {
   msg.innerHTML=errorSymbol+"Kuvan tiedostokoko on liian suuri!";
 } else if (data == "imgEmpty"){
   msg.innerHTML=errorSymbol+"Valitse ladattava kuva!";
+} else if (data == "imgError"){
+  msg.innerHTML=errorSymbol+"Kuvaa ei voitu ladata.";
 }
     else if (data == "adSuccess"){
+    $('.image-editor').cropit('disable');
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
      setTimeout(function () {
     window.location.href = "ads.php";
  }, 2000);
 } else if (data == "eventAdSuccess"){
+$('.image-editor').cropit('disable');
 msg.className="msgSuccess";
 msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
 setTimeout(function () {

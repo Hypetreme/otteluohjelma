@@ -15,14 +15,14 @@
     <form action="functions.php" method="POST">
       <div class="six columns">
         <label for="uid">
-          Käyttäjänimi:
+          Käyttäjänimi
         </label>
         <input type="text" id="uid" name="uid">
       </div>
 
       <div class="six columns">
         <label for="email">
-          Sähköposti:
+          Sähköposti
         </label>
         <input type="text" id="email" name="email">
         <input type="text" style="display:none">
@@ -31,14 +31,14 @@
     <div class="row">
       <div class="six columns">
         <label for="pwd">
-          Salasana:
+          Salasana
         </label>
         <input type="password" style="display:none">
         <input type="password" id="pwd" name="pwd">
       </div>
       <div class="six columns">
         <label for="pwdConfirm">
-          Kirjoita salasana uudelleen:
+          Kirjoita salasana uudelleen
         </label>
         <input type="password" id="pwdConfirm" name="pwdConfirm">
       </div>
@@ -46,7 +46,7 @@
     <div class="row">
       <div class="six columns">
         <label for="taso">
-          Valitse taso:
+          Valitse taso
         </label>
         <select id="level" name="level">
           <option disabled selected>Valitse</option>
@@ -56,7 +56,7 @@
       </div>
       <div class="six columns">
         <label for="laji">
-          Urheilulaji:
+          Urheilulaji
         </label>
         <select name="laji">
           <option disabled selected>Valitse</option>

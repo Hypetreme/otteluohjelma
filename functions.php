@@ -435,13 +435,10 @@ if ($_POST['firstName'] && $_POST['lastName'] && $_POST['number']) {
 			$stmt->bindParam(':number',$number);
       $stmt->execute();
 		} else {
-			echo '<script type="text/javascript">';
-			echo 'alert("Täytä kaikki pelaajan tiedot!");';
-			echo 'document.location.href = "team.php?teamId='.$teamId.'"';
-			echo '</script>';
+			echo 'savePlayerEmpty';
 			exit();
 		}
-	header("Location: team.php?teamId=$teamId");
+	  echo 'savePlayerSuccess';
 }
 
 function saveTeam()
@@ -682,6 +679,10 @@ function removeTeam()
 	$stmt3->bindParam(':teamid',$teamId);
 	$stmt3->bindParam(':id',$id);
 	$stmt3->execute();
+
+	$stmt4 = $conn->prepare("DELETE FROM adlinks WHERE team_id = :teamid");
+	$stmt4->bindParam(':teamid',$teamId);
+	$stmt4->execute();
 
 	if ($stmt->execute() && $stmt2->execute()) {
 		echo 'teamRemoveSuccess';
@@ -1527,10 +1528,9 @@ function editTeam()
 		$showNum = $row['number'];
 		echo '<tr>';
 		echo '<td class="fetch img" id="playerpic' . $i . '"><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>';
-		echo '<td>Pelaaja ' . $i . '</td>';
-		echo '<td class="fetch" id="number' . $i . '"><input type="text" name="number' . $i . '"value="' . $showNum . '"></td>';
-		echo '<td class="fetch" style="text-transform: capitalize;" id="first' . $i . '"><input type="text" name="first' . $i . '"value="' . $showFirst . '"></td>';
-		echo '<td class="fetch" style="text-transform: capitalize;" id="last' . $i . '"><input type="text" name="last' . $i . '"value="' . $showLast . '"></td>';
+		echo '<td class="fetch" id="number' . $i . '"><input type="text" style="width:60px;" name="number' . $i . '"value="' . $showNum . '"></td>';
+		echo '<td class="fetch" style="text-transform: capitalize;" id="first' . $i . '"><input type="text" style="width:120px;" name="first' . $i . '"value="' . $showFirst . '"></td>';
+		echo '<td class="fetch" style="text-transform: capitalize;" id="last' . $i . '"><input type="text" style="width:160px;" name="last' . $i . '"value="' . $showLast . '"></td>';
 		echo '<td><a href="functions.php?removePlayer=' . $showId . '" id="iconRemove"><i class="material-icons">delete</i></a></td>';
 		echo '<input type="hidden" name="id' . $i . '" value="' . $showId . '">';
 		echo '</tr>';
@@ -1662,10 +1662,10 @@ if (isset($_SESSION['adlinks1'][2])) {
 if (isset($_SESSION['adlinks'][3])) {
 	$link4 = $_SESSION['adlinks'][3];
 }
-	echo '<br>
+	echo '
 	<br>
 	<label id="linkHeader" style="display:none" for="link">Mainoksen linkki</label>
-	<p style="display:inline-block">www.</p>
+	<p style="font-size:20px;font-weight:400;display:inline-block">www.</p>
 	<input style="display:none" type="text" name="link" name="link1" id="link1" value="'.$link1.'">
 	<input style="display:none" type="text" name="link" name="link2" id="link2" value="'.$link2.'">
 	<input style="display:none" type="text" name="link" name="link3" id="link3" value="'.$link3.'">
@@ -1681,10 +1681,10 @@ function setAdLinks() {
 	$ownerId = $_SESSION['ownerId'];
 
   //$pattern = '/(?:https?:\/\/)?(?:[a-zA-Z0-9.-]+?\.(?:[a-zA-Z])|\d+\.\d+\.\d+\.\d+)/';
-	$pattern2 = '(^www\.|^http:|\`|\~|\!|\@|\#|\$|^\%|\^|\&|\*|\(|\)|\+|\[|\{|\]|\}|\||\\|\'|\<|\,|^\.|\>|^\?|^\/|\"|\;|^\:|\s)i';
+	$pattern = '(^www\.|^http(.*)|\`|\~|\!|\@|\#|\$|^\%|\^|\&|\*|\(|\)|\+|\[|\{|\]|\}|\||\\|\'|\<|\,|^\.|\>|^\?|^\/|\"|\;|^\:|\s)i';
 
-  if (!empty($_POST['link1']) && (!empty($_POST['imgData']) || isset($_SESSION['ads'][0]))) {
-  if (!preg_match($pattern2, $_POST['link1'])) {
+  if (!empty($_POST['imgData'] || isset($_SESSION['ads'][0]))) {
+  if (!preg_match($pattern, $_POST['link1'])) {
 	if (isset($_SESSION['editEvent'])) {
   $_SESSION['adlinks'][0] = $_POST['link1'];
 	} else {
@@ -1704,8 +1704,8 @@ function setAdLinks() {
   	exit();
   }
   }
-  if (!empty($_POST['link2']) && (!empty($_POST['imgData']) || isset($_SESSION['ads'][1]))) {
-  if (!preg_match($pattern2, $_POST['link2'])) {
+  if (!empty($_POST['imgData'] || isset($_SESSION['ads'][1]))) {
+  if (!preg_match($pattern, $_POST['link2'])) {
 		if (isset($_SESSION['editEvent'])) {
 	  $_SESSION['adlinks'][1] = $_POST['link2'];
 		} else {
