@@ -45,10 +45,10 @@
           $events = 'my_events.php';
           $url2 = 'location.href="'.$events.'"';
           if (isset($_SESSION['teamId'])) {
-            echo '<li class="navbar-item"><button onclick='.$url.'>Kokoonpano</button></li>';
-            echo '<li class="navbar-item"><button onclick='.$url2.'>Tapahtumasi</button></li>';
+            echo '<li class="navbar-item"><button class="button-primary" onclick='.$url.'>Kokoonpano</button></li>';
+            echo '<li class="navbar-item"><button class="button-primary" onclick='.$url2.'>Tapahtumasi</button></li>';
             }
-            echo '<li class="navbar-item"><button onclick='.$url3.'>Aseta Mainospaikat</button></li>';
+            echo '<li class="navbar-item"><button class="button-primary" onclick='.$url3.'>Aseta Mainospaikat</button></li>';
 
         ?>
       </ul>
@@ -62,10 +62,21 @@
           <tbody>
             <tr>
               <td><input type="file" onchange="loadData()"></td>
-              <td><input type="submit" value="Tallenna logo" name="fileUpload"></td>
-              <!--<img src="" height="200" alt="Image preview...">-->
-              <input type="hidden" id="imgData">
             </tr>
+            <tr>
+              <td><input class="button-primary" type="submit" value="Tallenna logo" id="fileUpload" name="fileUpload"></td>
+            </tr>
+              <img src= <?php
+              if (isset($_SESSION['teamId'])) {
+                  $fileName =  'images/logos/' . $teamUid . $teamId .'.png';
+                  echo $fileName .'?'.time();
+              } else {
+                $fileName = 'images/logos/' . $uid . $id . '.png';
+                echo $fileName .'?'.time();
+              }
+              ?> height="200" alt="Image preview...">
+              <input type="hidden" id="imgData">
+
           </tbody>
         </form>
         </table>
@@ -83,7 +94,7 @@
           </body>
         </table>
       <ul class="navbar-list">
-      <li class="navbar-item"><button onclick="window.location='edit_user.php'">Muokkaa</button></li>
+      <li class="navbar-item"><button class="button-primary" onclick="window.location='edit_user.php'">Muokkaa</button></li>
     </ul>
       </div>
     </div>
@@ -105,7 +116,7 @@
         var logo = document.getElementById("imgData");
         var reader  = new FileReader();
       reader.addEventListener("load", function () {
-//preview.src = reader.result;
+preview.src = reader.result;
 logo.value = reader.result;
 }, false);
 if (file) {

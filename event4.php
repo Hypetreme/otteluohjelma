@@ -12,7 +12,7 @@ include ('inc/header.php');
 ?>
 
 <!-- Theme included stylesheets -->
-<link href="//cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">
+<link href="css/quill.snow.css" rel="stylesheet">
 
 <div class="container">
   <div class="row" id="guide">
@@ -62,8 +62,8 @@ include ('inc/header.php');
 
   <div class="row">
     <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
-      <button class="button-primary" type="button" value="Takaisin" onclick="window.location='event3.php'"/>Takaisin</button>
-      <input class="button-primary" type="submit" name="setMatchText" id="btnEvent4" value="Seuraava">
+      <button type="button" value="Takaisin" onclick="window.location='event3.php'"/>Takaisin</button>
+      <input class="button-primary" type="submit" name="setMatchText" id="setMatchText" value="Seuraava">
 </form>
     </div>
   </div>
@@ -71,7 +71,7 @@ include ('inc/header.php');
 </div>
 
 <!-- Main Quill library -->
-<script src="//cdn.quilljs.com/1.2.0/quill.js"></script>
+<script src="js/quill.min.js"></script>
 
 <script>
 
@@ -95,13 +95,9 @@ form.onsubmit = function() {
   // Lisätään formin tiedot piilotettuun kenttään
   var matchText = document.querySelector('input[name=matchText]');
   matchText.value = JSON.stringify(quill.getContents());
-  console.log(matchText.value);
   var plainMatchText = document.querySelector('input[name=plainMatchText]');
   plainMatchText.value = JSON.stringify(quill.getText());
 
-  /*var obj = JSON.parse(matchText.value);
-  console.log(obj);
-  console.log("Submitted", $(form).serialize(), $(form).serializeArray());*/
 };
 var matchText = document.querySelector('input[name=matchText]');
 </script>

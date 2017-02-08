@@ -40,17 +40,8 @@ unset($_SESSION['visitors']);
 
         <form name="form" action="functions.php" method="GET">
           <table class='u-full-width'>
-          <thead>
-              <tr>
-                <th>Laji</th>
-                <th>Nimi</th>
-                <th>Linkki</th>
-                <th>Tila</th>
-              </tr>
-            </thead>
           <?php listEvents('all');
           ?>
-
           </table>
           <span id="newrow"></span>
             </form>

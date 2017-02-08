@@ -127,23 +127,35 @@ function message(data,selected) {
    } else if (data == "userSuccess"){
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.";
+     $('#register').prop('disabled', true);
      setTimeout(function () {
     window.location.href = "index.php";
  }, 4000);
    } else if (data == "teamSuccess"){
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.";
+     $('#register').prop('disabled', true);
      setTimeout(function () {
     window.location.href = "teams.php";
  }, 4000);
    }
   // Players
   else if (data == "savePlayerEmpty"){
-msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
-  } else if (data == "savePlayerSuccess"){
-    msg.className="msgSuccess";
     $("#msg").css("display", "none");
+//msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
+setTimeout(function () {
+window.location.href = "team.php";
+}, 1000);
+  } else if (data == "savePlayerSuccess"){
+    $("#msg").css("display", "none");
+    msg.className="msgSuccess";
+    //msg.innerHTML=successSymbol+"Pelaajien tiedot tallennettu!";
+    $('#savePlayer').prop('disabled', true);
+    setTimeout(function () {
     window.location.href = "team.php";
+  }, 1000);
+} else if (data == "Success"){
+    $("#msg").css("display", "none");
   }
   // Advertisements
   else if (data == "imgEmpty"){
@@ -161,6 +173,8 @@ msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
     $('.image-editor').cropit('disable');
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
+     $('#submitAd').prop('disabled', true);
+     $('#removeAd').prop('disabled', true);
      setTimeout(function () {
     window.location.href = "ads.php";
  }, 2000);
@@ -168,6 +182,8 @@ msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
 $('.image-editor').cropit('disable');
 msg.className="msgSuccess";
 msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
+$('#submitAd').prop('disabled', true);
+$('#removeAd').prop('disabled', true);
 setTimeout(function () {
 window.location.href = "event5.php";
 }, 2000);
@@ -175,9 +191,18 @@ window.location.href = "event5.php";
 else if (data == "logoSuccess"){
    msg.className="msgSuccess";
    msg.innerHTML=successSymbol+"Kuvan lataus onnistui!";
+   $('#fileUpload').prop('disabled', true);
    setTimeout(function () {
    window.location.href = "settings.php";
    }, 2000);
+ } else if (data == "adRemoveSuccess"){
+   $("#msg").css("display", "none");
+   msg.className="msgSuccess";
+   $('#submitAd').prop('disabled', true);
+   $('#removeAd').prop('disabled', true);
+   window.location.href = "ads.php";
+ } else if (data == "adRemoveFail"){
+   msg.innerHTML=errorSymbol+"Ei poistettavaa kuvaa!";
    }
 
  // User data
@@ -189,12 +214,16 @@ else if (data == "logoSuccess"){
  } else if (data == "nameChangeSuccess"){
  msg.className="msgSuccess";
  msg.innerHTML=successSymbol+"Joukkueen nimi muutettu!";
+ $('#removeTeam').prop('disabled', true);
+ $('#editUser').prop('disabled', true);
  setTimeout(function () {
 window.location.href = "settings.php";
 }, 2000);
 } else if (data == "teamRemoveSuccess"){
 msg.className="msgSuccess";
 msg.innerHTML=successSymbol+"Joukkue poistettu!";
+$('#removeTeam').prop('disabled', true);
+$('#editUser').prop('disabled', true);
 setTimeout(function () {
 window.location.href = "settings.php";
 }, 2000);
@@ -203,8 +232,8 @@ window.location.href = "settings.php";
  else if (data == "event1Empty"){
  msg.innerHTML=errorSymbol+"Täytä kaikki tapahtuman tiedot!";
  } else if (data == "event1Success"){
-   msg.className="msgSuccess";
    $("#msg").css("display", "none");
+   msg.className="msgSuccess";
 
 if (selected == "btnEvent2") {
  window.location.href = "event2.php";
@@ -221,8 +250,8 @@ if (selected == "btnEvent2") {
  } else if (data == "event2Empty"){
  msg.innerHTML=errorSymbol+"Lisää vähintään yksi pelaaja!";
  } else if (data == "event2Success"){
-   msg.className="msgSuccess";
    $("#msg").css("display", "none");
+   msg.className="msgSuccess";
    if (selected == "btnEvent3") {
     window.location.href = "event3.php";
     } else if (selected == "btnEvent4") {
@@ -238,14 +267,16 @@ else if (data == "event3TeamEmpty"){
    } else if (data == "event3NameEmpty"){
  msg.innerHTML=errorSymbol+"Lisää vierasjoukkueen nimi!";
    } else if (data == "event3PlayerEmpty"){
- msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
+ //msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
    } else if (data == "event3PlayerSuccess"){
-     msg.className="msgSuccess";
      $("#msg").css("display", "none");
+     msg.className="msgSuccess";
+     setTimeout(function () {
      window.location.href = "event3.php";
+   }, 1000);
    } else if (data == "event3Success"){
-   msg.className="msgSuccess";
-   $("#msg").css("display", "none");
+     $("#msg").css("display", "none");
+     msg.className="msgSuccess";
  if (selected == "btnEvent4") {
     window.location.href = "event4.php";
    } else if (selected == "btnEvent5") {
@@ -262,8 +293,10 @@ msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
 } else if (data == "adlink4Invalid"){
    msg.innerHTML=errorSymbol+"Syötä 4. mainoksen linkki oikeassa muodossa!";
 } else if (data == "eventLinkSuccess"){
-  msg.className="msgSuccess";
   $("#msg").css("display", "none");
+  msg.className="msgSuccess";
+  $('#submitAd').prop('disabled', true);
+  $('#removeAd').prop('disabled', true);
  window.location.href = "event_overview.php?c";
 }
  else if (data == "eventFail") {
@@ -273,6 +306,6 @@ msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
   msg.className="msgSuccess";
   var url = "<a style='color:white' target='_blank' href='inc/widgets/ottelu/index.php?eventId="+selected+"'>Linkki katsojanäkymään</a>";
   msg.innerHTML=successSymbol+"Tapahtuma tallennettu!<br>"+url;
-  document.getElementById('createEvent').style="display:none";
+  $('#createEvent').prop('disabled', true);
  }
 }

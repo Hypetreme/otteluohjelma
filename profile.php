@@ -49,18 +49,7 @@
               Tulevat tapahtumat
             </h5>
             <table class="u-full-width">
-              <thead>
-                <tr>
-                  <th>Tapahtuman nimi</th>
-                  <?php if (!isset($_SESSION['teamId'])) {
-                  echo '<th>Joukkue</th>';
-                  } ?>
-                  <th>Päivämäärä</th>
-                </tr>
-              </thead>
-              <tbody>
                 <?php listEvents('upcoming'); ?>
-              </tbody>
           </table>
        </div>
     </div>
@@ -71,25 +60,14 @@
               Viimeisimmät tapahtumat
             </h5>
             <table class="u-full-width">
-              <thead>
-                <tr>
-                  <th>Tapahtuman nimi</th>
-                  <?php if (!isset($_SESSION['teamId'])) {
-                  echo '<th>Joukkue</th>';
-                  } ?>
-                  <th>Päivämäärä</th>
-                </tr>
-              </thead>
-              <tbody>
                 <?php listEvents('past'); ?>
-              </tbody>
           </table>
        </div>
     </div>
 
 <?php if (isset($_SESSION['teamId'])) {
     echo '<form action="functions.php" method="POST">';
-    echo '<input type="submit" name="fetchAds" value="Luo Tapahtuma">'; }
+    echo '<input class="button-primary" type="submit" name="fetchAds" value="Luo Tapahtuma">'; }
     echo '</form>';
 ?>
     <?php

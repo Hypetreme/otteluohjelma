@@ -9,7 +9,7 @@
       </div>
     </div>
     <?php if ($_SESSION['type'] == 0) {
-      echo '<div class="row" style="background-color: #BFD0D6;">';
+      echo '<div class="row" style="background-color: #2A279B66;">';
     } else {
       echo '<div class="row" style="background-color: #f7f7f7;">';
     }
@@ -20,7 +20,7 @@
           $profile  = 'profile.php?back';
           $url  = 'location.href="'.$profile.'"';
           if (isset($_SESSION['teamId']) && $_SESSION['type'] == 0) {
-            echo '<button class="button-primary" style="float:left;" onclick='.$url.'>Takaisin seuraan</button>';
+            echo '<button style="background-color:white;float:left;" onclick='.$url.'>Seuraan</button>';
           }
         ?>
       </div>

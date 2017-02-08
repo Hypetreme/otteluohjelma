@@ -242,7 +242,9 @@ function fileUpload($mod) {
 	$teamId =	$_SESSION['teamId'];
 	$teamUid =	$_SESSION['teamUid'];
 }
+  if (!isset($_POST['fileUpload'])) {
   setAdLinks();
+}
  //Mainoksen & Logon lataus
 
     if (!empty($_POST['imgData'])) {
@@ -345,6 +347,29 @@ function fileUpload($mod) {
 		}
 		}
  }
+function removeAd($mod) {
+
+	if(!isset($_SESSION)) {
+	session_start();
+}
+	include 'dbh.php';
+
+	if(isset($_SESSION['teamId'])) {
+	$teamId   =  $_SESSION['teamId'];
+  $teamUid   =  $_SESSION['teamUid'];
+}
+	$ownerId = $_SESSION['ownerId'];
+
+	$fileName = str_replace("http://localhost/otteluohjelma/","",$_POST['fileName']);
+
+if ($fileName != "images/default_ad.png" && file_exists($fileName)) {
+echo 'adRemoveSuccess';
+unlink($fileName);
+} else {
+echo 'adRemoveFail';
+set_error_handler('error');
+}
+}
 function logIn()
 {
 	if(!isset($_SESSION)) {
@@ -423,7 +448,7 @@ function savePlayer()
 	include 'dbh.php';
 	$teamId = $_SESSION["teamId"];
 	$id = $_SESSION["id"];
-if ($_POST['firstName'] && $_POST['lastName'] && $_POST['number']) {
+if ($_POST['firstName'] && $_POST['lastName'] && $_POST['number'] && strlen(trim($_POST['firstName'])) > 0 && strlen(trim($_POST['lastName']) && strlen(trim($_POST['number'])) > 0) > 0) {
 		  $firstName = $_POST['firstName'];
 			$lastName = $_POST['lastName'];
 			$number = $_POST['number'];
@@ -618,7 +643,7 @@ function removePlayer()
 	$stmt = $conn->prepare("DELETE FROM player WHERE id = :removeid");
 	$stmt->bindParam(':removeid',$removeId);
 	$stmt->execute();
-	header("Location: team.php?teamId=$teamId");
+	header("Location: edit.php");
 }
 
 function removeEvent()
@@ -976,6 +1001,7 @@ function listHome()
 	$stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
 	$stmt->bindParam(':teamid',$teamId);
 	$stmt->execute();
+	if ($stmt->rowCount() > 0) {
 	while ($row = $stmt->fetch()) {
 	  $showId = $row['id'];
 		$_SESSION['home']['firstName'][$i] = $row['firstName'];
@@ -1001,6 +1027,9 @@ function listHome()
 		echo '</tr>';
 		$i++;
 	}
+} else {
+	echo '<h3 style="color:gray">Ei pelaajia</h3>';
+}
 }
 
 function listEvents($mod)
@@ -1042,13 +1071,28 @@ function listEvents($mod)
 	}
 
 	$stmt->execute();
+	if ($stmt->rowCount() > 0) {
 	while ($row = $stmt->fetch()) {
 		$showId = $row['id'];
 		$showName = $row['name'];
 		$showTeam = $row['team_id'];
-		$showDate = $row['date'];
-		echo "<tr>";
+		$showDate = strtotime($row['date']);
+		$showDate = date("d.m.Y", $showDate);
+		if (true) {
+
+
 		if ($mod != "all") {
+			echo '<thead>
+				<tr>
+					<th>Tapahtuman nimi</th>';
+					if (!isset($_SESSION['teamId'])) {
+					echo '<th>Joukkue</th>';
+					}
+			echo '<th>Päivämäärä</th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr>';
 			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
 		if (!isset($teamId)) {
 			$stmt2 = $conn->prepare("SELECT * from user WHERE team_id = :teamid");
@@ -1064,12 +1108,23 @@ function listEvents($mod)
 			$fileDest = glob('files/overview_'. $showId .'*.json');
 			$fileDest = substr(strstr($fileDest[0], '_'), strlen('_'));
 			$fileDest = substr($fileDest, 0, strpos($fileDest, "."));
+			echo '<thead>
+				<tr>
+			<th>Laji</th>
+			<th>Tapahtuman nimi</th>
+			<th>Linkki</th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr>';
 			echo '<td><img src="default_team.png"></td>';
 			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
 			echo "<td><a target='_blank' href='inc/widgets/ottelu/index.php?eventId=". $fileDest ."'><i class='material-icons'>input</i></a></td>";
 		}
-		echo "</tr>";
+		echo "</tr></tbody>";
 		$i++;
+	} }} else {
+		echo '<h4 style="color:gray">Ei tapahtumia</h4>';
 	}
 }
 
@@ -1130,7 +1185,9 @@ function eventData()
 				$_SESSION['eventName'] = $json['eventinfo'][0];
 				$_SESSION['eventPlace'] = $json['eventinfo'][1];
 				$_SESSION['eventDate'] = $json['eventinfo'][2];
+				if (!empty($json['eventinfo'][3])) {
 				$_SESSION['matchText'] = $json['eventinfo'][3];
+			}
 				$_SESSION['homeName'] = $json['teams']['home'][0];
 				$_SESSION['visitorName'] = $json['teams']['visitors'][0];
 
@@ -1319,10 +1376,10 @@ function createEvent()
 	$filename = $value;
 	$file_basename = substr($filename, 0, strripos($filename, '.')); // get file extention
 	$file_ext = substr($filename, strripos($filename, '.')); // get file name
-	$newfilename = $eventId . "_ad". ($i+1) . $file_ext;
-	$overview['ads']['images'][$i] = $newfilename;
+	$newfilename = $eventId . "_ad". ($key+1) . $file_ext;
+	$overview['ads']['images'][$key] = $newfilename;
 	if (!empty($_SESSION['adlinks'][$i])) {
-	$overview['ads']['links'][$i] = $_SESSION['adlinks'][$i];
+	$overview['ads']['links'][$key] = $_SESSION['adlinks'][$key];
 }
 	copy($filename, "images/ads/event/" . $newfilename);
 	if (strpos($filename, 'e_') !== false) {
@@ -1432,13 +1489,24 @@ function listPlayers()
 	$i = 0;
 	$stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
 	$stmt->bindParam(':teamid',$teamId);
-	$stmt->execute();
 	if ($stmt->execute()) {
+		if ($stmt->rowCount() > 0) {
+			$_SESSION['foundPlayers'] = 1;
+			echo '<thead>
+				<tr>
+					<th>Avatar</th>
+					<th>Nro</th>
+					<th>Etunimi</th>
+					<th>Sukunimi</th>
+					<th>Pelipaikka</th>
+				</tr>
+			</thead>';
 		while ($row = $stmt->fetch()) {
 			$showId = $row['id'];
 			$showFirst = $row['firstName'];
 			$showLast = $row['lastName'];
 			$showNum = $row['number'];
+
 			echo '<tr>';
 			echo '<td class="fetch img" id="playerpic' . $i . '"><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>';
 			echo '<td class="fetch" id="number' . $i . '">' . $showNum . '</td>';
@@ -1450,10 +1518,13 @@ function listPlayers()
 		}
 	}
 	else {
+		unset($_SESSION['foundPlayers']);
+		echo '<h3 style="color:gray">Ei pelaajia</h3>';
+	}
+}
+	else {
 		set_error_handler('error');
 	}
-
-	return $i + 1;
 }
 
 function getTeamName()
@@ -1584,13 +1655,13 @@ function userData($mod)
 	$type = $row['type'];
   if ($mod == 'view') {
 	echo '<tr>';
-	echo '<td class="bold">Käyttäjänimi:</td>';
+	echo '<td class="bold">Käyttäjänimi</td>';
 	echo '<td>' . $userName . '</td>';
 	echo '</tr>';
 }
 if (isset($_SESSION['teamId'])) {
 	echo '<tr>';
-	echo '<td class="bold">Joukkueen nimi:</td>';
+	echo '<td class="bold">Joukkueen nimi</td>';
 	if ($mod == 'view') {
 	echo '<td>' . $teamName . '</td>';
 } else {
@@ -1600,7 +1671,7 @@ if (isset($_SESSION['teamId'])) {
 }
 if ($mod == 'view') {
 	echo '<tr>';
-	echo '<td class="bold">Tilintyyppi:</td>';
+	echo '<td class="bold">Tilintyyppi</td>';
 	if ($type == 1) {
 		echo '<td>Joukkuetaso</td>';
 	}
@@ -1681,7 +1752,7 @@ function setAdLinks() {
 	$ownerId = $_SESSION['ownerId'];
 
   //$pattern = '/(?:https?:\/\/)?(?:[a-zA-Z0-9.-]+?\.(?:[a-zA-Z])|\d+\.\d+\.\d+\.\d+)/';
-	$pattern = '(^www\.|^http(.*)|\`|\~|\!|\@|\#|\$|^\%|\^|\&|\*|\(|\)|\+|\[|\{|\]|\}|\||\\|\'|\<|\,|^\.|\>|^\?|^\/|\"|\;|^\:|\s)i';
+	$pattern = '(^www\.|^http(.*)|\`|\~|\!|\@|\#|\$|^\%|\^|\&|\*|\(|\)|\+|\[|\{|\]|\}|\||\\|\'|\<|\,|^\.|\.$|\,$|\>|^\?|^\/|\"|\;|^\:|\s)i';
 
   if (!empty($_POST['imgData'] || isset($_SESSION['ads'][0]))) {
   if (!preg_match($pattern, $_POST['link1'])) {
@@ -1802,8 +1873,8 @@ $_SESSION['ads'][3] = $fileName4j;
 }
 
 // Haetaan asetetut linkit
-$stmt = $conn->prepare("SELECT * from adlinks WHERE owner_id = :ownerid");
-$stmt->bindParam(':ownerid',$ownerId);
+$stmt = $conn->prepare("SELECT * from adlinks WHERE team_id = :teamid");
+$stmt->bindParam(':teamid',$teamId);
 $stmt->execute();
 if ($row = $stmt->fetch()) {
 if (!empty($row['link1'])) {
@@ -1934,6 +2005,22 @@ if (isset($_POST['submitAd']) && ($_POST['submitAd'])=="3") {
 
 if (isset($_POST['submitAd']) && ($_POST['submitAd'])=="4") {
 	fileUpload(4);
+}
+
+if (isset($_POST['removeAd']) && ($_POST['removeAd'])=="1") {
+	removeAd(1);
+}
+
+if (isset($_POST['removeAd']) && ($_POST['removeAd'])=="2") {
+	removeAd(2);
+}
+
+if (isset($_POST['removeAd']) && ($_POST['removeAd'])=="3") {
+	removeAd(3);
+}
+
+if (isset($_POST['removeAd']) && ($_POST['removeAd'])=="4") {
+	removeAd(4);
 }
 
 if (isset($_GET['sendActivation'])) {

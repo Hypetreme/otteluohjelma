@@ -67,7 +67,8 @@
         </select>
       </div>
       <div class="twelve columns">
-        <input class="button-primary" name="register" type="submit" value="Rekisteröidy">
+        <button type="button" value="Takaisin" onclick="window.location='index.php'"/>Takaisin</button>
+        <input class="button-primary" id="register" name="register" type="submit" value="Rekisteröidy">
       </div>
     </form>
   </div>

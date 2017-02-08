@@ -42,7 +42,7 @@ exit();
       $("#iconAddTeam").hide();
       //document.getElementById('iconAddTeam').style="display:none;";
 
-      $("#btnSave").fadeIn();
+      $("#register").fadeIn();
       //document.getElementById('btnSave').style="display:block;";
 
       var num = document.getElementById('ref').value.match(/\d+/)[0];
@@ -92,19 +92,19 @@ exit();
 
 
       var uidH = document.createElement("label");
-      uidH.innerHTML = "Nimi:";
+      uidH.innerHTML = "Nimi";
 
       var emailH = document.createElement("label");
-      emailH.innerHTML = "Sähköposti:";
+      emailH.innerHTML = "Sähköposti";
 
       var pwdH = document.createElement("label");
-      pwdH.innerHTML = "Salasana:";
+      pwdH.innerHTML = "Salasana";
 
       var pwdConfirmH = document.createElement("label");
-      pwdConfirmH.innerHTML = "Salasana uudelleen:";
+      pwdConfirmH.innerHTML = "Salasana uudelleen";
 
       var color = document.createElement("label");
-      color.innerHTML = "Valitse väri:";
+      color.innerHTML = "Valitse väri";
 
       document.getElementById('newrow').appendChild(uidH);
       document.getElementById('newrow').appendChild(uidField);
@@ -125,9 +125,9 @@ exit();
 
     <div class="row">
       <div class="twelve columns">
-        <h1 style="text-transform: uppercase;">
+        <h4>
           Joukkueet
-        </h1>
+        </h4>
       </div>
     </div>
 
@@ -163,7 +163,7 @@ exit();
           <a href="#" id="iconAddTeam" onclick="addInput()">
             <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
           </a>
-          <input form="form" style="display:none" class="button-primary" name="register" type="submit" id="btnSave" value="Tallenna">
+          <input form="form" style="display:none" class="button-primary" name="register" type="submit" id="register" value="Tallenna">
           </form>
         </div>
     </div>

@@ -169,7 +169,7 @@ include 'functions.php';
 
         <div class="row">
           <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
-         <input class="button-primary" type="button" value="Takaisin" onclick="window.location='event1.php'"/>
+         <input type="button" value="Takaisin" onclick="window.location='event1.php'"/>
 
             <input class="button-primary" type="submit" name="setHomeTeam" id="btnEvent3" value="Seuraava">
             </form>

@@ -141,7 +141,10 @@ $ad4 = $fileName4j;
             listAdLinks();
             ?>
             <input type="hidden" id="image-data" name="image-data" class="hidden-image-data" />
+            <div class="twelve columns" style="text-align:center">
             <button id="submitAd" class="button-primary" type="submit">Tallenna</button>
+            <button id="removeAd" class="button-primary" type="submit">Poista</button>
+          </div>
     </form>
 </div>
     </span>
@@ -152,18 +155,18 @@ $ad4 = $fileName4j;
       <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 680px;solid;top: 59px;">
         <?php
         if (file_exists($fileName1s) || file_exists($fileName1j)){
-          echo '<div class="reserved" onclick="notify(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
+          echo '<div class="reserved" onclick="notify(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'?'.time().'"></div>';
         } else {
-          echo '<div onclick="addAd(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'"></div>';
+          echo '<div onclick="addAd(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'?'.time().'"></div>';
         }
       echo '<div style="color:white"><h2>Pelaajat</h2></div>';
       echo '<div style="color:white"><h3>Kotijoukkue</h3></div>';
       echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
       echo '<div style="color:white"><h5>Pelaaja Kaksi</h5></div>';
       if (file_exists($fileName2s) || file_exists($fileName2j)){
-        echo '<div class="reserved" onclick="notify(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
+        echo '<div class="reserved" onclick="notify(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'?'.time().'"></div>';
       } else {
-        echo '<div onclick="addAd(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'"></div>';
+        echo '<div onclick="addAd(this);" id="2" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad2.'?'.time().'"></div>';
       }
       echo '<div style="color:white"><h3>Vierasjoukkue</h3></div>';
       echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
@@ -193,7 +196,7 @@ echo '<div onclick="addAd(this);" id="4" style="border-width:1px;position:absolu
        echo'<input type="hidden" id="ad3" name="ad3" value="'.$ad3.'">';
        echo'<input type="hidden" id="ad4" name="ad4" value="'.$ad4.'">';
       ?>
-      <button class="button-primary" type="button" onclick="window.location='event4.php'"/>Takaisin</button>
+      <button type="button" onclick="window.location='event4.php'"/>Takaisin</button>
       <button class="button-primary" type="button" id="btnEvent6" onclick="window.location='event_overview.php?c'"/>Seuraava</button>
     </div>
   </div>
@@ -258,11 +261,15 @@ $('.image-editor').cropit(
       $(element).addClass('active')
       $(element).css({"border-color":"#2def30"});
       $(element).css({"border-width":"3px"});
+
+      $('#preview').css("display","none");
+      $('#preview').fadeIn();
     });
 $("#adHeader").css({"color":"black"});
 document.getElementById('adHeader').innerHTML="Mainoskuva "+element.id;
 document.getElementById('upload').style="visibility:visible;";
 document.getElementById('submitAd').value=element.id;
+document.getElementById('removeAd').value=element.id;
 document.getElementById('linkHeader').style="initial";
 document.getElementById('link1').style="display:none";
 document.getElementById('link2').style="display:none";
@@ -325,6 +332,17 @@ $('#submitAd').click(function(event){
 
       });
   });
+  $('#removeAd').click(function(event){
+        event.preventDefault(); // stop the form from submitting
+
+        var ad = $('#removeAd').val();
+        var finish = $.post("functions.php", { removeAd: ad, fileName: url }, function(data) {
+          if(data){
+            console.log(data);
+          }
+          message(data);
+        });
+    });
 </script>
 
   <?php include('inc/footer.php'); ?>

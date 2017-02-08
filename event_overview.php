@@ -15,7 +15,7 @@ include 'functions.php';
 ?>
 
 <!-- Theme included stylesheets -->
-<link href="//cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">
+<link href="css/quill.snow.css" rel="stylesheet">
 
   <div class="container">
   <?php if (!isset($_GET['eventId'])) {
@@ -109,7 +109,7 @@ include 'functions.php';
         <span>Ennakkoteksti</span>
       </h4>
       <span><?php if (isset($_SESSION['matchText'])) {
-        echo '<div id="editor" class="twelve columns" style="border:none;min-height:200px">';
+        echo '<div id="editor" class="twelve columns" style="font-size:17px;border:none;min-height:200px">';
         echo '</div>';
       } else {
         echo '<h3 style="color:gray">Ei ennakkotekstiä</h3>';
@@ -127,7 +127,7 @@ include 'functions.php';
       $url = "event5.php";
       $url2 = "event1.php";
         if (isset($_GET['c'])) {
-       echo "<button class='button-primary' type='button' value='Takaisin' onclick='window.location=\"$url\"'/>";
+       echo "<button type='button' value='Takaisin' onclick='window.location=\"$url\"'/>";
        echo "Takaisin</button>";
        if ((isset($_SESSION['saved']) || isset($_SESSION['home'])) && $_SESSION['visitorName'] && $_SESSION['visitors']) {
        echo "<form style='display: inline;padding: 5px' action='functions.php' method='POST'>";
@@ -136,7 +136,7 @@ include 'functions.php';
        echo "</form>"; }
      } else if (isset($_GET['eventId'])) {
        echo "<form style='display: inline;padding: 5px' action='functions.php?removeEvent=".$eventId."' method='POST'>";
-       echo "<button style='border-color:gray;background-color:gray;' class='button-primary' name='removeEvent' type='submit' id='btnremoveEvent' value='Poista'>";
+       echo "<button style='border-color:gray;background-color:red;' class='button-primary' name='removeEvent' type='submit' id='btnremoveEvent' value='Poista'>";
        echo "Poista</button>";
        echo "</form>";
        echo "<button class='button-primary' type='button' value='Muokkaa' onclick='window.location=\"$url2\"'/>";
@@ -163,7 +163,7 @@ include 'functions.php';
   });
   </script>
   <!-- Main Quill library -->
-  <script src="//cdn.quilljs.com/1.2.0/quill.js"></script>
+  <script src="js/quill.min.js"></script>
   <script>
   var options = {
     modules: {

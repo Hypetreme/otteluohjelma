@@ -16,10 +16,6 @@ include 'functions.php';
          <h4>
            <form name="form" action="functions.php" method="POST">
           <span><p style="display: inline;">Muokkaa</p></span>
-
-        <a id="iconEdit" style="display: inline;" href="team.php?teamId=<?php echo $_SESSION['teamId']?>">
-          <i class="material-icons">reply</i></a>
-        </a>
         </h4>
   </div>
       <div class="twelve columns">
@@ -29,6 +25,7 @@ include 'functions.php';
         editTeam();
           ?>
         </span>
+      <button type="button" value="Takaisin" onclick="window.location='team.php?teamId=<?php echo $_SESSION['teamId']?>'"/>Takaisin</button>
       <input class="button-primary" name="updateTeam" type="submit" id="btnUpdate" value="Tallenna muutokset">
         </form>
       </div>

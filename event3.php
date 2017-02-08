@@ -12,50 +12,96 @@ include 'functions.php';
 ?>
 
   <script>
+  function openDialog() {
+  vex.dialog.open({
+      message: 'Lisää pelaaja',
+      input: [
+          '<span id="msg" class="msgError"></span>',
+          '<label for="firstName">Etunimi</label>',
+          '<input id="firstName" name="firstName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä etunimi\')">',
+          '<label for="firstName">Sukunimi</label>',
+          '<input id="lastName" name="lastName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä sukunimi\')">',
+          '<label for="firstName">Pelinumero</label>',
+          '<input id="number" name="number" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä pelinumero\')">',
+      ].join(''),
+      buttons: [
+          $.extend({}, vex.dialog.buttons.YES, { text: 'Lisää uusi'}),
+          $.extend({}, vex.dialog.buttons.YES, { text: 'Valmis' }),
+      ],
+      callback: function (data) {
+          if (!data) {
+          message("event3PlayerSuccess");
+          } else {
+          }
+      }
+  })
+  $('.vex-first').on('click', function() {
+    if ($('#firstName').val()!="" && $('#lastName').val()!="" && $('#number').val()!="") {
+      var selected = ($(this).attr("id"));
+      var visitor = $('#visitorName').val();
+      var first = $('#firstName').val();
+      var last = $('#lastName').val();
+      var num = $('#number').val();
+      var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num}, function(data) {
+        if(data){
+          console.log(data);
+        }
+
+      });
+    openDialog();
+  }
+  });
+  $('.vex-last').on('click', function() {
+    if ($('#firstName').val()!="" && $('#lastName').val()!="" && $('#number').val()!="") {
+      var selected = ($(this).attr("id"));
+      var visitor = $('#visitorName').val();
+      var first = $('#firstName').val();
+      var last = $('#lastName').val();
+      var num = $('#number').val();
+      var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num}, function(data) {
+        if(data){
+          console.log(data);
+        }
+         message(data);
+      });
+  }
+  });
+}
     var count = 1;
 
     function addInput() {
-      document.getElementById('newTr').style="display:table-row;height:61px";
-      document.getElementById('iconAddPlayer').style="display:none";
-      document.getElementById('addVisitor').style="display:block";
+      $("#newTr").fadeIn();
+      //document.getElementById('newTr').style="display:table-row;height:61px";
+      $("#iconAddPlayer").hide();
+      //document.getElementById('iconAddPlayer').style="display:none";
+      $("#addVisitor").fadeIn();
+      //document.getElementById('addVisitor').style="display:block";
       var num = document.getElementById('ref').value.match(/\d+/)[0];
       var finalNum = +num + count - 1;
 
-      var etuCount = "firstName";
       var etuField = document.createElement("input");
       etuField.type = "text";
-      etuField.name = etuCount;
-      etuField.id = etuCount;
-      etuField.style = "padding:0; margin:0;margin-left:-10px;width:100px;clear:left;";
+      etuField.name = "firstName";
+      etuField.id = "firstName";
 
-      var sukuCount = "lastName";
       var sukuField = document.createElement("input");
       sukuField.type = "text";
-      sukuField.name = sukuCount;
-      sukuField.id = sukuCount;
-      sukuField.style = "padding:0; margin:0;margin-left:-5px;width:100px;clear:left;";
+      sukuField.name = "lastName";
+      sukuField.id = "lastName";
 
-      var nroCount = "number";
       var nroField = document.createElement("input");
       nroField.type = "text";
-      nroField.name = nroCount;
-      nroField.id = nroCount;
-      nroField.style = "padding:0; margin:0;margin-left:5px;width:40px;clear:left;";
+      nroField.name = "number";
+      nroField.id = "number";
 
-      /*var etuP = document.createElement("p");
-      var etuText = document.createTextNode("Etunimi:");
-      etuP.style = "display: inline-block; text-align: right; width:90px;";
-      etuP.appendChild(etuText);
+      var etuH = document.createElement("label");
+      etuH.innerHTML = "Etunimi";
 
-      var sukuP = document.createElement("p");
-      var sukuText = document.createTextNode("Sukunimi:");
-      sukuP.style = "display: inline-block; text-align: right; width:90px;";
-      sukuP.appendChild(sukuText);
+      var sukuH = document.createElement("label");
+      sukuH.innerHTML = "Sukunimi";
 
-      var nroP = document.createElement("p");
-      var nroText = document.createTextNode("Pelinumero:");
-      nroP.style = "display: inline-block; text-align: right; width:90px;";
-      nroP.appendChild(nroText);*/
+      var nroH = document.createElement("label");
+      nroH.innerHTML = "Numero";
 
       //var headerCount = "Pelaaja " + finalNum;
 
@@ -66,12 +112,12 @@ include 'functions.php';
       //var br = document.createElement("br");
 
       //document.getElementById('newrow').appendChild(header);
-      //document.getElementById('newrow').appendChild(etuP);
-      document.getElementById('firstRow').appendChild(etuField);
-      //document.getElementById('newrow').appendChild(sukuP);
-      document.getElementById('lastRow').appendChild(sukuField);
-      //document.getElementById('newrow').appendChild(nroP);
-      document.getElementById('numRow').appendChild(nroField);
+      document.getElementById('newrow').appendChild(etuH);
+      document.getElementById('newrow').appendChild(etuField);
+      document.getElementById('newrow').appendChild(sukuH);
+      document.getElementById('newrow').appendChild(sukuField);
+      document.getElementById('newrow').appendChild(nroH);
+      document.getElementById('newrow').appendChild(nroField);
       //document.getElementById('newrow').appendChild(br);
 
       count += 1;
@@ -109,7 +155,6 @@ include 'functions.php';
   </div>
   <div class="row">
     <div class="twelve columns">
-      <span id="msg" class="msgError"></span>
     </div>
   </div>
     <div class="row">
@@ -125,6 +170,7 @@ include 'functions.php';
        }
         ?>">
         </form>
+        <button type="button" class="button-primary" id="iconAddPlayer" style="float:left;position:relative;left:-10px">Lisää</button>
       </div>
       </div>
 
@@ -149,27 +195,23 @@ include 'functions.php';
 <?php
         echo'<input type="hidden" id="ref" value="'.$count.'">';
   ?>
-  <table>
   <tr id="newTr" style="height:61px;display:none">
     <td><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>
-  <td id="numRow" style="padding:0; margin:0 "></td>
-   <td id="firstRow" style="padding:0; margin:0 "></td>
-   <td id="lastRow" style="padding:0; margin:0 "></td>
+
+    <td><span id="newrow"></span></td>
+    <td></td>
   </tr>
   </table>
 
   <div class="row">
     <div class="twelve columns" style="text-align:left">
-   <a href="#" id="iconAddPlayer"  onclick="addInput()">
-    <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
-  </a>
   <input style="display:none"class="button-primary" name="addVisitor" type="submit" id="addVisitor" value="Tallenna">
 </form>
 </div>
 </div>
 <div class="row">
       <div class="twelve columns" style='text-align:center;padding-top:50px'>
-<button class="button-primary" type="button" value="Takaisin" onclick="window.location='event2.php'"/>Takaisin</button>
+<button type="button" value="Takaisin" onclick="window.location='event2.php'"/>Takaisin</button>
 <input form="form" class="button-primary" type="submit" id="btnEvent4" name="setVisitorTeam" value="Seuraava">
 
       </div>
@@ -192,20 +234,9 @@ $('#btnEvent4, #btnEvent5, #btnEvent6').click(function(event){
     });
 });
 
-$('#addVisitor').click(function(event){
-    var selected = ($(this).attr("id"));
-    event.preventDefault(); // stop the form from submitting
-    var visitor = $('#visitorName').val();
-    var first = $('#firstName').val();
-    var last = $('#lastName').val();
-    var num = $('#number').val();
-    var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num}, function(data) {
-      if(data){
-        console.log(data);
-      }
-      message(data,selected);
+$('#iconAddPlayer').on('click', function() {
+openDialog();
 
-    });
 });
 </script>
   <?php include('inc/footer.php'); ?>
