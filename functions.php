@@ -133,7 +133,11 @@ function register()
 	} else {
 
  if (isset($_SESSION['id'])) {
+	if ($_POST['button'] != "add")  {
 	echo 'teamSuccess';
+} else {
+	echo 'teamMore';
+}
 } else {
   echo 'userSuccess';
 }
@@ -361,11 +365,13 @@ function removeAd($mod) {
 	$ownerId = $_SESSION['ownerId'];
 
 	$fileName = str_replace("http://localhost/otteluohjelma/","",$_POST['fileName']);
+	$fileName = substr($fileName, 0, strpos($fileName, "?"));
 
 if ($fileName != "images/default_ad.png" && file_exists($fileName)) {
 echo 'adRemoveSuccess';
 unlink($fileName);
 } else {
+echo $fileName;
 echo 'adRemoveFail';
 set_error_handler('error');
 }
@@ -463,7 +469,11 @@ if ($_POST['firstName'] && $_POST['lastName'] && $_POST['number'] && strlen(trim
 			echo 'savePlayerEmpty';
 			exit();
 		}
+		if ($_POST['button'] != "add") {
 	  echo 'savePlayerSuccess';
+	} else {
+		echo 'savePlayerMore';
+	}
 }
 
 function saveTeam()
@@ -716,6 +726,7 @@ function removeTeam()
 		unset($_SESSION['teamName']);
 } else {
 	set_error_handler('error');
+	exit();
 }
 }
 }
@@ -769,7 +780,11 @@ function addVisitor()
 	if (!empty($_POST['visitorName'])) {
   $_SESSION['visitorName'] = $_POST['visitorName'];
 }
+if ($_POST['button'] != "add") {
 	echo 'event3PlayerSuccess';
+} else {
+	echo 'event3More';
+}
 }
 
 function setEventInfo($mod)
@@ -869,7 +884,7 @@ function validateEvent() {
 		exit();
 	} }
 	if (isset($_POST['addVisitor'])) {
-	if (empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['number'])) {
+	if (preg_match('/\s/',$_POST['firstName']) || preg_match('/\s/',$_POST['lastName']) || preg_match('/\s/',$_POST['number'])) {
 		echo 'event3PlayerEmpty';
 		return false;
 		exit();
@@ -903,10 +918,10 @@ function showHome()
 	}
 	else {
 		if (isset($_SESSION['home'])) {
-		foreach($_SESSION['home']['firstName'] as $value) {
-			$showFirst = $_SESSION['home']['firstName'][$i];
-			$showLast = $_SESSION['home']['lastName'][$i];
-			$showNum = $_SESSION['home']['number'][$i];
+		foreach($_SESSION['old']['firstName'] as $value) {
+			$showFirst = $_SESSION['old']['firstName'][$i];
+			$showLast = $_SESSION['old']['lastName'][$i];
+			$showNum = $_SESSION['old']['number'][$i];
 			echo '<td class="all img" id="playerpic' . $i . '"><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>';
 			echo '<td class="all" id="number' . $i . '">' . $showNum . '</td>';
 			echo '<td class="all" style="text-transform: capitalize;" id="first' . $i . '">' . $showFirst . '</td>';
@@ -969,6 +984,8 @@ function listVisitors()
 		echo '<td class="all" id="number' . $i . '">' . $showNum . '</td>';
 		echo '<td class="all" style="text-transform: capitalize;" id="first' . $i . '">' . $showFirst . '</td>';
 		echo '<td class="all" style="text-transform: capitalize;" id="last' . $i . '">' . $showLast . '</td>';
+		//Pelipaikka
+		echo '<td></td>';
 		echo '<td><a href="functions.php?removeVisitor=' . $i . '" id="iconRemove"><i class="material-icons">delete</i></a></td>';
 		/*echo '<input type="hidden" id="number" name="number[' . $i . ']" value="' . $showNum . '">';
 		echo '<input type="hidden" id="firstName" name="firstName[' . $i . ']" value="' . $showFirst . '">';
@@ -1001,15 +1018,15 @@ function listHome()
 	$stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
 	$stmt->bindParam(':teamid',$teamId);
 	$stmt->execute();
-	if ($stmt->rowCount() > 0) {
-	while ($row = $stmt->fetch()) {
+
+	/*while ($row = $stmt->fetch()) {
 	  $showId = $row['id'];
 		$_SESSION['home']['firstName'][$i] = $row['firstName'];
 		$_SESSION['home']['lastName'][$i] = $row['lastName'];
 		$_SESSION['home']['number'][$i] = $row['number'];
 		$i++;
-	}
-
+	}*/
+	if ($stmt->rowCount() > 0 || isset($_SESSION['eventId'])) {
 	$i = 0;
 	foreach($_SESSION['home']['firstName'] as $value) {
 		$showId = $i;
@@ -1078,22 +1095,9 @@ function listEvents($mod)
 		$showTeam = $row['team_id'];
 		$showDate = strtotime($row['date']);
 		$showDate = date("d.m.Y", $showDate);
-		if (true) {
-
 
 		if ($mod != "all") {
-			echo '<thead>
-				<tr>
-					<th>Tapahtuman nimi</th>';
-					if (!isset($_SESSION['teamId'])) {
-					echo '<th>Joukkue</th>';
-					}
-			echo '<th>Päivämäärä</th>
-				</tr>
-			</thead>
-			<tbody>
-			<tr>';
-			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
+		echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
 		if (!isset($teamId)) {
 			$stmt2 = $conn->prepare("SELECT * from user WHERE team_id = :teamid");
 			$stmt2->bindParam(':teamid',$showTeam);
@@ -1123,7 +1127,7 @@ function listEvents($mod)
 		}
 		echo "</tr></tbody>";
 		$i++;
-	} }} else {
+}} else {
 		echo '<h4 style="color:gray">Ei tapahtumia</h4>';
 	}
 }
@@ -1163,7 +1167,19 @@ function eventData()
 	}
 }
 
-	$i = 0;
+$i = 0;
+$stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
+$stmt->bindParam(':teamid',$teamId);
+$stmt->execute();
+
+while ($row = $stmt->fetch()) {
+	$showId = $row['id'];
+	$_SESSION['home']['firstName'][$i] = $row['firstName'];
+	$_SESSION['home']['lastName'][$i] = $row['lastName'];
+	$_SESSION['home']['number'][$i] = $row['number'];
+	$i++;
+}
+
 	if (!empty($_SESSION['eventId'])) {
 		if ($_SESSION['type'] == 0) {
 			$stmt = $conn->prepare("SELECT * from event WHERE id= :eventid AND owner_id = :id");
@@ -1192,12 +1208,23 @@ function eventData()
 				$_SESSION['visitorName'] = $json['teams']['visitors'][0];
 
         fetchAds();
-
+				$i = 0;
+        $j = 0;
 				foreach($json['teams']['home']['players'] as $value) {
-					$_SESSION['home']['firstName'][$i] = $json['teams']['home']['players'][$i]['first'];
-					$_SESSION['home']['lastName'][$i] = $json['teams']['home']['players'][$i]['last'];
-					$_SESSION['home']['number'][$i] = $json['teams']['home']['players'][$i]['number'];
-					$i++;
+					if ($_SESSION['home']['firstName'][$i] != $json['teams']['home']['players'][$j]['first']) {
+						while (!empty($_SESSION['home']['firstName'][$i])) {
+						$i++;
+				}
+}
+				$_SESSION['home']['firstName'][$i] = $json['teams']['home']['players'][$j]['first'];
+				$_SESSION['home']['lastName'][$i] = $json['teams']['home']['players'][$j]['last'];
+				$_SESSION['home']['number'][$i] = $json['teams']['home']['players'][$j]['number'];
+
+				$_SESSION['old']['firstName'][$j] = $json['teams']['home']['players'][$j]['first'];
+				$_SESSION['old']['lastName'][$j] = $json['teams']['home']['players'][$j]['last'];
+				$_SESSION['old']['number'][$j] = $json['teams']['home']['players'][$j]['number'];
+
+					$j++;
 				}
 
 				$i = 0;
@@ -1381,11 +1408,29 @@ function createEvent()
 	if (!empty($_SESSION['adlinks'][$i])) {
 	$overview['ads']['links'][$key] = $_SESSION['adlinks'][$key];
 }
-	copy($filename, "images/ads/event/" . $newfilename);
+	if (copy($filename, "images/ads/event/" . $newfilename)) {
 	if (strpos($filename, 'e_') !== false) {
 	unlink($filename);
 }
 	$i++;
+} else {
+	set_error_handler('error');
+	unset($_SESSION['eventId']);
+	unset($_SESSION['homeName']);
+	unset($_SESSION['visitorName']);
+	unset($_SESSION['eventName']);
+	unset($_SESSION['eventPlace']);
+	unset($_SESSION['eventDate']);
+	unset($_SESSION['matchText']);
+	unset($_SESSION['plainMatchText']);
+	unset($_SESSION['home']);
+	unset($_SESSION['visitors']);
+	unset($_SESSION['saved']);
+	unset($_SESSION['ads']);
+	unset($_SESSION['adlinks']);
+	unset($_SESSION['editEvent']);
+	exit();
+}
 }
 }
 
@@ -1491,7 +1536,9 @@ function listPlayers()
 	$stmt->bindParam(':teamid',$teamId);
 	if ($stmt->execute()) {
 		if ($stmt->rowCount() > 0) {
-			$_SESSION['foundPlayers'] = 1;
+			echo '<script>
+      document.getElementById("edit").style="display:initial";
+			</script>';
 			echo '<thead>
 				<tr>
 					<th>Avatar</th>
@@ -1518,12 +1565,12 @@ function listPlayers()
 		}
 	}
 	else {
-		unset($_SESSION['foundPlayers']);
 		echo '<h3 style="color:gray">Ei pelaajia</h3>';
 	}
 }
 	else {
 		set_error_handler('error');
+		exit();
 	}
 }
 
@@ -1557,6 +1604,7 @@ function getTeamName()
 			unset($_SESSION['teamId']);
 			unset($_SESSION['teamUid']);
 			set_error_handler('error');
+			exit();
 		}
 	}
 	else {
@@ -1591,7 +1639,8 @@ function editTeam()
 	$stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
 	$stmt->bindParam(':teamid',$teamId);
 	$stmt->execute();
-	echo "<table class='u-full-width'>";
+	if ($stmt->rowCount() > 0) {
+  echo "<table class='u-full-width'>";
 	while ($row = $stmt->fetch()) {
 		$showId = $row['id'];
 		$showFirst = $row['firstName'];
@@ -1607,8 +1656,10 @@ function editTeam()
 		echo '</tr>';
 		$i++;
 	}
-
-	echo '</table>';
+echo '</table>';
+} else {
+	echo '<script>window.location = "team.php"</script>';
+}
 }
 
 /*function newEvent()

@@ -49,6 +49,18 @@
               Tulevat tapahtumat
             </h5>
             <table class="u-full-width">
+              <thead>
+        	 		 <tr>
+        	 			 <th>Tapahtuman nimi</th>
+                 <?php
+                if (!isset($_SESSION['teamId'])) {
+       					echo '<th>Joukkue</th>';
+              } ?>
+                <th>Päivämäärä</th>
+          				</tr>
+          			</thead>
+          			<tbody>
+          			<tr>
                 <?php listEvents('upcoming'); ?>
           </table>
        </div>

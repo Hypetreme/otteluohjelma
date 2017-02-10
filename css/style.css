@@ -173,15 +173,15 @@ header {
   position:fixed;
   display: none;
   padding:15px;
-  border-radius:8px;
   color: white;
   font-weight: bold;
   font-size: 22px;
   font-weight:bold;
   font-size:15px;
-  width:30%;
+  width:100%;
   z-index:999;
-  left:35%;
+  left:0;
+  bottom:0;
 }
 .msgError {
   background-color: #e80000;

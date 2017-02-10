@@ -27,10 +27,39 @@
   <script>
 
   function openDialog() {
-  vex.dialog.open({
+    vex.dialog.open({
+    onSubmit: function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if ($('#firstName').val()!="" && $('#lastName').val()!="" && $('#number').val()!="") {
+      if ($('.vex-first').hasClass("ok")) {
+      var btn = "add";
+    } else {
+      var btn = "";
+    }
+      var selected = ($(this).attr("id"));
+      var visitor = $('#visitorName').val();
+      var first = $('#firstName').val();
+      var last = $('#lastName').val();
+      var num = $('#number').val();
+      var finish = $.post("functions.php", { savePlayer: "saveplayer", firstName : first, lastName : last, number : num, button: btn }, function(data) {
+        if(data){
+          console.log(data);
+        }
+         message(data);
+         if (data == "savePlayerMore") {
+            vex.closeAll();
+            setTimeout(function(){
+            openDialog();
+             }, 500);
+         }
+
+      });
+  }
+  },
       message: 'Lisää pelaaja',
       input: [
-          '<span id="msg" class="msgError"></span>',
           '<label for="firstName">Etunimi</label>',
           '<input id="firstName" name="firstName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä etunimi\')">',
           '<label for="firstName">Sukunimi</label>',
@@ -44,42 +73,15 @@
       ],
       callback: function (data) {
           if (!data) {
-          message("savePlayerSuccess");
-          } else {
+          message("savePlayerClose");
           }
       }
   })
-  $('.vex-first').on('click', function() {
-    if ($('#firstName').val()!="" && $('#lastName').val()!="" && $('#number').val()!="") {
-      var selected = ($(this).attr("id"));
-      var visitor = $('#visitorName').val();
-      var first = $('#firstName').val();
-      var last = $('#lastName').val();
-      var num = $('#number').val();
-      var finish = $.post("functions.php", { savePlayer: "saveplayer", firstName : first, lastName : last, number : num}, function(data) {
-        if(data){
-          console.log(data);
-        }
 
-      });
-    openDialog();
-  }
+$('.vex-first').click(function(event){
+  $(this).addClass("ok");
   });
-  $('.vex-last').on('click', function() {
-    if ($('#firstName').val()!="" && $('#lastName').val()!="" && $('#number').val()!="") {
-      var selected = ($(this).attr("id"));
-      var visitor = $('#visitorName').val();
-      var first = $('#firstName').val();
-      var last = $('#lastName').val();
-      var num = $('#number').val();
-      var finish = $.post("functions.php", { savePlayer: "saveplayer", firstName : first, lastName : last, number : num}, function(data) {
-        if(data){
-          console.log(data);
-        }
-         message(data);
-      });
-  }
-  });
+
 }
     $content = "<div class='six columns'>";
     $content += "<h1>Lisää pelaaja</h1>";
@@ -152,11 +154,11 @@
          <h4>
           <span><?php echo $_SESSION['teamUid'];?></span>
         </h4>
-          <button type="button" class="button-primary" id="iconAddPlayer" style="position:relative;left:-10px">Lisää</button>
+          <button type="button" class="button-primary" id="iconAddPlayer" style="position:relative;">Lisää</button>
           <?php
-          if (isset($_SESSION['foundPlayers'])) {
-          echo '<button class="button-primary" type="button" onclick="window.location.href=\'edit.php\'">Muokkaa</button>';
-        }
+
+          echo '<button id="edit" style="display:none" class="button-primary" type="button" onclick="window.location.href=\'edit.php\'">Muokkaa</button>';
+
           ?>
       </div>
       <div class="twelve columns">

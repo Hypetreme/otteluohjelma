@@ -21,6 +21,7 @@ include 'functions.php';
       <div class="twelve columns">
 
         <span id="datarow">
+        
         <?php
         editTeam();
           ?>

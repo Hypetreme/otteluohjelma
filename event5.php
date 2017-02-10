@@ -287,7 +287,7 @@ $('#preview').css("background-image", "none");
 $('#image-data').val("");
 imageData = "";
 
-if (url != 'http://localhost/otteluohjelma/images/default_ad.png' && url != 'www.otteluohjelma.fi/login/images/default_ad.png' && url != 'otteluohjelma.fi/login/images/default_ad.png') {
+if (!url.includes('default_ad.png')){
 $('.image-editor').cropit('imageSrc', url);
 }
 }

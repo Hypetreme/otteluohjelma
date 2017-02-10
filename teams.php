@@ -32,6 +32,67 @@ exit();
 ?>
 
   <script type="text/javascript">
+  function openDialog() {
+  vex.dialog.open({
+
+    onSubmit: function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+  if ($('#uid').val()!="" && $('#email').val()!="" && $('#pwd').val()!="" && $('#pwdConfirm').val()!="") {
+    if ($('.vex-first').hasClass("ok")) {
+    var btn = "add"
+  } else {
+    var btn = "";
+  }
+    var username = $('#uid').val();
+    var emailaddress = $('#email').val();
+    var pass = $('#pwd').val();
+    var passconfirm = $('#pwdConfirm').val();
+    var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm, button: btn }, function(data) {
+      if(data){
+        console.log(data);
+      }
+       message(data);
+       if (data == "teamMore") {
+          vex.closeAll();
+          setTimeout(function(){
+          openDialog();
+           }, 500);
+       }
+
+
+    });
+}
+  },
+      message: 'Lisää joukkue',
+      input: [
+          '<label for="uid">Käyttäjänimi</label>',
+          '<input id="uid" name="uid" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä käyttäjänimi\')">',
+          '<label for="email">Sähköposti</label>',
+          '<input id="email" name="email" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä sähköpostiosoite\')">',
+          '<input id="fake1" style="display:none">',
+          '<input id="fake2" style="display:none" type="password">',
+          '<label for="pwd">Salasana</label>',
+          '<input id="pwd" name="pwd" type="password" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä salasana\')">',
+          '<label for="pwd">Salasana uudelleen</label>',
+          '<input id="pwdConfirm" name="pwdConfirm" type="password" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä salasana uudelleen\')">',
+      ].join(''),
+      buttons: [
+          $.extend({}, vex.dialog.buttons.YES, { text: 'Lisää uusi'}),
+          $.extend({}, vex.dialog.buttons.YES, { text: 'Valmis' }),
+      ],
+      callback: function (data) {
+          if (!data) {
+          message("teamClose");
+          }
+      }
+  })
+  $('.vex-first').click(function(event){
+    $(this).addClass("ok");
+    });
+
+}
 
     function addInput() {
 
@@ -122,19 +183,19 @@ exit();
 </script>
 
   <div class="container">
-
+  <span id="msg" class="msgError"></span>
     <div class="row">
       <div class="twelve columns">
         <h4>
           Joukkueet
         </h4>
+        <button type="button" class="button-primary" id="iconAddPlayer" style="position:relative;">Lisää</button>
       </div>
     </div>
 
     <div class="row">
       <div class="twelve columns">
 <form id="form" action="functions.php" method="POST">
-  <span style="float:left" id="msg" class="msgError"></span>
           <table class='u-full-width'>
 
           <thead>
@@ -160,9 +221,6 @@ exit();
         </div>
 
         <div class="twelve columns">
-          <a href="#" id="iconAddTeam" onclick="addInput()">
-            <i style="position:relative;font-size:40px; left:-10px"class="material-icons">add box</i>
-          </a>
           <input form="form" style="display:none" class="button-primary" name="register" type="submit" id="register" value="Tallenna">
           </form>
         </div>
@@ -170,18 +228,10 @@ exit();
 
   </div>
   <script>
-  $('form').submit(function(event){
-      event.preventDefault(); // stop the form from submitting
-      var username = $('#uid').val();
-      var emailaddress = $('#email').val();
-      var pass = $('#pwd').val();
-      var passconfirm = $('#pwdConfirm').val();
-      var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm }, function(data) {
-        if(data){
-          console.log(data);
-        }
-          message(data);
-      });
+
+  $('#iconAddPlayer').on('click', function() {
+  openDialog();
+
   });
   </script>
 

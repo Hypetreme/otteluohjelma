@@ -14,9 +14,41 @@ include 'functions.php';
   <script>
   function openDialog() {
   vex.dialog.open({
+
+    onSubmit: function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+  if ($('#firstName').val()!="" && $('#lastName').val()!="" && $('#number').val()!="") {
+    if ($('.vex-first').hasClass("ok")) {
+    var btn = "add"
+  } else {
+    var btn = "";
+  }
+    var selected = ($(this).attr("id"));
+    var visitor = $('#visitorName').val();
+    var first = $('#firstName').val();
+    var last = $('#lastName').val();
+    var num = $('#number').val();
+    var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num, button: btn}, function(data) {
+      if(data){
+        console.log(data);
+      }
+       message(data);
+       if (data == "event3More") {
+          vex.closeAll();
+          setTimeout(function(){
+          openDialog();
+           }, 500);
+       }
+
+
+    });
+}
+  },
+
       message: 'Lisää pelaaja',
       input: [
-          '<span id="msg" class="msgError"></span>',
           '<label for="firstName">Etunimi</label>',
           '<input id="firstName" name="firstName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä etunimi\')">',
           '<label for="firstName">Sukunimi</label>',
@@ -30,42 +62,13 @@ include 'functions.php';
       ],
       callback: function (data) {
           if (!data) {
-          message("event3PlayerSuccess");
-          } else {
+          message("event3Close");
           }
       }
   })
-  $('.vex-first').on('click', function() {
-    if ($('#firstName').val()!="" && $('#lastName').val()!="" && $('#number').val()!="") {
-      var selected = ($(this).attr("id"));
-      var visitor = $('#visitorName').val();
-      var first = $('#firstName').val();
-      var last = $('#lastName').val();
-      var num = $('#number').val();
-      var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num}, function(data) {
-        if(data){
-          console.log(data);
-        }
-
-      });
-    openDialog();
-  }
-  });
-  $('.vex-last').on('click', function() {
-    if ($('#firstName').val()!="" && $('#lastName').val()!="" && $('#number').val()!="") {
-      var selected = ($(this).attr("id"));
-      var visitor = $('#visitorName').val();
-      var first = $('#firstName').val();
-      var last = $('#lastName').val();
-      var num = $('#number').val();
-      var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num}, function(data) {
-        if(data){
-          console.log(data);
-        }
-         message(data);
-      });
-  }
-  });
+  $('.vex-first').click(function(event){
+    $(this).addClass("ok");
+    });
 }
     var count = 1;
 
@@ -155,6 +158,7 @@ include 'functions.php';
   </div>
   <div class="row">
     <div class="twelve columns">
+      <span id="msg" class="msgError"></span>
     </div>
   </div>
     <div class="row">

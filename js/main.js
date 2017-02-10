@@ -97,8 +97,10 @@ function message(data,selected) {
 
     // Login
   if (data == "pwdWrong"){
+    msg.className="msgError";
     msg.innerHTML=errorSymbol+"Käyttäjätunnus tai salasana on väärin!";
   } else if (data == "notActivated"){
+    msg.className="msgError";
     msg.innerHTML=errorSymbol+"Käyttäjätunnusta ei ole aktivoitu!";
   } else if (data == "loginSuccess"){
     msg.className="msgSuccess";
@@ -107,22 +109,31 @@ function message(data,selected) {
     }
    // Register
      else if (data == "duplicate"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Käyttäjänimi on jo olemassa!";
    } else if (data == "uidEmpty"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Et syöttänyt käyttäjänimeä!";
    } else if (data == "uidInvalid"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Käyttäjänimi ei saa sisältää välilyöntejä!";
    } else if (data == "pwdEmpty"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Et syöttänyt salasanaa!";
    } else if (data == "uidShort"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Käyttäjänimen on oltava vähintään 4 merkkiä pitkä!";
    } else if (data == "pwdShort"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Salasanan on oltava vähintään 4 merkkiä pitkä!";
    } else if (data == "pwdMismatch"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Salasanat eivät täsmää!";
    } else if (data == "emailInvalid"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Syötä sähköposti oikeassa muodossa!";
    } else if (data == "emailFail"){
+     msg.className="msgError";
      msg.innerHTML=errorSymbol+"Käyttäjä rekisteröity! Sähköpostia ei voitu lähettää.";
    } else if (data == "userSuccess"){
      msg.className="msgSuccess";
@@ -132,31 +143,50 @@ function message(data,selected) {
     window.location.href = "index.php";
  }, 4000);
    } else if (data == "teamSuccess"){
+     vex.closeAll();
      msg.className="msgSuccess";
-     msg.innerHTML=successSymbol+"Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.";
+     msg.innerHTML=successSymbol+"Joukkue lisätty! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.";
      $('#register').prop('disabled', true);
      setTimeout(function () {
     window.location.href = "teams.php";
  }, 4000);
+   } else if (data == "teamMore"){
+     vex.closeAll();
+     msg.className="msgSuccess";
+     msg.innerHTML=successSymbol+"Joukkue lisätty!";
+     $('#register').prop('disabled', true);
+   }
+   else if (data == "teamClose"){
+     $("#msg").css("display", "none");
+     $('#register').prop('disabled', true);
+     setTimeout(function () {
+    window.location.href = "teams.php";
+ }, 1000);
    }
   // Players
   else if (data == "savePlayerEmpty"){
-    $("#msg").css("display", "none");
-//msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
-setTimeout(function () {
-window.location.href = "team.php";
-}, 1000);
+  msg.className="msgError";
+  msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
   } else if (data == "savePlayerSuccess"){
-    $("#msg").css("display", "none");
+    vex.closeAll();
     msg.className="msgSuccess";
-    //msg.innerHTML=successSymbol+"Pelaajien tiedot tallennettu!";
+    msg.innerHTML=successSymbol+"Pelaaja lisätty!";
     $('#savePlayer').prop('disabled', true);
     setTimeout(function () {
-    window.location.href = "team.php";
+   window.location.href = "team.php";
   }, 1000);
-} else if (data == "Success"){
-    $("#msg").css("display", "none");
-  }
+} else if (data == "savePlayerMore"){
+  vex.closeAll();
+  msg.className="msgSuccess";
+  msg.innerHTML=successSymbol+"Pelaaja lisätty!";
+  $('#savePlayer').prop('disabled', true);
+} else if (data == "savePlayerClose"){
+  $("#msg").css("display", "none");
+  $('#savePlayer').prop('disabled', true);
+  setTimeout(function () {
+ window.location.href = "team.php";
+}, 1000);
+}
   // Advertisements
   else if (data == "imgEmpty"){
   msg.innerHTML=errorSymbol+"Valitse ladattava kuva!";
@@ -263,20 +293,36 @@ if (selected == "btnEvent2") {
     }
    }
 else if (data == "event3TeamEmpty"){
+  msg.className="msgError";
  msg.innerHTML=errorSymbol+"Lisää vähintään yksi vierasjoukkueen pelaaja!";
    } else if (data == "event3NameEmpty"){
+     msg.className="msgError";
  msg.innerHTML=errorSymbol+"Lisää vierasjoukkueen nimi!";
    } else if (data == "event3PlayerEmpty"){
- //msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
+     msg.className="msgError";
+ msg.innerHTML=errorSymbol+"Täytä kaikki pelaajan tiedot!";
    } else if (data == "event3PlayerSuccess"){
-     $("#msg").css("display", "none");
+     vex.closeAll();
      msg.className="msgSuccess";
      setTimeout(function () {
      window.location.href = "event3.php";
    }, 1000);
-   } else if (data == "event3Success"){
+ } else if (data == "event3More"){
+   vex.closeAll();
+   msg.className="msgSuccess";
+   msg.innerHTML=successSymbol+"Pelaaja lisätty!";
+   $('#addVisitor').prop('disabled', true);
+ } else if (data == "event3Close"){
      $("#msg").css("display", "none");
+     $('#addVisitor').prop('disabled', true);
+     setTimeout(function () {
+    window.location.href = "event3.php";
+ }, 1000);
+   }
+   else if (data == "event3Success"){
+     vex.closeAll();
      msg.className="msgSuccess";
+    window.location.href = "event4.php";
  if (selected == "btnEvent4") {
     window.location.href = "event4.php";
    } else if (selected == "btnEvent5") {
