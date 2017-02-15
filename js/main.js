@@ -92,6 +92,7 @@ function message(data,selected) {
   setTimeout(function () {
    $("#msg").fadeOut();
 }, 3000); } else {
+  $("#share").fadeIn().css("display", "inline-block");
 
 }
 
@@ -225,7 +226,9 @@ else if (data == "logoSuccess"){
    setTimeout(function () {
    window.location.href = "settings.php";
    }, 2000);
- } else if (data == "adRemoveSuccess"){
+ } else if (data == "imgFail"){
+ msg.innerHTML=errorSymbol+"Kuvaa ei voitu tallentaa!";
+} else if (data == "adRemoveSuccess"){
    $("#msg").css("display", "none");
    msg.className="msgSuccess";
    $('#submitAd').prop('disabled', true);
@@ -234,6 +237,9 @@ else if (data == "logoSuccess"){
  } else if (data == "adRemoveFail"){
    msg.innerHTML=errorSymbol+"Ei poistettavaa kuvaa!";
    }
+   else if (data == "adRemoveDenied"){
+     msg.innerHTML=errorSymbol+"Kuvaa ei voitu poistaa!";
+  }
 
  // User data
  else if (data == "teamPwdWrong"){
@@ -304,6 +310,7 @@ else if (data == "event3TeamEmpty"){
    } else if (data == "event3PlayerSuccess"){
      vex.closeAll();
      msg.className="msgSuccess";
+     msg.innerHTML=successSymbol+"Pelaaja lisätty!";
      setTimeout(function () {
      window.location.href = "event3.php";
    }, 1000);
@@ -321,6 +328,7 @@ else if (data == "event3TeamEmpty"){
    }
    else if (data == "event3Success"){
      vex.closeAll();
+     $("#msg").css("display", "none");
      msg.className="msgSuccess";
     window.location.href = "event4.php";
  if (selected == "btnEvent4") {
@@ -350,8 +358,20 @@ msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
  }
  else if (data == "createLink") {
   msg.className="msgSuccess";
+  $("#msg").css("display", "none");
+  //msg.innerHTML=successSymbol+"Tapahtuma tallennettu!<br>"+url;
   var url = "<a style='color:white' target='_blank' href='inc/widgets/ottelu/index.php?eventId="+selected+"'>Linkki katsojanäkymään</a>";
-  msg.innerHTML=successSymbol+"Tapahtuma tallennettu!<br>"+url;
+  var qrcode = new QRCode("qrCode", {
+    text: 'inc/widgets/ottelu/index.php?eventId='+selected,
+    width: 150,
+    height: 150,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
+  document.getElementById('link').children[0].setAttribute('data-clipboard-text','otteluohjelma/inc/widgets/ottelu/index.php?eventId='+selected);
+  document.getElementById('email').children[0].setAttribute('href','mailto:example@tutorialspark.com?body=Your message within Main Body');
+  //mailto:someone@yoursite.com?cc=someoneelse@theirsite.com &subject=Otteluohjelma&body=Body-goes-here
   $('#createEvent').prop('disabled', true);
  }
 }

@@ -21,6 +21,7 @@
     unset($_SESSION['ads']);
     unset($_SESSION['adlinks']);
     unset($_SESSION['editEvent']);
+    unset($_SESSION['old']);
   include ('functions.php');
   include ('inc/header.php');
 ?>

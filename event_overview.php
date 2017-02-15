@@ -49,11 +49,79 @@ include 'functions.php';
   </div>
   </div>'; }
   ?>
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/fi_FI/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
   <div class="row">
     <div class="twelve columns">
-      <span id="msg" class="msgError"></span>
+      <div id="msg" class="msgError"></div>
+      <div id="share">
+      <div id="title">Valmista!</div>
+      <div id="options" style="float:right;font-size:25px">
+      <div id="shareText" style="padding-right:50px;float:right;">Jaa:</div>
+
+      <div id="email" style="text-align:center">
+      <a href="">
+      <button type="button "style="background-color:#9B4827;color:white;width:144px">
+      <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-email"></i>Sähköposti</button></a>
+      </div>
+
+      <!--Facebook-->
+      <div id="facebook" style="text-align:center">
+      <div data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"
+      data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank"
+      href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">
+      <button type="button "style="background-color:#2A279B;color:white;width:144px">
+      <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-facebook"></i>Facebook</button></a>
+      </div>
+      </div>
+      <!--Twitter-->
+      <div id="twitter" style="text-align:center">
+      <a href="https://twitter.com/intent/tweet?text=Hello%20world">
+      <button type="button "style="background-color:#53279B;color:white;width:144px">
+      <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-twitter"></i>Twitter</button></a>
+      </div>
+      <!--Whatsapp-->
+      <div id="whatsapp" style="text-align:center">
+      <a href="whatsapp://send?text=Hello world">
+      <button type="button "style="background-color:#2A9B27;color:white;width:144px">
+      <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-whatsapp"></i>Whatsapp</button></a>
+      </div>
+
+      <div id="link" style="text-align:center">
+      <button data-clipboard-text="copy" id="link" type="button" style="background-color:black;color:white;width:144px">Kopioi</button>
+      </div>
+      </div>
+      <div id="qrCode" style="padding-top:40px;width:150px"></div>
+
+      <div id="qrText">Skannaa QR-koodi</div>
+      </div>
     </div>
   </div>
+
     <div class="row">
 <br>
       <div class="twelve columns" style="text-align: center;">
@@ -143,12 +211,13 @@ include 'functions.php';
        echo "Muokkaa</button>";
 
 } ?>
-
       </div>
     </div>
 
   </div>
   <script>
+  new Clipboard('#link');
+
   $('#createEvent').click(function(event){
       event.preventDefault(); // stop the form from submitting
       var finish = $.post("functions.php", { createEvent: "createEvent"}, function(data) {

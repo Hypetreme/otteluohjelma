@@ -340,7 +340,7 @@ function fileUpload($mod) {
 			$newfilename = UPLOAD_DIR . 's_'. $ownerId . '_ad4'. '.png';
 							}
 		}
-			file_put_contents($newfilename, $data);
+			if (@file_put_contents($newfilename, $data)) {
 			if (isset($_SESSION['editEvent'])) {
 			$_SESSION['ads'][$mod-1] = $newfilename;
 			echo 'eventAdSuccess';
@@ -349,6 +349,9 @@ function fileUpload($mod) {
 		}else {
 			echo 'adSuccess';
 		}
+	} else {
+		echo 'imgFail';
+	}
 		}
  }
 function removeAd($mod) {
@@ -368,10 +371,14 @@ function removeAd($mod) {
 	$fileName = substr($fileName, 0, strpos($fileName, "?"));
 
 if ($fileName != "images/default_ad.png" && file_exists($fileName)) {
+
+if (@unlink($fileName)) {
 echo 'adRemoveSuccess';
-unlink($fileName);
 } else {
-echo $fileName;
+echo 'adRemoveDenied';
+exit();
+}
+} else {
 echo 'adRemoveFail';
 set_error_handler('error');
 }
@@ -1033,7 +1040,10 @@ function listHome()
 		$showFirst = $_SESSION['home']['firstName'][$i];
 		$showLast = $_SESSION['home']['lastName'][$i];
 		$showNum = $_SESSION['home']['number'][$i];
-		echo '<tr id="' . $showId . '" onclick="removePlayer(&quot;' . $showId . '&quot;, &quot;' . $showFirst . '&quot;, &quot;' . $showLast . '&quot;, &quot;' . $showNum . '&quot;)">';
+		echo '<tr id="' . $showId . '">';
+		echo '<td>';
+		echo '<i onclick="removePlayer(&quot;' . $showId . '&quot;, &quot;' . $showFirst . '&quot;, &quot;' . $showLast . '&quot;, &quot;' . $showNum . '&quot;)" style="font-size:25px;cursor: pointer;color:red" class="material-icons">close</i>';
+		echo '</td>';
 		echo '<td class="all img" id="playerpic' . $i . '"><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>';
 		echo '<td class="all" id="number' . $i . '">' . $showNum . '</td>';
 		echo '<td class="all" style="text-transform: capitalize;" id="first' . $i . '">' . $showFirst . '</td>';
@@ -1211,21 +1221,33 @@ while ($row = $stmt->fetch()) {
 				$i = 0;
         $j = 0;
 				foreach($json['teams']['home']['players'] as $value) {
-					if ($_SESSION['home']['firstName'][$i] != $json['teams']['home']['players'][$j]['first']) {
+					if ($_SESSION['home']['firstName'][$i] != $json['teams']['home']['players'][$i]['first']) {
 						while (!empty($_SESSION['home']['firstName'][$i])) {
 						$i++;
 				}
-}
+
 				$_SESSION['home']['firstName'][$i] = $json['teams']['home']['players'][$j]['first'];
 				$_SESSION['home']['lastName'][$i] = $json['teams']['home']['players'][$j]['last'];
 				$_SESSION['home']['number'][$i] = $json['teams']['home']['players'][$j]['number'];
-
+}
 				$_SESSION['old']['firstName'][$j] = $json['teams']['home']['players'][$j]['first'];
 				$_SESSION['old']['lastName'][$j] = $json['teams']['home']['players'][$j]['last'];
 				$_SESSION['old']['number'][$j] = $json['teams']['home']['players'][$j]['number'];
 
 					$j++;
 				}
+				/*$i = 0;
+				foreach ($_SESSION['old']['firstName'] as $value) {
+				if ($_SESSION['home']['firstName'][$i] == $_SESSION['old']['firstName'][$i]) {
+					unset($_SESSION['home']['firstName'][$i]);
+					unset($_SESSION['home']['lastName'][$i]);
+					unset($_SESSION['home']['number'][$i]);
+					$i++;
+				}
+			}*/
+			$_SESSION['home']['firstName'] = array_values($_SESSION['home']['firstName']);
+			$_SESSION['home']['lastName'] = array_values($_SESSION['home']['lastName']);
+			$_SESSION['home']['number'] = array_values($_SESSION['home']['number']);
 
 				$i = 0;
 				foreach($json['teams']['visitors']['players'] as $value) {
@@ -1452,7 +1474,7 @@ function createEvent()
 
 	// Tyhjennetään Tapahtumamuuttujat
 
-	unset($_SESSION['eventId']);
+	/*unset($_SESSION['eventId']);
 	unset($_SESSION['homeName']);
 	unset($_SESSION['visitorName']);
 	unset($_SESSION['eventName']);
@@ -1465,7 +1487,7 @@ function createEvent()
 	unset($_SESSION['saved']);
 	unset($_SESSION['ads']);
 	unset($_SESSION['adlinks']);
-	unset($_SESSION['editEvent']);
+	unset($_SESSION['editEvent']);*/
 }
 
 function listTeams()

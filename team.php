@@ -20,6 +20,7 @@
     unset($_SESSION['ads']);
     unset($_SESSION['adlinks']);
     unset($_SESSION['editEvent']);
+    unset($_SESSION['old']);
 ?>
 
 
