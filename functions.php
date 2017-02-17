@@ -1099,6 +1099,28 @@ function listEvents($mod)
 
 	$stmt->execute();
 	if ($stmt->rowCount() > 0) {
+		echo '<table class="u-full-width">';
+		if ($mod != 'all') {
+			echo '<thead>
+			 <tr>
+				 <th>Tapahtuman nimi</th>';
+				if (!isset($_SESSION['teamId'])) {
+				echo '<th>Joukkue</th>';
+			}
+				echo '<th>Päivämäärä</th>
+					</tr>
+				</thead>
+				<tbody>';
+     } else {
+		 echo '<thead>
+			 <tr>
+		 <th>Laji</th>
+		 <th>Tapahtuman nimi</th>
+			 </tr>
+		 </thead>
+		 <tbody>
+		 <tr>';
+	 }
 	while ($row = $stmt->fetch()) {
 		$showId = $row['id'];
 		$showName = $row['name'];
@@ -1119,21 +1141,14 @@ function listEvents($mod)
 			echo '<td><p style="margin-bottom: 0;">' . $showDate . '</p></td>';
 		}
 		else {
-			$fileDest = glob('files/overview_'. $showId .'*.json');
+			$encodeName = rawurlencode($eventName);
+			$fileDest = glob('files/overview_'. $encodeName . '_' . $showId .'_*.json');
 			$fileDest = substr(strstr($fileDest[0], '_'), strlen('_'));
 			$fileDest = substr($fileDest, 0, strpos($fileDest, "."));
-			echo '<thead>
-				<tr>
-			<th>Laji</th>
-			<th>Tapahtuman nimi</th>
-			<th>Linkki</th>
-				</tr>
-			</thead>
-			<tbody>
-			<tr>';
+
 			echo '<td><img src="default_team.png"></td>';
 			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
-			echo "<td><a target='_blank' href='inc/widgets/ottelu/index.php?eventId=". $fileDest ."'><i class='material-icons'>input</i></a></td>";
+			//echo "<td><a target='_blank' href='inc/widgets/ottelu/index.php?eventId=". $fileDest ."'><i class='material-icons'>input</i></a></td>";
 		}
 		echo "</tr></tbody>";
 		$i++;
@@ -1204,7 +1219,9 @@ while ($row = $stmt->fetch()) {
       $stmt->execute();
 		if ($row = $stmt->fetch()) {
 			$eventId = $row['id'];
-			$fileDest = glob('files/overview_'. $eventId .'*.json');
+			$eventName = $row['name'];
+			$encodeName = rawurlencode($eventName);
+			$fileDest = glob('files/overview_'. $eventId . '_' . $encodeName . '_*.json');
 			$json = file_get_contents($fileDest[0]);
 			$json = json_decode($json, true);
 			if (!isset($_GET['c'])) {
@@ -1221,30 +1238,13 @@ while ($row = $stmt->fetch()) {
 				$i = 0;
         $j = 0;
 				foreach($json['teams']['home']['players'] as $value) {
-					if ($_SESSION['home']['firstName'][$i] != $json['teams']['home']['players'][$i]['first']) {
-						while (!empty($_SESSION['home']['firstName'][$i])) {
-						$i++;
-				}
 
-				$_SESSION['home']['firstName'][$i] = $json['teams']['home']['players'][$j]['first'];
-				$_SESSION['home']['lastName'][$i] = $json['teams']['home']['players'][$j]['last'];
-				$_SESSION['home']['number'][$i] = $json['teams']['home']['players'][$j]['number'];
-}
 				$_SESSION['old']['firstName'][$j] = $json['teams']['home']['players'][$j]['first'];
 				$_SESSION['old']['lastName'][$j] = $json['teams']['home']['players'][$j]['last'];
 				$_SESSION['old']['number'][$j] = $json['teams']['home']['players'][$j]['number'];
 
 					$j++;
 				}
-				/*$i = 0;
-				foreach ($_SESSION['old']['firstName'] as $value) {
-				if ($_SESSION['home']['firstName'][$i] == $_SESSION['old']['firstName'][$i]) {
-					unset($_SESSION['home']['firstName'][$i]);
-					unset($_SESSION['home']['lastName'][$i]);
-					unset($_SESSION['home']['number'][$i]);
-					$i++;
-				}
-			}*/
 			$_SESSION['home']['firstName'] = array_values($_SESSION['home']['firstName']);
 			$_SESSION['home']['lastName'] = array_values($_SESSION['home']['lastName']);
 			$_SESSION['home']['number'] = array_values($_SESSION['home']['number']);
@@ -1462,10 +1462,11 @@ function createEvent()
 
 	// kirjoitetaan tiedosto
   $hash = md5($eventId);
-	$fp = fopen("files/overview_" . $eventId . $hash .".json", "wb");
+	$encodeName = rawurlencode($eventName);
+	$fp = fopen('files/overview_'. $eventId . '_' . $encodeName .'_'. $hash .'.json', 'wb');
 
 	if (fwrite($fp, $json)) {
-		echo 'createLink=' .$eventId . $hash;
+		echo 'createLink='. $eventId . '_' . $encodeName .'_'. $hash;
 	}
 	else {
     echo 'eventFail';
@@ -1474,7 +1475,7 @@ function createEvent()
 
 	// Tyhjennetään Tapahtumamuuttujat
 
-	/*unset($_SESSION['eventId']);
+	unset($_SESSION['eventId']);
 	unset($_SESSION['homeName']);
 	unset($_SESSION['visitorName']);
 	unset($_SESSION['eventName']);
@@ -1487,7 +1488,8 @@ function createEvent()
 	unset($_SESSION['saved']);
 	unset($_SESSION['ads']);
 	unset($_SESSION['adlinks']);
-	unset($_SESSION['editEvent']);*/
+	unset($_SESSION['editEvent']);
+	unset($_SESSION['old']);
 }
 
 function listTeams()
@@ -1684,24 +1686,27 @@ echo '</table>';
 }
 }
 
-/*function newEvent()
+function newEvent()
 {
+	include 'dbh.php';
 	if(!isset($_SESSION)) {
 	session_start(); }
-	$_SESSION['homeName'] = $_SESSION['teamName'];
-	if (isset($_SESSION['eventId'])) {
-		unset($_SESSION['eventId']);
-		unset($_SESSION['homeName']);
-		unset($_SESSION['visitorName']);
-		unset($_SESSION['eventName']);
-		unset($_SESSION['eventPlace']);
-		unset($_SESSION['eventDate']);
-		unset($_SESSION['home']);
-		unset($_SESSION['visitors']);
-	}
+	$teamId = $_SESSION['teamId'];
+	$i = 0;
+  $stmt = $conn->prepare("SELECT * from player WHERE team_id = :teamid");
+  $stmt->bindParam(':teamid',$teamId);
+  $stmt->execute();
 
-	header("Location:event1.php");
-}*/
+  while ($row = $stmt->fetch()) {
+  	$showId = $row['id'];
+  	$_SESSION['home']['firstName'][$i] = $row['firstName'];
+  	$_SESSION['home']['lastName'][$i] = $row['lastName'];
+  	$_SESSION['home']['number'][$i] = $row['number'];
+  	$i++;
+  }
+
+ fetchAds();
+}
 
 function error()
 {

@@ -192,16 +192,60 @@ header {
 #share {
 position:fixed;
 display:none;
-background-color: #a4a4a4;
-border: 2px solid blue;
-color:white;
-width:550px;
+background-color: white;
+border: 3px solid grey;
+color:black;
+width:450px;
 padding:25px;
 z-index:999;
+right: 25%;
+left: 25%;
+
 }
 #title {
 font-size:35px;
 text-align: center;
 margin-left: 0;
 margin-right: 0;
+}
+#close {
+cursor:pointer;
+font-size:25px;
+text-align: right;
+margin-left: 0;
+margin-right: 0;
+margin-top: 0;
+margin-bottom: 0;
+padding: 0;
+position:relative;
+top:-20px;
+right:-10px;
+float:right;
+width:20px;
+}
+#fbBtn:hover {
+background-color:#2A279B !important;
+}
+#twitterBtn:hover {
+background-color:#702796 !important;
+}
+#whatsappBtn:hover {
+background-color:#2A9B27 !important;
+}
+#emailBtn:hover {
+background-color:#F69F00 !important;
+}
+#linkappBtn:hover {
+background-color:#2A9B27 !important;
+}
+#cover {
+display:none;
+position:fixed;
+background-color:#0003;
+width:100%;
+left:0;
+right:0;
+top:0;
+bottom:0;
+z-index: 999;
 }

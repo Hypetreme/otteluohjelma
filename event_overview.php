@@ -16,7 +16,7 @@ include 'functions.php';
 
 <!-- Theme included stylesheets -->
 <link href="css/quill.snow.css" rel="stylesheet">
-
+<div id="cover"></div>
   <div class="container">
   <?php if (!isset($_GET['eventId'])) {
     echo '<div class="row" id="guide">
@@ -49,6 +49,7 @@ include 'functions.php';
   </div>
   </div>'; }
   ?>
+
   <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -79,45 +80,46 @@ include 'functions.php';
     <div class="twelve columns">
       <div id="msg" class="msgError"></div>
       <div id="share">
+      <div id="close">X</div>
       <div id="title">Valmista!</div>
       <div id="options" style="float:right;font-size:25px">
       <div id="shareText" style="padding-right:50px;float:right;">Jaa:</div>
 
       <div id="email" style="text-align:center">
       <a href="">
-      <button type="button "style="background-color:#9B4827;color:white;width:144px">
+      <button id="emailBtn" type="button "style="background-color:black;color:white;width:144px">
       <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-email"></i>Sähköposti</button></a>
       </div>
 
       <!--Facebook-->
       <div id="facebook" style="text-align:center">
-      <div data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"
+      <div data-href="" data-layout="button"
       data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank"
-      href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">
-      <button type="button "style="background-color:#2A279B;color:white;width:144px">
+      href="">
+      <button id="fbBtn" type="button "style="background-color:black;color:white;width:144px">
       <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-facebook"></i>Facebook</button></a>
       </div>
       </div>
       <!--Twitter-->
       <div id="twitter" style="text-align:center">
-      <a href="https://twitter.com/intent/tweet?text=Hello%20world">
-      <button type="button "style="background-color:#53279B;color:white;width:144px">
+      <a href="">
+      <button id="twitterBtn" type="button "style="background-color:black;color:white;width:144px">
       <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-twitter"></i>Twitter</button></a>
       </div>
       <!--Whatsapp-->
       <div id="whatsapp" style="text-align:center">
       <a href="whatsapp://send?text=Hello world">
-      <button type="button "style="background-color:#2A9B27;color:white;width:144px">
+      <button id="whatsappBtn" type="button "style="background-color:black;color:white;width:144px">
       <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-whatsapp"></i>Whatsapp</button></a>
       </div>
 
       <div id="link" style="text-align:center">
-      <button data-clipboard-text="copy" id="link" type="button" style="background-color:black;color:white;width:144px">Kopioi</button>
+      <button id="linkBtn" data-clipboard-text="copy" type="button" style="background-color:white;width:144px">Kopioi linkki</button>
       </div>
       </div>
       <div id="qrCode" style="padding-top:40px;width:150px"></div>
-
-      <div id="qrText">Skannaa QR-koodi</div>
+      <div id="saveQr" style="margin-top:48px"><button style="width:144px;">Tallenna QR</div>
+        <a style="display:none" href="#" id="download"></a>
       </div>
     </div>
   </div>
@@ -216,15 +218,45 @@ include 'functions.php';
 
   </div>
   <script>
-  new Clipboard('#link');
+  function downloadCanvas(link, canvasId, filename) {
+    link.href = document.getElementById(canvasId).children[0].toDataURL();
+    link.download = filename;
+}
+  document.getElementById('download').addEventListener('click', function() {
+      downloadCanvas(this, 'qrCode', 'QR.png');
+  }, false);
+
+  $('#saveQr').click(function(event){
+    console.log('asdsa');
+     $("#download")[0].click();
+  });
+
+  $('#close').click(function(event){
+  $("#cover").fadeOut();
+  $("#share").fadeOut();
+  setTimeout(function () {
+ window.location.href = "profile.php";
+}, 1000);
+
+  });
+  $('#linkBtn').click(function(event){
+  var clipboard;
+  if(clipboard = new Clipboard('#linkBtn')) {
+  message('copySuccess');
+  clipboard.destroy;
+} else {
+  message('copyFail');
+  clipboard.destroy;
+}
+  });
 
   $('#createEvent').click(function(event){
       event.preventDefault(); // stop the form from submitting
       var finish = $.post("functions.php", { createEvent: "createEvent"}, function(data) {
         if(data){
+          console.log(data);
           var eventId = data.substring(data.indexOf('=')+1);
           data = data.substring(0, data.indexOf('='));
-          console.log(data);
         }
         message(data,eventId);
 

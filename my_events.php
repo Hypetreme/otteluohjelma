@@ -39,7 +39,6 @@ unset($_SESSION['visitors']);
     <div class="row">
 
         <form name="form" action="functions.php" method="GET">
-          <table class='u-full-width'>
           <?php listEvents('all');
           ?>
           </table>

@@ -356,11 +356,17 @@ msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
  else if (data == "eventFail") {
   msg.innerHTML=errorSymbol+"Tapahtuman tallennus epäonnistui!";
  }
+ else if (data == "copySuccess") {
+  msg.className="msgSuccess";
+  msg.innerHTML=successSymbol+"Linkki kopioitu leikepöydälle!";
+} else if (data == "copyFail") {
+  msg.className="msgError";
+  msg.innerHTML=console.error();Symbol+"Linkkiä ei voitu kopioida!";
+ }
  else if (data == "createLink") {
   msg.className="msgSuccess";
   $("#msg").css("display", "none");
   //msg.innerHTML=successSymbol+"Tapahtuma tallennettu!<br>"+url;
-  var url = "<a style='color:white' target='_blank' href='inc/widgets/ottelu/index.php?eventId="+selected+"'>Linkki katsojanäkymään</a>";
   var qrcode = new QRCode("qrCode", {
     text: 'inc/widgets/ottelu/index.php?eventId='+selected,
     width: 150,
@@ -369,9 +375,16 @@ msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
     colorLight : "#ffffff",
     correctLevel : QRCode.CorrectLevel.H
 });
-  document.getElementById('link').children[0].setAttribute('data-clipboard-text','otteluohjelma/inc/widgets/ottelu/index.php?eventId='+selected);
+  $("#cover").fadeIn().css("display", "initial");
+  var url = window.location.href
+  url = url.substring(0, url.indexOf('event'));
+  console.log(url);
+  document.getElementById('facebook').children[0].setAttribute('data-href',url+'inc/widgets/ottelu/index.php?eventId='+selected);
+  document.getElementById('facebook').children[0].children[0].href='https://www.facebook.com/sharer/sharer.php?u='+url+'inc/widgets/ottelu/index.php?eventId='+selected+'%2F&amp;src=sdkpreparse';
+  //https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.otteluohjelma.fi%2F&amp;src=sdkpreparse
+  document.getElementById('twitter').children[0].setAttribute('href','https://twitter.com/intent/tweet?text=Tässä ottelumme käsiohjelma suoraan mobiliisi:'+url+'inc/widgets/ottelu/index.php?eventId='+selected+'&hashtags=otteluohjelma');
+  document.getElementById('link').children[0].setAttribute('data-clipboard-text',url+'inc/widgets/ottelu/index.php?eventId='+selected);
   document.getElementById('email').children[0].setAttribute('href','mailto:example@tutorialspark.com?body=Your message within Main Body');
-  //mailto:someone@yoursite.com?cc=someoneelse@theirsite.com &subject=Otteluohjelma&body=Body-goes-here
   $('#createEvent').prop('disabled', true);
  }
 }

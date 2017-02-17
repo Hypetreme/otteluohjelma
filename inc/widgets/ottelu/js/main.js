@@ -17,7 +17,7 @@ $(function() {
 
 //Haetaan -tiedosto
 function getStuff() {
-  var url = window.location.href;
+  var url = encodeURI(window.location.href);
   var eventId = url.substring(url.indexOf('=')+1);
     var jsonIssue = {};
     $.ajax({
@@ -78,7 +78,6 @@ function doSomething(jsonIssue){
       li.appendChild(node);
       document.getElementById("playerListVisitors").appendChild(li);
   }
-
   var editor = new Quill('#editor', {
     modules: {
       toolbar: null
@@ -88,5 +87,4 @@ function doSomething(jsonIssue){
     theme: 'snow'
   });
   editor.setContents(jsonText);
-
 }
