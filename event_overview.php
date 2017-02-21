@@ -19,35 +19,49 @@ include 'functions.php';
 <div id="cover"></div>
   <div class="container">
   <?php if (!isset($_GET['eventId'])) {
-    echo '<div class="row" id="guide">
-      <div class="twelve columns" style="text-align: center;">
+    echo '<div class="twelve columns" style="text-align:center" id="guide">
 
-  <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">1</h3>
-  </div></a>
+      <div id="section1">
+      <p class="guideHeader">Tapahtuman tiedot</p>
+      <a href="event1.php" style="text-decoration:none">
+      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+      </a></div>
+      <div class="line"></div>
 
-  <a href="event2.php" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">2</h3>
-  </div></a>
+      <div id="section2">
+      <p class="guideHeader">Kotipelaajat</p>
+      <a href="event2.php" style="text-decoration:none">
+      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+      </a></div>
+      <div class="line"></div>
 
-  <a href="event3.php" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">3</h3>
-  </div></a>
+      <div id="section3">
+      <p class="guideHeader">Vieraspelaajat</p>
+      <a href="event3.php" style="text-decoration:none">
+      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+      </a></div>
+      <div class="line"></div>
 
-  <a href="event4.php" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">4</h3>
-  </div></a>
+      <div id="section4">
+      <p class="guideHeader">Ennakkoteksti</p>
+      <a href="event4.php" style="text-decoration:none">
+      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+      </a></div>
+      <div class="line"></div>
 
-  <a href="event5.php" style="text-decoration:none"><div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">5</h3>
-  </div></a>
+      <div id="section5">
+      <p class="guideHeader">Mainospaikat</p>
+      <a href="event5.php" style="text-decoration:none">
+      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+      </a></div>
+      <div class="line" style="background-color:#2bc9c9"></div>
 
-  <a href="#" style="text-decoration:none"><div id="section6" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">6</h3>
-  </div></a>
-
-  </div>
-  </div>'; }
+      <div id="section6" style="background-color:#2bc9c9">
+      <p class="guideHeader">Yhteenveto</p>
+      <a href="#" style="text-decoration:none">
+      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+      </a></div>
+    </div>'; }
   ?>
 
   <div id="fb-root"></div>
@@ -125,13 +139,9 @@ include 'functions.php';
   </div>
 
     <div class="row">
-<br>
-      <div class="twelve columns" style="text-align: center;">
-
-      </div>
       </div>
 
-    <div class="row">
+    <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
 
       <div class="six columns">
         <h4>
@@ -206,7 +216,7 @@ include 'functions.php';
        echo "</form>"; }
      } else if (isset($_GET['eventId'])) {
        echo "<form style='display: inline;padding: 5px' action='functions.php?removeEvent=".$eventId."' method='POST'>";
-       echo "<button style='border-color:gray;background-color:red;' class='button-primary' name='removeEvent' type='submit' id='btnremoveEvent' value='Poista'>";
+       echo "<button class='button-remove' name='removeEvent' type='submit' id='btnremoveEvent' value='Poista'>";
        echo "Poista</button>";
        echo "</form>";
        echo "<button class='button-primary' type='button' value='Muokkaa' onclick='window.location=\"$url2\"'/>";

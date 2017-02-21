@@ -1,6 +1,8 @@
 <?php
-
   include('inc/header.php');
+  if (isset($_SESSION['id'])) {
+    header("Location: profile.php");
+  }
 ?>
 
 <!-- Tähän sitten se switchi -->

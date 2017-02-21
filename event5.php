@@ -85,74 +85,86 @@ $ad4 = $fileName4j;
 <script src="js/jquery.cropit.js"></script>
 
 <div class="container">
-  <div class="row" id="guide">
-    <div class="twelve columns" style="text-align: center;">
-    <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-    <h3 style="color:white;padding-top:5px">1</h3>
-  </div></a>
+  <div class="twelve columns" style="text-align:center" id="guide">
 
-  <a href="event2.php" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">2</h3>
-  </div></a>
+  <div id="section1">
+  <p class="guideHeader">Tapahtuman tiedot</p>
+  <a href="event1.php" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+  </a></div>
+  <div class="line"></div>
 
-  <a href="event3.php" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">3</h3>
-  </div></a>
+  <div id="section2">
+  <p class="guideHeader">Kotipelaajat</p>
+  <a href="event2.php" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+  </a></div>
+  <div class="line"></div>
 
-  <a href="event4.php" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">4</h3>
-  </div></a>
+  <div id="section3">
+  <p class="guideHeader">Vieraspelaajat</p>
+  <a href="event3.php" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+  </a></div>
+  <div class="line"></div>
 
-<a href="#" style="text-decoration:none"><div id="section5" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<h3 style="color:white;padding-top:5px">5</h3>
-</div></a>
+  <div id="section4">
+  <p class="guideHeader">Ennakkoteksti</p>
+  <a href="event4.php" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+  </a></div>
+  <div class="line" style="background-color:#2bc9c9"></div>
 
-<a href="event_overview.php?c" style="text-decoration:none"><div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<h3 style="color:white;padding-top:5px">6</h3>
-</div></a>
+  <div id="section5" style="background-color:#2bc9c9">
+  <p class="guideHeader">Mainospaikat</p>
+  <a href="#" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+  </a></div>
+  <div class="line" style="background-color:gray"></div>
 
+  <div id="section6" style="background-color:gray">
+  <p class="guideHeader">Yhteenveto</p>
+  <a href="event_overview.php?c" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+  </a></div>
 </div>
-</div>
+
   <span id="msg" class="msgError"></span>
   <div class="row">
-    <div class="twelve columns" style="text-align: center;">
-      <h4>
-        <span>Mainospaikat</span>
-      </h4>
-    </div>
-
   </div>
+  <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
   <div class="row" style="float:left">
     <div class="six columns" style="text-align: center;">
       <h5 style="margin-bottom:0" id="adHeader">&nbsp;</h5>
       <span id="upload" style="visibility:hidden;">
-
-        <form method="POST" enctype="multipart/form-data">
         <tbody>
         <tr>
-          <div class="image-editor" id="crop">
+          <div class="image-editor" id="crop" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
       <div style="display:inline-block">
             <div id="preview" class="cropit-image-preview"><div class="error-msg"></div></div>
           </div>
-            <input style="display:inline-block" type="file" class="cropit-image-input">
+            <input style="display:inline-block;padding-left:30px" type="file" class="cropit-image-input">
             <label for="zoom">Zoomaus</label>
             <input id="zoom" style="display:inline-block;" type="range" class="cropit-image-zoom-input">
             <?php
             listAdLinks();
             ?>
             <input type="hidden" id="image-data" name="image-data" class="hidden-image-data" />
-            <div class="twelve columns" style="text-align:center">
+</div>
+<div class="twelve columns" style="text-align:center;margin-top:20px">
+            <button id="removeEventAd" class="button-remove" type="submit">Poista</button>
             <button id="submitAd" class="button-primary" type="submit">Tallenna</button>
-            <button id="removeAd" class="button-primary" type="submit">Poista</button>
-          </div>
-    </form>
 </div>
     </span>
   </div>
 
-  <div style="float:left;margin-left:auto ;margin-right:auto;width:375px;height:709px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
-    <div class="six columns" style="text-align:center">
-      <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 680px;solid;top: 59px;">
+  <div class="six columns" style="position:relative;left:20px;float:left;width:360px;height:680px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
+    <div style="position:relative;top:50%;">
+    <i id="back" class="material-icons">arrow_back</i>
+    <i id="forward" class="material-icons">arrow_forward</i>
+    </div>
+    <div id="1and2" class="on" style="display:initial;text-align:center">
+      <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 680px;solid;top: 5px;">
         <?php
         if (file_exists($fileName1s) || file_exists($fileName1j)){
           echo '<div class="reserved" onclick="notify(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'?'.time().'"></div>';
@@ -171,19 +183,30 @@ $ad4 = $fileName4j;
       echo '<div style="color:white"><h3>Vierasjoukkue</h3></div>';
       echo '<div style="color:white"><h5>Pelaaja Yksi</h5></div>';
       echo '<div style="color:white"><h5>Pelaaja Kaksi</h5></div>';
-  /*if (file_exists($fileName3s) || file_exists($fileName3j)){
-  echo '<div class="reserved" onclick="notify(this);" id="3" style="border-width:3px;border-color:red;position:absolute;bottom:9.5%;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad3.');">AD 3</div>';
-} else {
-  echo '<div onclick="addAd(this);" id="3" style="border-width:3px;position:absolute;bottom:9.5%;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad3.');">AD 3</div>';
-}
-if (file_exists($fileName4s) || file_exists($fileName4j)){
-echo '<div class="reserved" onclick="notify(this);" id="4" style="border-width:3px;border-color:red;position:absolute;bottom:0;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad4.');">AD 4</div>';
-} else {
-echo '<div onclick="addAd(this);" id="4" style="border-width:1px;position:absolute;bottom:0;border-style:solid;width:100%;height:55px;background-color:white;background-repeat:no-repeat;background-size:100% 100%;background-image: url('.$ad4.');">AD 4</div>';
-}*/
       ?>
     </div>
     </div>
+
+    <div id="3and4" style="display:none;text-align:center">
+    <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 620px;solid;top: 5px;">
+      <?php
+      if (file_exists($fileName3s) || file_exists($fileName3j)){
+      echo '<div class="reserved" onclick="notify(this);" id="3" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad3.'?'.time().'"></div>';
+    } else {
+      echo '<div onclick="addAd(this);" id="3" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad3.'?'.time().'"></div>';
+    }
+    echo '<div style="color:white"><h3>Kotijoukkue</h3></div>';
+    if (file_exists($fileName4s) || file_exists($fileName4j)){
+    echo '<div class="reserved" onclick="notify(this);" id="4" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad4.'?'.time().'"></div>';
+  } else {
+    echo '<div onclick="addAd(this);" id="4" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad4.'?'.time().'"></div>';
+  }
+    echo '<div style="color:white"><h3>Vierasjoukkue</h3></div>';
+
+      ?>
+    </div>
+    </div>
+
   </div>
 </div>
 </div>
@@ -200,7 +223,7 @@ echo '<div onclick="addAd(this);" id="4" style="border-width:1px;position:absolu
       <button class="button-primary" type="button" id="btnEvent6" onclick="window.location='event_overview.php?c'"/>Seuraava</button>
     </div>
   </div>
-
+</div>
 </div>
 
 <script>
@@ -217,7 +240,6 @@ $('.image-editor').cropit(
         onImageLoaded: function() {
               $('#image-data').val("");
               $('#image-data').val($('.image-editor').cropit('export'));
-              imageData = $('#image-data').val();
           }
     }
 );
@@ -265,20 +287,24 @@ $('.image-editor').cropit(
       $('#preview').css("display","none");
       $('#preview').fadeIn();
     });
-$("#adHeader").css({"color":"black"});
+$("#adHeader").css({"color":"gray"});
 document.getElementById('adHeader').innerHTML="Mainoskuva "+element.id;
 document.getElementById('upload').style="visibility:visible;";
 document.getElementById('submitAd').value=element.id;
-document.getElementById('removeAd').value=element.id;
+document.getElementById('removeEventAd').value=element.id;
 document.getElementById('linkHeader').style="initial";
 document.getElementById('link1').style="display:none";
 document.getElementById('link2').style="display:none";
 document.getElementById('link3').style="display:none";
 document.getElementById('link4').style="display:none";
 if (element.id == 1) {
-document.getElementById('link1').style="display:inline-block";
+document.getElementById('link1').style="display:inline-block;width:180px";
 } else if (element.id == 2) {
-document.getElementById('link2').style="display:inline-block";
+document.getElementById('link2').style="display:inline-block;width:180px";
+} else if (element.id == 3) {
+document.getElementById('link3').style="display:inline-block;width:180px";
+} else if (element.id == 4) {
+document.getElementById('link4').style="display:inline-block;width:180px";
 }
 url = document.getElementById(element.id).children[0].src;
 
@@ -319,6 +345,8 @@ document.getElementById('submitAd').name="adUpload";
 }
 $('#submitAd').click(function(event){
     event.preventDefault(); // stop the form from submitting
+    $('#image-data').val($('.image-editor').cropit('export'));
+    imageData = $('#image-data').val();
       var ad = $('#submitAd').val();
       var adlink1 = $('#link1').val();
       var adlink2 = $('#link2').val();
@@ -332,16 +360,28 @@ $('#submitAd').click(function(event){
 
       });
   });
-  $('#removeAd').click(function(event){
+  $('#removeEventAd').click(function(event){
         event.preventDefault(); // stop the form from submitting
 
-        var ad = $('#removeAd').val();
-        var finish = $.post("functions.php", { removeAd: ad, fileName: url }, function(data) {
+        var ad = $('#removeEventAd').val();
+        var finish = $.post("functions.php", { removeEventAd: ad, fileName: url }, function(data) {
           if(data){
             console.log(data);
           }
           message(data);
         });
+    });
+    $('#forward, #back').click(function(event){
+    $('#1and2').toggleClass("on");
+    $('#3and4').toggleClass("on");
+
+    if ($('#1and2').hasClass("on")) {
+    $('#3and4').css("display","none");
+    $('#1and2').fadeIn();
+    } if ($('#3and4').hasClass("on")) {
+    $('#1and2').css("display","none");
+    $('#3and4').fadeIn();
+    }
     });
 </script>
 

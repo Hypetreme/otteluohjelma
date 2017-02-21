@@ -28,13 +28,11 @@
 
   <div class="container">
     <span id="msg" class="msgError"></span>
-    <div class="row">
+    <div class="row" style="text-align:left">
       <div class="twelve columns">
         <h4>
           Asetukset
         </h4>
-      </div>
-      <ul class="navbar-list">
         <?php
           $url = "";
           if (isset($_SESSION['teamId'])) {
@@ -46,17 +44,17 @@
           $events = 'my_events.php';
           $url2 = 'location.href="'.$events.'"';
           if (isset($_SESSION['teamId'])) {
-            echo '<li class="navbar-item"><button class="button-primary" onclick='.$url.'>Kokoonpano</button></li>';
-            echo '<li class="navbar-item"><button class="button-primary" onclick='.$url2.'>Tapahtumasi</button></li>';
+            echo '<button class="button-primary" onclick='.$url.'>Kokoonpano</button>';
+            echo '<button class="button-primary" onclick='.$url2.'>Tapahtumasi</button>';
             }
-            echo '<li class="navbar-item"><button class="button-primary" onclick='.$url3.'>Aseta Mainospaikat</button></li>';
+            echo '<button class="button-primary" onclick='.$url3.'>Aseta Mainospaikat</button>';
 
         ?>
-      </ul>
+    </div>
     </div>
 
     <div class="row">
-      <div class="six columns">
+      <div class="six columns" style="float:left">
         <h5>Logo</h5>
         <table class="u-full-width">
         <form action="functions.php" method="post" enctype="multipart/form-data">
@@ -75,17 +73,16 @@
                 $fileName = 'images/logos/' . $uid . $id . '.png';
                 echo $fileName .'?'.time();
               }
-              ?> height="200" alt="Image preview...">
+              ?> height="180" alt="Image preview...">
               <input type="hidden" id="imgData">
 
           </tbody>
         </form>
         </table>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="six columns">
+
+      <div class="six columns" style="float:left">
         <h5>Käyttäjätiedot</h5>
         <table class="u-full-width">
           <tbody>
@@ -98,7 +95,7 @@
       <li class="navbar-item"><button class="button-primary" onclick="window.location='edit_user.php'">Muokkaa</button></li>
     </ul>
       </div>
-    </div>
+      </div>
     <script>
     $('form').submit(function(event){
 

@@ -135,7 +135,10 @@ function message(data,selected) {
      msg.innerHTML=errorSymbol+"Syötä sähköposti oikeassa muodossa!";
    } else if (data == "emailFail"){
      msg.className="msgError";
-     msg.innerHTML=errorSymbol+"Käyttäjä rekisteröity! Sähköpostia ei voitu lähettää.";
+     msg.innerHTML=errorSymbol+"Sähköpostia ei voitu lähettää.";
+   } else if (data == "emailSuccess"){
+     msg.className="msgSuccess";
+     msg.innerHTML=successSymbol+"Sähköposti lähetetty!";
    } else if (data == "userSuccess"){
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.";
@@ -234,7 +237,13 @@ else if (data == "logoSuccess"){
    $('#submitAd').prop('disabled', true);
    $('#removeAd').prop('disabled', true);
    window.location.href = "ads.php";
- } else if (data == "adRemoveFail"){
+ } else if (data == "eventAdRemoveSuccess"){
+    $("#msg").css("display", "none");
+    msg.className="msgSuccess";
+    $('#submitAd').prop('disabled', true);
+    $('#removeAd').prop('disabled', true);
+    window.location.href = "event5.php";
+  } else if (data == "adRemoveFail"){
    msg.innerHTML=errorSymbol+"Ei poistettavaa kuvaa!";
    }
    else if (data == "adRemoveDenied"){
@@ -338,7 +347,14 @@ else if (data == "event3TeamEmpty"){
   } else if (selected == "btnEvent6") {
     window.location.href = "event_overview.php?c";
   }
-} else if (data == "adlink1Invalid"){
+} else if (data == "event4Success"){
+  if (selected == "btnEvent5") {
+     window.location.href = "event5.php";
+   } else if (selected == "btnEvent6") {
+     window.location.href = "event_overview.php?c";
+   }
+}
+ else if (data == "adlink1Invalid"){
 msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
 } else if (data == "adlink2Invalid"){
  msg.innerHTML=errorSymbol+"Syötä 2. mainoksen linkki oikeassa muodossa!";
@@ -384,7 +400,7 @@ msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
   //https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.otteluohjelma.fi%2F&amp;src=sdkpreparse
   document.getElementById('twitter').children[0].setAttribute('href','https://twitter.com/intent/tweet?text=Tässä ottelumme käsiohjelma suoraan mobiliisi:'+url+'inc/widgets/ottelu/index.php?eventId='+selected+'&hashtags=otteluohjelma');
   document.getElementById('link').children[0].setAttribute('data-clipboard-text',url+'inc/widgets/ottelu/index.php?eventId='+selected);
-  document.getElementById('email').children[0].setAttribute('href','mailto:example@tutorialspark.com?body=Your message within Main Body');
+  document.getElementById('email').children[0].setAttribute('href','mailto:?subject:?body='+url+'inc/widgets/ottelu/index.php?eventId='+selected);
   $('#createEvent').prop('disabled', true);
  }
 }

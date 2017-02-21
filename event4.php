@@ -15,59 +15,65 @@ include ('inc/header.php');
 <link href="css/quill.snow.css" rel="stylesheet">
 
 <div class="container">
-  <div class="row" id="guide">
-    <div class="twelve columns" style="text-align: center;">
-    <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-    <h3 style="color:white;padding-top:5px">1</h3>
-  </div></a>
+  <div class="twelve columns" style="text-align:center" id="guide">
 
-  <a href="event2.php" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">2</h3>
-  </div></a>
+  <div id="section1">
+  <p class="guideHeader">Tapahtuman tiedot</p>
+  <a href="event1.php" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+  </a></div>
+  <div class="line"></div>
 
-  <a href="event3.php" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">3</h3>
-  </div></a>
+  <div id="section2">
+  <p class="guideHeader">Kotipelaajat</p>
+  <a href="event2.php" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+  </a></div>
+  <div class="line"></div>
 
-<a href="#" style="text-decoration:none"><div id="section4" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<h3 style="color:white;padding-top:5px">4</h3>
-</div></a>
+  <div id="section3">
+  <p class="guideHeader">Vieraspelaajat</p>
+  <a href="event3.php" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+  </a></div>
+  <div class="line" style="background-color:#2bc9c9"></div>
 
-<div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="form" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name="setMatchText" value="5">
+  <div id="section4" style="background-color:#2bc9c9">
+  <p class="guideHeader">Ennakkoteksti</p>
+  <a href="#" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+  </a></div>
+  <div class="line" style="background-color:gray"></div>
+
+  <div id="section5" style="background-color:gray">
+  <p class="guideHeader">Mainospaikat</p>
+  <a id="btnEvent5" href="#" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+  </a></div>
+  <div class="line" style="background-color:gray"></div>
+
+  <div id="section6" style="background-color:gray">
+  <p class="guideHeader">Yhteenveto</p>
+  <a id="btnEvent6" href="#" style="text-decoration:none">
+  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+  </a></div>
 </div>
 
-<div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-<input form="form" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" name ="setMatchTextGuide6" value ="6">
-</div>
-
-</div>
-</div>
 
   <div class="row">
-    <div class="twelve columns" style="text-align: center;">
-      <h4>
-        <span>Ennakot</span>
-      </h4>
-    </div>
-
   </div>
-<form id="form" action="functions.php" method="POST">
+  <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
   <div class="row">
     <div id="toolbar"></div>
-    <div id="editor" class="twelve columns" style="min-height:200px"></div>
-    <input name="matchText" type="hidden">
-    <input name="plainMatchText" type="hidden">
+    <div id="editor" class="twelve columns" style="min-height:253px"></div>
     </div>
-
+  </div>
   <div class="row">
     <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
       <button type="button" value="Takaisin" onclick="window.location='event3.php'"/>Takaisin</button>
-      <input class="button-primary" type="submit" name="setMatchText" id="setMatchText" value="Seuraava">
-</form>
+      <input class="button-primary" type="submit" name="setMatchText" id="btnEvent5" value="Seuraava">
     </div>
   </div>
-
 </div>
 
 <!-- Main Quill library -->
@@ -88,18 +94,20 @@ var quill = new Quill('#editor', {
   theme: 'snow',
 });
 
+$('#btnEvent5,#btnEvent6').click(function(event){
+  event.preventDefault(); // stop the form from submitting
+  var selected = ($(this).attr("id"));
+  var text = JSON.stringify(quill.getContents());
+  var plainText = JSON.stringify(quill.getText());
 
-var form = document.querySelector('form');
-form.onsubmit = function() {
+  var finish = $.post("functions.php", { setMatchText: "matchtext", matchText: text, plainMatchText: plainText }, function(data) {
+    if(data){
+      console.log(data);
+    }
+    message(data,selected);
 
-  // Lisätään formin tiedot piilotettuun kenttään
-  var matchText = document.querySelector('input[name=matchText]');
-  matchText.value = JSON.stringify(quill.getContents());
-  var plainMatchText = document.querySelector('input[name=plainMatchText]');
-  plainMatchText.value = JSON.stringify(quill.getText());
-
-};
-var matchText = document.querySelector('input[name=matchText]');
+  });
+});
 </script>
 <?php
 if (isset($_SESSION['matchText'])) {

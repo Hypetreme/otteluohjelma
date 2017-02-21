@@ -36,9 +36,6 @@
         display: block;
       }
 
-      button {
-        margin-top: 10px;
-      }
 .cropit-preview.cropit-image-loading .spinner {
         opacity: 1;
       }

@@ -229,6 +229,16 @@ exit();
 
   </div>
   <script>
+  $('a[name=activation').click(function(event){
+        event.preventDefault(); // stop the form from submitting
+        var id = $(this).attr('id');
+        var finish = $.post("functions.php", { sendActivation: 'send', activationId: id }, function(data) {
+          if(data){
+            console.log(data);
+          }
+          message(data);
+        });
+    });
 
   $('#iconAddPlayer').on('click', function() {
   openDialog();

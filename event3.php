@@ -70,102 +70,59 @@ include 'functions.php';
     $(this).addClass("ok");
     });
 }
-    var count = 1;
-
-    function addInput() {
-      $("#newTr").fadeIn();
-      //document.getElementById('newTr').style="display:table-row;height:61px";
-      $("#iconAddPlayer").hide();
-      //document.getElementById('iconAddPlayer').style="display:none";
-      $("#addVisitor").fadeIn();
-      //document.getElementById('addVisitor').style="display:block";
-      var num = document.getElementById('ref').value.match(/\d+/)[0];
-      var finalNum = +num + count - 1;
-
-      var etuField = document.createElement("input");
-      etuField.type = "text";
-      etuField.name = "firstName";
-      etuField.id = "firstName";
-
-      var sukuField = document.createElement("input");
-      sukuField.type = "text";
-      sukuField.name = "lastName";
-      sukuField.id = "lastName";
-
-      var nroField = document.createElement("input");
-      nroField.type = "text";
-      nroField.name = "number";
-      nroField.id = "number";
-
-      var etuH = document.createElement("label");
-      etuH.innerHTML = "Etunimi";
-
-      var sukuH = document.createElement("label");
-      sukuH.innerHTML = "Sukunimi";
-
-      var nroH = document.createElement("label");
-      nroH.innerHTML = "Numero";
-
-      //var headerCount = "Pelaaja " + finalNum;
-
-      //var header = document.createElement("h4");
-      //var headerText = document.createTextNode(headerCount);
-      //header.appendChild(headerText);
-
-      //var br = document.createElement("br");
-
-      //document.getElementById('newrow').appendChild(header);
-      document.getElementById('newrow').appendChild(etuH);
-      document.getElementById('newrow').appendChild(etuField);
-      document.getElementById('newrow').appendChild(sukuH);
-      document.getElementById('newrow').appendChild(sukuField);
-      document.getElementById('newrow').appendChild(nroH);
-      document.getElementById('newrow').appendChild(nroField);
-      //document.getElementById('newrow').appendChild(br);
-
-      count += 1;
-    }
   </script>
   <div class="container">
-    <div class="row" id="guide">
-      <div class="twelve columns" style="text-align: center;">
+    <div class="twelve columns" style="text-align:center" id="guide">
 
-      <a href="event1.php" style="text-decoration:none"><div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-      <h3 style="color:white;padding-top:5px">1</h3>
-    </div></a>
+    <div id="section1">
+    <p class="guideHeader">Tapahtuman tiedot</p>
+    <a href="event1.php" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+    </a></div>
+    <div class="line"></div>
 
-  <a href="event2.php" style="text-decoration:none"><div id="section2" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">2</h3>
-  </div></a>
+    <div id="section2">
+    <p class="guideHeader">Kotipelaajat</p>
+    <a href="event2.php" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+    </a></div>
+    <div class="line" style="background-color:#2bc9c9"></div>
 
-  <a href="#" style="text-decoration:none"><div id="section3" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">3</h3>
-  </div></a>
+    <div id="section3" style="background-color:#2bc9c9">
+    <p class="guideHeader">Vieraspelaajat</p>
+    <a href="#" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
 
-  <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="form" id="btnEvent4" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="4">
-  </div>
+    <div id="section4" style="background-color:gray">
+    <p class="guideHeader">Ennakkoteksti</p>
+    <a id="btnEvent4" href="#" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
 
-  <div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="form" id="btnEvent5" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="5">
-  </div>
+    <div id="section5" style="background-color:gray">
+    <p class="guideHeader">Mainospaikat</p>
+    <a id="btnEvent5" href="#" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
 
-  <div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input form="form" id="btnEvent6" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value ="6">
-  </div>
+    <div id="section6" style="background-color:gray">
+    <p class="guideHeader">Yhteenveto</p>
+    <a id="btnEvent6" href="#" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+    </a></div>
+    </div>
 
-  </div>
-  </div>
   <div class="row">
     <div class="twelve columns">
       <span id="msg" class="msgError"></span>
     </div>
   </div>
-    <div class="row">
+    <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
       <div class="twelve columns" style="text-align: center">
-        <h4>
-          <span>Lisää vierasjoukkueen tiedot</span>
-        </h4>
         <form id="form" action="functions.php" method="POST">
        <label for="visitorName">Vierasjoukkueen nimi</label>
       <input type="text" id="visitorName" name="visitorName" value="<?php
@@ -176,8 +133,6 @@ include 'functions.php';
         </form>
         <button type="button" class="button-primary" id="iconAddPlayer" style="float:left;position:relative;left:-10px">Lisää</button>
       </div>
-      </div>
-
 
       <div class="twelve columns">
         <form name="players" action="functions.php" method="POST">
@@ -194,33 +149,18 @@ include 'functions.php';
           <?php
           $count = listVisitors();
           ?>
-
-    </div>
-<?php
-        echo'<input type="hidden" id="ref" value="'.$count.'">';
-  ?>
-  <tr id="newTr" style="height:61px;display:none">
-    <td><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>
-
-    <td><span id="newrow"></span></td>
-    <td></td>
-  </tr>
-  </table>
-
-  <div class="row">
-    <div class="twelve columns" style="text-align:left">
-  <input style="display:none"class="button-primary" name="addVisitor" type="submit" id="addVisitor" value="Tallenna">
-</form>
+        </table>
+      </form>
+      </div>
 </div>
-</div>
+
 <div class="row">
       <div class="twelve columns" style='text-align:center;padding-top:50px'>
 <button type="button" value="Takaisin" onclick="window.location='event2.php'"/>Takaisin</button>
 <input form="form" class="button-primary" type="submit" id="btnEvent4" name="setVisitorTeam" value="Seuraava">
-
       </div>
     </div>
-</div>
+  </div>
 <script>
 $('#btnEvent4, #btnEvent5, #btnEvent6').click(function(event){
     var selected = ($(this).attr("id"));

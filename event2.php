@@ -31,11 +31,7 @@ include 'functions.php';
       //tr.setAttribute("name", count );
       tr.className += "removed";
 
-
-
-
       playerElement.appendChild(tr);
-
       //luodaan rowin jokanen kenttä
       var td1 = document.createElement("td");
       var td2 = document.createElement("td");
@@ -102,52 +98,56 @@ include 'functions.php';
   </script>
 
   <div class="container">
-    <div class="row" id="guide">
-      <div class="twelve columns" style="text-align: center;">
+    <div class="twelve columns" style="text-align:center" id="guide">
+    <div id="section1">
+    <p class="guideHeader">Tapahtuman tiedot</p>
+    <a href="event1.php" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+    </a></div>
+    <div class="line" style="background-color:#2bc9c9"></div>
 
-      <a href="event1.php" style="text-decoration:none">
-      <div id="section1" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-      <h3 style="color:white;padding-top:5px">1</h3>
-      </div></a>
+    <div id="section2" style="background-color:#2bc9c9">
+    <p class="guideHeader">Kotipelaajat</p>
+    <a href="event2.php" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
 
-  <a href="#" style="text-decoration:none">
-  <div id="section2" style="float:left;width: 60px; height: 60px; background: green; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <h3 style="color:white;padding-top:5px">2</h3>
-  </div></a>
+    <div id="section3" style="background-color:gray">
+    <p class="guideHeader">Vieraspelaajat</p>
+    <a id="btnEvent3" href="#" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
 
-  <div id="section3" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input id="btnEvent3" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="3">
-  </div>
+    <div id="section4" style="background-color:gray">
+    <p class="guideHeader">Ennakkoteksti</p>
+    <a id="btnEvent4" href="#" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
 
-  <div id="section4" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input id="btnEvent4" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="4">
-  </div>
+    <div id="section5" style="background-color:gray">
+    <p class="guideHeader">Mainospaikat</p>
+    <a id="btnEvent5" href="#" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
 
-  <div id="section5" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input id="btnEvent5" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="5">
-  </div>
+    <div id="section6" style="background-color:gray">
+    <p class="guideHeader">Yhteenveto</p>
+    <a id="btnEvent6" href="#" style="text-decoration:none">
+    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+    </a></div>
+    </div>
 
-  <div id="section6" style="float:left;width: 60px; height: 60px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 50px;">
-  <input id="btnEvent6" type="submit" style="height:50px;border:0;color:white;padding-left:20px;padding-top:5px;font-size: 3.5rem; line-height:1.3;letter-spacing:-.1rem;font-weight: 300;" value="6">
-  </div>
-
-  </div>
-  </div>
   <div class="row">
     <div class="twelve columns">
       <span id="msg" class="msgError"></span>
     </div>
   </div>
 
-    <div class="row">
-      <div class="twelve columns" style="text-align: center;">
-        <h4>
-          <span>Lisää kotijoukkueen pelaajat</span>
-        </h4>
-      </div>
-      </div>
-
-    <div class="row">
+    <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
 
       <div class="six columns">
         <h5>
@@ -180,7 +180,7 @@ include 'functions.php';
             </form>
           </div>
         </div>
-    </div>
+      </div>
     <script>
     $('#btnEvent3, #btnEvent4, #btnEvent5, #btnEvent6').click(function(event){
         var selected = ($(this).attr("id"));

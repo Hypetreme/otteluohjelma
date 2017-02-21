@@ -149,7 +149,7 @@ function sendEmail($mod,$uid,$pwd,$email,$hash) {
 	// Sähköpostin lähetys
 if ($mod == 'resend') {
 	$stmt = $conn->prepare("SELECT * FROM user WHERE team_id = :username");
-	$stmt->bindParam(':username');
+	$stmt->bindParam(':username',$uid);
 	$stmt->execute();
 	$row = $stmt->fetch();
 	$email = $row['email'];
@@ -191,16 +191,18 @@ http://'.$_SERVER['SERVER_NAME'].'/otteluohjelma/verify.php?email='.$email.'&has
 	http://'.$_SERVER['SERVER_NAME'].'/otteluohjelma/verify.php?email='.$email.'&hash='.$hash.'';
 
 }
-
-$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 if (!$mail->send()) {
 	if ($mod == 'reg') {
-	echo 'Mailer Error:'.$mail->ErrorInfo.'';
+	//echo 'Mailer Error:'.$mail->ErrorInfo.'';
 	return FALSE;
+} else {
+	echo 'emailFail';
 }
 } else {
 	if ($mod == 'reg') {
 	return TRUE;
+} else {
+	echo 'emailSuccess';
 }
 }
 }
@@ -354,7 +356,7 @@ function fileUpload($mod) {
 	}
 		}
  }
-function removeAd($mod) {
+function removeAd($ad,$mod) {
 
 	if(!isset($_SESSION)) {
 	session_start();
@@ -395,7 +397,7 @@ function logIn()
 
 	$uid = $_POST['uid'];
 	$pwd = $_POST['pwd'];
-	$stmt = $conn->prepare("SELECT * FROM user WHERE uid = :username");
+	$stmt = $conn->prepare("SELECT * FROM user WHERE BINARY uid = :username");
 	$stmt->bindParam(':username', $uid);
 	$stmt->execute();
 
@@ -411,7 +413,7 @@ function logIn()
 		echo 'notActivated';
 		}
 	else {
-		$stmt = $conn->prepare("SELECT * FROM user WHERE uid = :username");
+		$stmt = $conn->prepare("SELECT * FROM user WHERE BINARY uid = :username");
 		$stmt->bindParam(':username',$uid);
 		$stmt->execute();
 		$row = $stmt->fetch();
@@ -829,15 +831,11 @@ function setHomeTeam($mod) {
 		$i++;
 	}
 
-	//$eventId = $_SESSION['eventId'];
-
-	if ($mod == '4') {
+if ($mod == '4') {
 	header("Location:event4.php");
-}
-else if ($mod == '5') {
+} else if ($mod == '5') {
 header("Location:event5.php");
-}
-	else if ($mod == '6') {
+} else if ($mod == '6') {
 	header("Location:event_overview.php?c");
 } else {
 	echo 'event2Success';
@@ -1116,6 +1114,7 @@ function listEvents($mod)
 			 <tr>
 		 <th>Laji</th>
 		 <th>Tapahtuman nimi</th>
+		 <th>Linkki</th>
 			 </tr>
 		 </thead>
 		 <tbody>
@@ -1141,14 +1140,13 @@ function listEvents($mod)
 			echo '<td><p style="margin-bottom: 0;">' . $showDate . '</p></td>';
 		}
 		else {
-			$encodeName = rawurlencode($eventName);
-			$fileDest = glob('files/overview_'. $encodeName . '_' . $showId .'_*.json');
+			$fileDest = glob('files/overview_' . $showId .'*.json');
 			$fileDest = substr(strstr($fileDest[0], '_'), strlen('_'));
-			$fileDest = substr($fileDest, 0, strpos($fileDest, "."));
+			$fileDest = substr($fileDest, 0, strrpos($fileDest, ".json"));
 
 			echo '<td><img src="default_team.png"></td>';
 			echo '<td><a style="text-decoration:none;" href="event_overview.php?eventId=' . $showId . '">' . $showName . '</a></td>';
-			//echo "<td><a target='_blank' href='inc/widgets/ottelu/index.php?eventId=". $fileDest ."'><i class='material-icons'>input</i></a></td>";
+			echo "<td><a target='_blank' href='inc/widgets/ottelu/index.php?eventId=". $fileDest ."'><i class='material-icons'>input</i></a></td>";
 		}
 		echo "</tr></tbody>";
 		$i++;
@@ -1463,6 +1461,9 @@ function createEvent()
 	// kirjoitetaan tiedosto
   $hash = md5($eventId);
 	$encodeName = rawurlencode($eventName);
+	if ($oldFile = glob('files/overview_*'. $hash .'.json')) {
+	unlink($oldFile[0]);
+}
 	$fp = fopen('files/overview_'. $eventId . '_' . $encodeName .'_'. $hash .'.json', 'wb');
 
 	if (fwrite($fp, $json)) {
@@ -1530,15 +1531,11 @@ function listTeams()
 		} else {
 			echo '<td><a style="text-decoration:none; color:gray;" href="#">' . $showName . '</a></td>';
 			echo '<td><i style="color: #670a1c;" class="material-icons">cancel</i></td>';
-
-			echo '<form action="functions.php" method="POST">';
-			echo '<input type="hidden" name="teamId" value='.$showId.'>';
 			echo '<td>
-				<a style="display: inline-block; text-decoration: none; vertical-align: middle;" href="?sendActivation" name="sendActivation"><i style="float: left; padding-right: 3px;" class="material-icons">refresh</i>Lähetä vahvistus</a>
+				<a id="'.$showId.'" name="activation" style="display: inline-block; text-decoration: none; vertical-align: middle;" href="#"><i style="float: left; padding-right: 3px;" class="material-icons">refresh</i>Lähetä vahvistus</a>
 				<br/>
 				<a style="display: inline-block; text-decoration: none; vertical-align: middle;" href="#"><i style="float: left; padding-right: 3px;" class="material-icons">open_in_browser</i>Siirry</a>
 			</td>';
-			echo '</form>';
 		}
 		echo '</tr>';
 		$i++;
@@ -1759,7 +1756,7 @@ if ($mod == 'view') {
 }
 	echo '</tr>';
 }
-function setMatchText($mod) {
+function setMatchText() {
 	if(!isset($_SESSION)) {
 	session_start();
 	}
@@ -1769,12 +1766,7 @@ if ($_POST['matchText'] && !empty($_POST['matchText']) && $_POST['matchText'] !=
 	$_SESSION['matchText'] = $_POST['matchText'];
 	$_SESSION['plainMatchText'] = $_POST['plainMatchText'];
 }
-if ($mod == "6"){
-	header("Location: event_overview.php?c");
-}
-else {
-	header("Location:event5.php");
-}
+	echo 'event4Success';
 }
 function listAdLinks() {
 	if(!isset($_SESSION)) {
@@ -1874,38 +1866,49 @@ function setAdLinks() {
   	exit();
   }
   }
-  if (!empty($_POST['link3']) && (!empty($_POST['imgData']) || isset($_SESSION['ads'][2]))) {
-  if (preg_match($pattern, $_POST['link3'])) {
+	if (!empty($_POST['imgData'] || isset($_SESSION['ads'][2]))) {
+	if (!preg_match($pattern, $_POST['link3'])) {
 		if (isset($_SESSION['editEvent'])) {
-	  $_SESSION['adlinks'][2] = $_POST['link3'];
+		$_SESSION['adlinks'][2] = $_POST['link3'];
 		} else {
 	$link = $_POST['link3'];
-	$stmt = $conn->prepare("UPDATE adlinks SET link3= :adlink  WHERE owner_id= :ownerid");
- 	$stmt->bindParam(':adlink',$link);
-	$stmt->bindParam(':ownerid',$ownerId);
+	if (isset($_SESSION['teamId'])) {
+	$stmt = $conn->prepare("UPDATE adlinks SET link3 = :adlink WHERE team_id = :teamid");
 	$stmt->bindParam(':teamid',$teamId);
- 	$stmt->execute();
+} else {
+	$stmt = $conn->prepare("UPDATE adlinks SET link3 = :adlink WHERE owner_id = :ownerid");
+	$stmt->bindParam(':ownerid',$ownerId);
 }
-  } else {
-  	echo 'adlink3Invalid';
-  }
-  }
-  if (!empty($_POST['link4']) && (!empty($_POST['imgData']) || isset($_SESSION['ads'][3]))) {
-  if (preg_match($pattern, $_POST['link4'])) {
+	$stmt->bindParam(':adlink',$link);
+	$stmt->execute();
+}
+	} else {
+		echo 'adlink3Invalid';
+		exit();
+	}
+	}
+
+	if (!empty($_POST['imgData'] || isset($_SESSION['ads'][3]))) {
+	if (!preg_match($pattern, $_POST['link4'])) {
 		if (isset($_SESSION['editEvent'])) {
-	  $_SESSION['adlinks'][3] = $_POST['link4'];
+		$_SESSION['adlinks'][3] = $_POST['link4'];
 		} else {
 	$link = $_POST['link4'];
-	$stmt = $conn->prepare("UPDATE adlinks SET link4= :adlink WHERE owner_id= :ownerid");
- 	$stmt->bindParam(':adlink',$link);
-	$stmt->bindParam(':ownerid',$ownerId);
+	if (isset($_SESSION['teamId'])) {
+	$stmt = $conn->prepare("UPDATE adlinks SET link4 = :adlink WHERE team_id = :teamid");
 	$stmt->bindParam(':teamid',$teamId);
- 	$stmt->execute();
+} else {
+	$stmt = $conn->prepare("UPDATE adlinks SET link4 = :adlink WHERE owner_id = :ownerid");
+	$stmt->bindParam(':ownerid',$ownerId);
 }
-  } else {
-  	echo 'adlink4Invalid';
-  }
-  }
+	$stmt->bindParam(':adlink',$link);
+	$stmt->execute();
+}
+	} else {
+		echo 'adlink4Invalid';
+		exit();
+	}
+	}
 }
 function fetchAds() {
 	if(!isset($_SESSION)) {
@@ -1979,10 +1982,6 @@ if (isset($_POST['fetchAds'])){
 
 if (isset($_POST['setMatchText'])){
 	setMatchText();
-}
-
-if (isset($_POST['setMatchTextGuide6'])){
-	setMatchText('6');
 }
 
 if (isset($_POST['setEventInfo'])){
@@ -2101,7 +2100,24 @@ if (isset($_POST['removeAd']) && ($_POST['removeAd'])=="4") {
 	removeAd(4);
 }
 
-if (isset($_GET['sendActivation'])) {
-	sendEmail('resend',$_POST['teamId'],null,null,null);
+if (isset($_POST['removeEventAd']) && ($_POST['removeEventAd'])=="1") {
+	removeAd(1,'event');
+}
+
+if (isset($_POST['removeEventAd']) && ($_POST['removeEventAd'])=="2") {
+	removeAd(2,'event');
+}
+
+if (isset($_POST['removeEventAd']) && ($_POST['removeAEventd'])=="3") {
+	removeAd(3,'event');
+}
+
+if (isset($_POST['removeEventAd']) && ($_POST['removeEventAd'])=="4") {
+	removeAd(4,'event');
+}
+
+
+if (isset($_POST['sendActivation'])) {
+	sendEmail('resend',$_POST['activationId'],null,null,null);
 }
 ?>

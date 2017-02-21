@@ -8,11 +8,14 @@
         </ul>
       </div>
     </div>
-    <?php if ($_SESSION['type'] == 0) {
+    <?php
+    if (isset($_SESSION)) {
+    if ($_SESSION['type'] == 0) {
       echo '<div class="row" style="background-color: #2A279B66;">';
     } else {
       echo '<div class="row" style="background-color: #f7f7f7;">';
     }
+  }
     ?>
     <div class="one column" style="text-align:center;position: relative;">
       <div style="margin-left:10px;display:inline-block;">
@@ -20,7 +23,7 @@
           $profile  = 'profile.php?back';
           $url  = 'location.href="'.$profile.'"';
           if (isset($_SESSION['teamId']) && $_SESSION['type'] == 0) {
-            echo '<button style="background-color:white;float:left;" onclick='.$url.'>Seuraan</button>';
+            echo '<button style="position:relative;top:10px;background-color:white;float:left;" onclick='.$url.'>Seuraan</button>';
           }
         ?>
       </div>
@@ -42,7 +45,7 @@
               $profile = 'profile.php';
             }
 
-          }
+
 
           //defining variables
           $team       =   'teams.php';
@@ -101,9 +104,8 @@
                   </div>
                   <i class="material-icons openNav">keyboard_arrow_right</i>
                 </li>';
-
+          }
           echo '<script>console.log(' . $session . ')</script>';
-
           ?>
         <script type="text/javascript">
 

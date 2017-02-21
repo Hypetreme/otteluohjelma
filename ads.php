@@ -64,47 +64,48 @@ $ad4 = $fileName4s;
 $ad4 = $fileName4j;
 }
 ?>
-<link rel="stylesheet" type="text/css" href="css/cropit.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="js/jquery.cropit.js"></script>
+<link rel="stylesheet" type="text/css" href="css/cropit.css">
 <span id="msg" class="msgError"></span>
   <div class="container">
-    <div class="row">
-      <div class="twelve columns" style="text-align:center">
-        <h4>Mainospaikat</h4>
-      </div>
-
+    <div class="twelve columns" style="text-align:center">
+      <h4>Mainospaikat</h4>
     </div>
-    <div style="float:left;" class="row">
+    <div class="row"></div>
+    <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
+    <div class="row"style="float:left;">
       <div class="six columns" style="text-align:center">
         <h5 style="margin-bottom:0" id="adHeader">&nbsp;</h5>
         <span id="upload" style="visibility:hidden;">
 
-        <form method="POST" enctype="multipart/form-data">
         <tbody>
         <tr>
-          <div class="image-editor" id="crop">
+          <div class="image-editor" id="crop" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
       <div style="display:inline-block">
             <div id="preview" class="cropit-image-preview"><div class="error-msg"></div></div>
           </div>
-            <input style="display:inline-block" type="file" class="cropit-image-input">
+            <input style="display:inline-block;padding-left:30px" type="file" class="cropit-image-input">
             <label for="zoom">Zoomaus</label>
             <input id="zoom" style="display:inline-block;" type="range" class="cropit-image-zoom-input">
             <?php
             listAdLinks();
             ?>
             <input type="hidden" id="image-data" name="image-data" class="hidden-image-data" />
-            <div class="twelve columns" style="text-align:center">
+</div>
+<div class="twelve columns" style="text-align:center;margin-top:20px">
+            <button id="removeAd" class="button-remove" type="submit">Poista</button>
             <button id="submitAd" class="button-primary" type="submit">Tallenna</button>
-            <button id="removeAd" class="button-primary" type="submit">Poista</button>
           </div>
-    </form>
-    </div>
       </span>
     </div>
-    <div style="float:left;margin-left:auto ;margin-right:auto;width:360px;height:680px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
-      <div class="six columns" style="text-align:center">
-      <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 680px;solid;top: 59px;">
+    <div class="six columns" style="position:relative;left:20px;float:left;width:360px;height:680px;background-image: url(images/phone.jpg);background-repeat:no-repeat;">
+      <div style="position:relative;top:50%;">
+      <i id="back" class="material-icons">arrow_back</i>
+      <i id="forward" class="material-icons">arrow_forward</i>
+    </div>
+      <div id="1and2" class="on" style="display:initial;text-align:center">
+      <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 620px;solid;top: 5px;">
         <?php
         if (file_exists($fileName1s) && isset($_SESSION['teamId'])){
         echo '<div class="reserved" onclick="notify(this);" id="1" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad1.'?'.time().'"></div>';
@@ -126,10 +127,31 @@ $ad4 = $fileName4j;
         ?>
       </div>
       </div>
-    </div>
-    </div>
 
+      <div id="3and4" style="display:none;text-align:center">
+      <div id="adSelector" style="position: relative;margin-left: auto;margin-right: auto;width: 360px;height: 620px;solid;top: 5px;">
+        <?php
+        if (file_exists($fileName3s) && isset($_SESSION['teamId'])){
+        echo '<div class="reserved" onclick="notify(this);" id="3" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad3.'?'.time().'"></div>';
+      } else {
+        echo '<div onclick="addAd(this);" id="3" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad3.'?'.time().'"></div>';
+      }
+      echo '<div style="color:white"><h3>Kotijoukkue</h3></div>';
+      if (file_exists($fileName4s) && isset($_SESSION['teamId'])){
+      echo '<div class="reserved" onclick="notify(this);" id="4" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:red;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad4.'?'.time().'"></div>';
+    } else {
+      echo '<div onclick="addAd(this);" id="4" style="margin-left:auto;margin-right:auto;text-align:center;border-width:3px;border-style:solid;border-color:transparent;width:218px;height:71px;"><img style="height:65px;width:212px" src="'.$ad4.'?'.time().'"></div>';
+    }
+      echo '<div style="color:white"><h3>Vierasjoukkue</h3></div>';
+
+        ?>
+      </div>
+      </div>
+
+    </div>
+    </div>
   </div>
+</div>
 
   <script>
 var imageData = "";
@@ -145,7 +167,8 @@ $('.image-editor').cropit(
         onImageLoaded: function() {
               $('#image-data').val("");
               $('#image-data').val($('.image-editor').cropit('export'));
-              imageData = $('#image-data').val();
+
+
           }
     }
 );
@@ -193,7 +216,7 @@ $('.image-editor').cropit(
         $('#preview').css("display","none");
         $('#preview').fadeIn();
     });
-$("#adHeader").css({"color":"black"});
+$("#adHeader").css({"color":"gray"});
 document.getElementById('adHeader').innerHTML="Mainoskuva "+element.id;
 document.getElementById('upload').style="visibility:visible;";
 document.getElementById('submitAd').value=element.id;
@@ -207,6 +230,10 @@ if (element.id == 1) {
 document.getElementById('link1').style="display:inline-block;width:180px";
 } else if (element.id == 2) {
 document.getElementById('link2').style="display:inline-block;width:180px";
+} else if (element.id == 3) {
+document.getElementById('link3').style="display:inline-block;width:180px";
+} else if (element.id == 4) {
+document.getElementById('link4').style="display:inline-block;width:180px";
 }
 url = document.getElementById(element.id).children[0].src;
 
@@ -248,7 +275,8 @@ document.getElementById('submitAd').name="adUpload";
 
 $('#submitAd').click(function(event){
       event.preventDefault(); // stop the form from submitting
-
+      $('#image-data').val($('.image-editor').cropit('export'));
+      imageData = $('#image-data').val();
       var ad = $('#submitAd').val();
       var adlink1 = $('#link1').val();
       var adlink2 = $('#link2').val();
@@ -272,6 +300,18 @@ $('#submitAd').click(function(event){
           message(data);
         });
     });
+    $('#forward, #back').click(function(event){
+    $('#1and2').toggleClass("on");
+    $('#3and4').toggleClass("on");
+
+    if ($('#1and2').hasClass("on")) {
+    $('#3and4').css("display","none");
+    $('#1and2').fadeIn();
+  } if ($('#3and4').hasClass("on")) {
+  $('#1and2').css("display","none");
+  $('#3and4').fadeIn();
+}
+});
 </script>
 
   <?php
