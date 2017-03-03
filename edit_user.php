@@ -37,9 +37,10 @@
           <tbody>
             <tr>
               <?php userData('edit'); ?>
-            <tr>
+
+<tr>
 <td class="bold">Vahvista salasana</td>
-              <td><input type="password" id="pwd" name="pwd" ></td></tr>
+<td><input type="password" id="pwd" name="pwd" ></td></tr>
             </tr>
           </body>
         </table>
@@ -59,7 +60,8 @@
         event.preventDefault(); // stop the form from submitting
         var teamname = $('#name').val();
         var pass = $('#pwd').val();
-        var finish = $.post("functions.php", { editUser: 'edit', pwd: pass, name: teamname }, function(data) {
+        var serie = $('#serie').val();
+        var finish = $.post("functions.php", { editUser: 'edit', pwd: pass, name: teamname, teamSerie: serie }, function(data) {
           if(data){
             console.log(data);
           }

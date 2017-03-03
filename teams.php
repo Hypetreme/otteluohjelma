@@ -24,6 +24,7 @@ exit();
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
+    unset($_SESSION['popupText']);
     unset($_SESSION['ads']);
     unset($_SESSION['adlinks']);
     unset($_SESSION['editEvent']);

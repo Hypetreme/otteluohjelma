@@ -58,12 +58,12 @@
         <label for="laji">
           Urheilulaji
         </label>
-        <select name="laji">
+        <select id="sport" name="sport">
           <option disabled selected>Valitse</option>
-          <option value="jalkapallo">Jalkapallo</option>
-          <option value="salibandy">Salibändy</option>
-          <option value="jaakiekko">Jääkiekko</option>
-          <option value="koripallo">Koripallo</option>
+          <option value="1">Salibandy</option>
+          <option value="2">Jääkiekko</option>
+          <option value="3">Jalkapallo</option>
+          <option value="4">Koripallo</option>
         </select>
       </div>
       <div class="twelve columns">
@@ -81,7 +81,8 @@ $('form').submit(function(event){
     var pass = $('#pwd').val();
     var passconfirm = $('#pwdConfirm').val();
     var level = $('#level').val();
-    var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm, regLevel: level}, function(data) {
+    var sport = $('#sport').val();
+    var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm, regLevel: level, regSport: sport }, function(data) {
       if(data){
         console.log(data);
       }

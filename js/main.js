@@ -139,6 +139,9 @@ function message(data,selected) {
    } else if (data == "emailSuccess"){
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Sähköposti lähetetty!";
+   } else if (data == "regLevelInvalid"){
+     msg.className="msgError";
+     msg.innerHTML=errorSymbol+"Et valinnut tilin tasoa!";
    } else if (data == "userSuccess"){
      msg.className="msgSuccess";
      msg.innerHTML=successSymbol+"Käyttäjä rekisteröity! Käy aktivoimassa tili linkistä jonka lähetimme sähköpostiisi.";
@@ -380,27 +383,28 @@ msg.innerHTML=errorSymbol+"Syötä 1. mainoksen linkki oikeassa muodossa!";
   msg.innerHTML=console.error();Symbol+"Linkkiä ei voitu kopioida!";
  }
  else if (data == "createLink") {
+  $('#createEvent').prop('disabled', true);
   msg.className="msgSuccess";
   $("#msg").css("display", "none");
   //msg.innerHTML=successSymbol+"Tapahtuma tallennettu!<br>"+url;
+
+  $("#cover").fadeIn().css("display", "initial");
+  var url = window.location.href;
+  url = url.substring(0, url.indexOf('event'));
+  console.log(url);
   var qrcode = new QRCode("qrCode", {
-    text: 'inc/widgets/ottelu/index.php?eventId='+selected,
+    text: url+'inc/widgets/ottelu/index.php?eventId='+selected,
     width: 150,
     height: 150,
     colorDark : "#000000",
     colorLight : "#ffffff",
     correctLevel : QRCode.CorrectLevel.H
 });
-  $("#cover").fadeIn().css("display", "initial");
-  var url = window.location.href
-  url = url.substring(0, url.indexOf('event'));
-  console.log(url);
   document.getElementById('facebook').children[0].setAttribute('data-href',url+'inc/widgets/ottelu/index.php?eventId='+selected);
-  document.getElementById('facebook').children[0].children[0].href='https://www.facebook.com/sharer/sharer.php?u='+url+'inc/widgets/ottelu/index.php?eventId='+selected+'%2F&amp;src=sdkpreparse';
+  document.getElementById('facebook').children[0].children[0].href='https://www.facebook.com/sharer/sharer.php?u='+url+'inc/widgets/ottelu/index.php?eventId='+selected+'&amp;src=sdkpreparse';
   //https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.otteluohjelma.fi%2F&amp;src=sdkpreparse
   document.getElementById('twitter').children[0].setAttribute('href','https://twitter.com/intent/tweet?text=Tässä ottelumme käsiohjelma suoraan mobiliisi:'+url+'inc/widgets/ottelu/index.php?eventId='+selected+'&hashtags=otteluohjelma');
   document.getElementById('link').children[0].setAttribute('data-clipboard-text',url+'inc/widgets/ottelu/index.php?eventId='+selected);
   document.getElementById('email').children[0].setAttribute('href','mailto:?subject:?body='+url+'inc/widgets/ottelu/index.php?eventId='+selected);
-  $('#createEvent').prop('disabled', true);
  }
 }

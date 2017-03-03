@@ -18,6 +18,7 @@
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
+    unset($_SESSION['popupText']);
     unset($_SESSION['ads']);
     unset($_SESSION['adlinks']);
     unset($_SESSION['editEvent']);
@@ -30,9 +31,11 @@
     <span id="msg" class="msgError"></span>
     <div class="row" style="text-align:left">
       <div class="twelve columns">
+      <div style="float:left">
         <h4>
-          Asetukset
+        Asetukset
         </h4>
+      </div>
         <?php
           $url = "";
           if (isset($_SESSION['teamId'])) {
@@ -41,13 +44,15 @@
           }
             $ads = 'ads.php';
             $url3 = 'location.href="'.$ads.'"';
-          $events = 'my_events.php';
-          $url2 = 'location.href="'.$events.'"';
+            $events = 'my_events.php';
+            $url2 = 'location.href="'.$events.'"';
+          echo '<div style="float:right">';
           if (isset($_SESSION['teamId'])) {
             echo '<button class="button-primary" onclick='.$url.'>Kokoonpano</button>';
             echo '<button class="button-primary" onclick='.$url2.'>Tapahtumasi</button>';
             }
             echo '<button class="button-primary" onclick='.$url3.'>Aseta Mainospaikat</button>';
+            echo '</div>';
 
         ?>
     </div>
@@ -56,15 +61,13 @@
     <div class="row">
       <div class="six columns" style="float:left">
         <h5>Logo</h5>
-        <table class="u-full-width">
+        <table style="margin-top:23px" class="u-full-width">
         <form action="functions.php" method="post" enctype="multipart/form-data">
           <tbody>
             <tr>
               <td><input type="file" onchange="loadData()"></td>
             </tr>
-            <tr>
-              <td><input class="button-primary" type="submit" value="Tallenna logo" id="fileUpload" name="fileUpload"></td>
-            </tr>
+
               <img src= <?php
               if (isset($_SESSION['teamId'])) {
                   $fileName =  'images/logos/' . $teamUid . $teamId .'.png';
@@ -79,6 +82,7 @@
           </tbody>
         </form>
         </table>
+        <input class="button-primary" type="submit" value="Tallenna logo" id="fileUpload" name="fileUpload">
       </div>
 
 
@@ -91,9 +95,8 @@
             </tr>
           </body>
         </table>
-      <ul class="navbar-list">
-      <li class="navbar-item"><button class="button-primary" onclick="window.location='edit_user.php'">Muokkaa</button></li>
-    </ul>
+      <button class="button-primary" onclick="window.location='edit_user.php'">Muokkaa</button>
+
       </div>
       </div>
     <script>

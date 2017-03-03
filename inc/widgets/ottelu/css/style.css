@@ -1,107 +1,303 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800');
+/*@import url('https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800');*/
+
+@font-face {
+    font-family: "Raleway";
+    font-style: normal;
+    src: local('Raleway'), url('../raleway/Raleway-Regular.ttf')
+}
 
 html {
-  height: 100%;
+    height: 100%;
 }
 
 body {
-  background-color: #f5f5f5;
-  font-family: "Raleway", sans-serif;
+    background-color: black;
+    font-family: "Raleway", sans-serif;
+    overflow: hidden;
+
 }
 
-.overlay {
-  background-color: rgba(0,0,0,0.75);
-  height: 100%;
-  position: fixed;
-  width: 100%;
-}
+
 
 .background {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .jaakiekko {
-  background-image: url('../images/jaakiekko.jpg');
-  background-attachment: fixed;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/jaakiekko.jpg');background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/jaakiekko.jpg');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 header {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #fff;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    min-height: 79px;
 }
 
 nav {
-  width: 100%;
+    width: 100%;
 }
 
 nav ul {
-  list-style: none;
-  text-align: center;
-  margin: 0;
-  padding-top: 7px;
+    list-style: none;
+    text-align: center;
+    padding-top: 7px;
 }
 
 nav ul li {
-  display: inline-block;
-  margin: 0;
+    display: inline-block;
+    margin: 0;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
-nav ul li a {
-  font-weight: 600;
-  text-decoration: none;
-  background-color: #e2e2e2;
-  float: left;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  font-size: 16px;
-  color: #000000;
-  line-height: 50px;
-  text-align: center;
-  box-sizing: border-box;
-  -webkit-transition: all 200ms;/
-  transition: all 200ms;
+nav a {
+    font-weight: 600;
+    text-decoration: none;
+    background-color: #e2e2e2;
+    float: left;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    font-size: 16px;
+    color: #000000;
+    line-height: 45px;
+    text-align: center;
+    box-sizing: border-box;
+    -webkit-transition: all 200ms;
+    / transition: all 200ms;
 }
 
-nav ul li a:active,
-nav ul li a:focus,
-nav ul li a:hover {
-  background-color: #dc1313;
-  color: #fff;
+#share-header {
+  text-align:center;
+  color:white;
+}
+#fullscreen {
+    background-color: #1EAEDB;
+    color: white;
 }
 
-nav ul li a.active {
-  background-color: #dc1313;
-  color: #fff;
+#fullscreen:active, #fullscreen:focus, #fullscreen:hover {
+    background-color: #1EAEDB;
+    color: #fff;
 }
 
+.on a:active, .on a:focus, .on a:hover {
+    background-color: #dc1313;
+    color: #fff;
+}
+
+.off a:active, .off a:focus, .off a:hover {
+    color: black;
+}
 
 h1.title {
-  font-weight: 100;
-  font-size: 60px;
-  text-transform: uppercase;
-  text-align: center;
-  color: #fff;
+    font-weight: 100;
+    font-size: 60px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
 }
 
 .gameName h1 {
-  font-weight: 100;
-  font-size: 60px;
+    font-weight: 100;
+    font-size: 55px;
 }
 
 .gameName, .gameTime, .gamePlace, .gameDate {
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 100;
-  color: #fff;
-  font-size: 20px;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 100;
+    color: #fff;
+    font-size: 42px;
+}
+
+#playerListHome, #playerListVisitors {
+    color: white;
+    font-size: 25px;
+}
+
+#contentWrapper {
+    display: block;
+    overflow: hidden;
+}
+.game-share a {
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    background-color: #e2e2e2;
+    height: 68px;
+    width: 68px;
+    border-radius: 50%;
+    font-size: 42px;
+    color: #000000;
+    line-height: 68px;
+    text-align: center;
+    box-sizing: border-box;
+    -webkit-transition: all 200ms;
+    / transition: all 200ms;
+}
+
+/*Pysty*/
+
+@media screen and (max-width: 2280px){
+    #up {
+        height: 90%;
+        width: 100%;
+        float: left;
+        overflow-y: scroll;
+
+    }
+    #popup {
+        width: 90%;
+        top: 20%;
+    }
+    #popupText {
+      min-width: 340px;
+      max-width: inherit;
+    }
+    #popupAd img {
+        width: 100%;
+    }
+    .game-share {
+      text-align: center;
+      position:fixed;
+      top:50%;
+      width: 100%;
+      left:0;
+      right:0;
+    }
+    .game-share a {
+        float: left;
+    }
+    #facebook, #twitter, #whatsapp {
+        display: inline-block;
+        padding: 10px;
+    }
+    #share-header {
+      display:initial;
+    }
+    #space {
+      height:90px;
+    }
+}
+
+
+/*Vaaka*/
+
+@media screen and (max-height: 385px){
+    #up {
+        height: 42%;
+        width: 100%;
+        float: left;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    #popup {
+        width: 75%;
+        top: 5%;
+    }
+    #popupAd img {
+        width: 80%;
+    }
+    #sponsor-logos a img{
+      width: 40%;
+
+    }
+    .game-share {
+        text-align: center;
+        width: 20%;
+        position: absolute;
+        left: 90%;
+        top: 1%;
+    }
+    .game-share a {
+        width: 62px;
+        height: 62px;
+        font-size: 38px;
+        line-height: 62px;
+    }
+    #facebook, #twitter, #whatsapp {
+        padding: 5px;
+    }
+    #share-header {
+      display:none;
+    }
+    #space {
+      height:0px;
+    }
+    #bottom {
+      padding-bottom:20px;
+    }
+}
+
+#bottom {
+    position:fixed;
+    height:12%;
+    width: 100%;
+    bottom: 0;
+    z-index: 998;
 
 }
-#playerListHome, #playerListVisitors {
-  color: white;
-  font-size:25px;
+
+#popup {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: white;
+    border: 3px solid grey;
+    color: black;
+    padding: 10px;
+    z-index: 999;
+    font-family: "Ubuntu";
+}
+
+#close {
+    cursor: pointer;
+    font-size: 24px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+    top: -10px;
+    left: 10px;
+    float: right;
+    width: 20px;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+#cover {
+    position: fixed;
+    background: -webkit-linear-gradient(left,rgba(0,0,0,0.7),rgba(0,0,0,0.7)); /*Safari 5.1-6*/
+    background: -o-linear-gradient(right,rgba(0,0,0,0.7),rgba(0,0,0,0.7)); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(right,rgba(0,0,0,0.1),rgba(0,0,0,0.7)); /*Fx 3.6-15*/
+    background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.7)); /*Standard*/
+    width: 100%;
+    height:100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+#popupAd {
+    z-index: 999;
+    text-align: center;
+    width: 100%;
+}
+
+#popupText {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    font-family: "Ubuntu";
 }

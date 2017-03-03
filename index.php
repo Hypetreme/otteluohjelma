@@ -20,7 +20,7 @@
     <form name="form" action="functions.php" method="POST">
       <div class="twelve columns">
         <h4>
-          Login
+          Kirjaudu sisään
         </h4>
       </div>
       <div class="twelve columns">

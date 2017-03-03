@@ -95,7 +95,7 @@ var quill = new Quill('#editor', {
 });
 
 $('#btnEvent5,#btnEvent6').click(function(event){
-  event.preventDefault(); // stop the form from submitting
+  event.preventDefault();
   var selected = ($(this).attr("id"));
   var text = JSON.stringify(quill.getContents());
   var plainText = JSON.stringify(quill.getText());

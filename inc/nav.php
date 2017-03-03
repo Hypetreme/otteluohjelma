@@ -11,7 +11,13 @@
     <?php
     if (isset($_SESSION)) {
     if ($_SESSION['type'] == 0) {
-      echo '<div class="row" style="background-color: #2A279B66;">';
+      echo '<style>
+      .navbar-link,.openNav {
+      color: white;
+      }
+
+      </style>';
+      echo '<div class="row" style="background-color: #6172BD;">';
     } else {
       echo '<div class="row" style="background-color: #f7f7f7;">';
     }
@@ -177,7 +183,7 @@
           if (!isset($_SESSION['teamId'])) {
             echo '<li class="navbar-item"><a class="navbar-link" href="teams.php">Joukkueet</a></li>';
           } else {
-            echo '<li class="navbar-item"><a class="navbar-link" href="team.php?teamId='.$teamId.'">Joukkue</a></li>';
+            echo '<li class="navbar-item"><a class="navbar-link" href="team.php?teamId='.$teamId.'">Kokoonpano</a></li>';
           }
           ?>
           <li class="navbar-item"><a class="navbar-link" onclick="location.href='settings.php'">Asetukset</a></li>
