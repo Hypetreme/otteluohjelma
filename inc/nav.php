@@ -10,26 +10,26 @@
     </div>
     <?php
     if (isset($_SESSION)) {
-    if ($_SESSION['type'] == 0) {
-      echo '<style>
-      .navbar-link,.openNav {
+        if ($_SESSION['type'] == 0) {
+            echo '<style>
+      .navbar-link,.open-nav {
       color: white;
       }
 
       </style>';
-      echo '<div class="row" style="background-color: #6172BD;">';
-    } else {
-      echo '<div class="row" style="background-color: #f7f7f7;">';
+            echo '<div class="row" style="background-color: #6172BD;">';
+        } else {
+            echo '<div class="row" style="background-color: #f7f7f7;">';
+        }
     }
-  }
     ?>
-    <div class="one column" style="text-align:center;position: relative;">
+    <div class="one column" style="width:auto;text-align:center;position: relative;">
       <div style="margin-left:10px;display:inline-block;">
         <?php
           $profile  = 'profile.php?back';
           $url  = 'location.href="'.$profile.'"';
           if (isset($_SESSION['teamId']) && $_SESSION['type'] == 0) {
-            echo '<button style="position:relative;top:10px;background-color:white;float:left;" onclick='.$url.'>Seuraan</button>';
+              echo '<button style="position:relative;top:10px;background-color:white;float:left;" onclick='.$url.'>Seuraan</button>';
           }
         ?>
       </div>
@@ -38,65 +38,64 @@
 
         <ul class="navbar-list">
           <?php
-          include ('dbh.php');
+          include('dbh.php');
           $session = $profile = $profile2 = $teams = $url = $url2 = $url3 = "";
 
           if (isset($_SESSION)) {
+              $session = json_encode($_SESSION);
 
-            $session = json_encode($_SESSION);
-
-            if (isset($_SESSION['teamId'])) {
-              $profile = 'profile.php?teamId=' . $_SESSION['teamId'];
-            } else {
-              $profile = 'profile.php';
-            }
+              if (isset($_SESSION['teamId'])) {
+                  $profile = 'profile.php?teamId=' . $_SESSION['teamId'];
+              } else {
+                  $profile = 'profile.php';
+              }
 
 
 
           //defining variables
           $team       =   'teams.php';
-          $url        =   'location.href="'.$profile.'"';
-          $id         =   $_SESSION['id'];
-          $uid        =   $_SESSION['uid'];
-          if (isset($_SESSION['teamId'])) {
-            $teamUid   =   $_SESSION['teamUid'];
-            $teamId     =   $_SESSION['teamId'];
-          }
+              $url        =   'location.href="'.$profile.'"';
+              $id         =   $_SESSION['id'];
+              $uid        =   $_SESSION['uid'];
+              if (isset($_SESSION['teamId'])) {
+                  $teamUid   =   $_SESSION['teamUid'];
+                  $teamId     =   $_SESSION['teamId'];
+              }
 
 
-          $stmt = $conn->prepare("SELECT * FROM team WHERE user_id = :user_id");
-          $stmt->bindParam(":user_id", $id);
-          $stmt->execute();
-          $result = $stmt->fetchAll();
+              $stmt = $conn->prepare("SELECT * FROM team WHERE user_id = :user_id");
+              $stmt->bindParam(":user_id", $id);
+              $stmt->execute();
+              $result = $stmt->fetchAll();
 
           //if there is session teamId
           if (isset($_SESSION['teamId'])) {
-            $fileName = 'images/logos/'.$teamUid.$teamId.'.png';
-            if (file_exists($fileName)){
-              $profileLink = $url;
-              $profileFile = $fileName;
-              $profileName = $teamUid;
-            }else{
-              $profileLink = $url;
-              $profileFile = "images/logos/joukkue.png";
-              $profileName = $teamUid;
-            }
-          }else{
-            $fileName = 'images/logos/'.$uid.$id.'.png';
-            if (file_exists($fileName)){
-              $profileLink = $url;
-              $profileFile = $fileName;
-              $profileName = $uid;
-            }else{
-              $profileLink = $url;
-              $profileFile = "images/logos/seura.png";
-              $profileName = $uid;
-            }
+              $fileName = 'images/logos/'.$teamUid.$teamId.'.png';
+              if (file_exists($fileName)) {
+                  $profileLink = $url;
+                  $profileFile = $fileName;
+                  $profileName = $teamUid;
+              } else {
+                  $profileLink = $url;
+                  $profileFile = "images/logos/joukkue.png";
+                  $profileName = $teamUid;
+              }
+          } else {
+              $fileName = 'images/logos/'.$uid.$id.'.png';
+              if (file_exists($fileName)) {
+                  $profileLink = $url;
+                  $profileFile = $fileName;
+                  $profileName = $uid;
+              } else {
+                  $profileLink = $url;
+                  $profileFile = "images/logos/seura.png";
+                  $profileName = $uid;
+              }
           }
 
-          echo '<li class="liLogo navbar-item">
-                  <i class="material-icons changeTeam">import_export</i>
-                  <div class="btn openNav">
+              echo '<li class="li-logo navbar-item">
+                  <i style="display:none" class="material-icons change-team">import_export</i>
+                  <div class="btn open-nav">
                     <a class="navbar-link">
                       <div class="ctx">
                         <div class="ctx-r">
@@ -108,7 +107,7 @@
                       </div>
                     </a>
                   </div>
-                  <i class="material-icons openNav">keyboard_arrow_right</i>
+                  <i class="material-icons open-nav">keyboard_arrow_right</i>
                 </li>';
           }
           echo '<script>console.log(' . $session . ')</script>';
@@ -119,8 +118,8 @@
 
             var moreNav = $('.more');
             var links = $(".more li");
-            var moreNavBtn = $('.openNav');
-            var changeTeam = $('.changeTeam');
+            var moreNavBtn = $('.open-nav');
+            var changeTeam = $('.change-team');
             var navJoukkueet = $('.nav-joukkueet');
 
             changeTeam.on("click", function(){
@@ -181,9 +180,9 @@
           <li class="navbar-item"><a class="navbar-link" onclick=' <?php echo $url ?>'>Etusivu</a></li>
           <?php
           if (!isset($_SESSION['teamId'])) {
-            echo '<li class="navbar-item"><a class="navbar-link" href="teams.php">Joukkueet</a></li>';
+              echo '<li class="navbar-item"><a class="navbar-link" href="teams.php">Joukkueet</a></li>';
           } else {
-            echo '<li class="navbar-item"><a class="navbar-link" href="team.php?teamId='.$teamId.'">Kokoonpano</a></li>';
+              echo '<li class="navbar-item"><a class="navbar-link" href="team.php?teamId='.$teamId.'">Kokoonpano</a></li>';
           }
           ?>
           <li class="navbar-item"><a class="navbar-link" onclick="location.href='settings.php'">Asetukset</a></li>
@@ -193,8 +192,8 @@
         <select id="nav-joukkueet" name="nav-joukkueet" class="nav-joukkueet" onchange="location = this.value;">
           <option value="current" selected disabled>Valitse joukkue</option>
           <?php
-            foreach($result as $row){
-              echo "<option value='profile.php?teamId=".$row['id']."'>".$row['name']."</option>";
+            foreach ($result as $row) {
+                echo "<option value='profile.php?teamId=".$row['id']."'>".$row['name']."</option>";
             }
           ?>
         </select>

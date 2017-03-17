@@ -46,57 +46,63 @@ if (file_exists(${'fileName' . $i . 'es'})){
 }
 ?>
 <link rel="stylesheet" type="text/css" href="css/cropit.css">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="js/jquery.cropit.js"></script>
 
-<div class="container">
+<div class="container" style="padding-bottom:60px;">
   <div class="twelve columns" style="text-align:center" id="guide">
 
   <div id="section1">
-  <p class="guideHeader">Tapahtuman tiedot</p>
+  <p class="guide-header">Tapahtuman tiedot</p>
   <a href="event1.php" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+  <i class="material-icons">filter_1</i>
   </a></div>
   <div class="line"></div>
 
   <div id="section2">
-  <p class="guideHeader">Kotipelaajat</p>
+  <p class="guide-header">Kotipelaajat</p>
   <a href="event2.php" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+  <i class="material-icons">filter_2</i>
   </a></div>
   <div class="line"></div>
 
   <div id="section3">
-  <p class="guideHeader">Vieraspelaajat</p>
+  <p class="guide-header">Vieraspelaajat</p>
   <a href="event3.php" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+  <i class="material-icons">filter_3</i>
   </a></div>
   <div class="line"></div>
 
   <div id="section4">
-  <p class="guideHeader">Ennakkoteksti</p>
+  <p class="guide-header">Ennakkoteksti</p>
   <a href="event4.php" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+  <i class="material-icons">filter_4</i>
   </a></div>
   <div class="line" style="background-color:#2bc9c9"></div>
 
   <div id="section5" style="background-color:#2bc9c9">
-  <p class="guideHeader">Mainospaikat</p>
+  <p class="guide-header">Mainospaikat</p>
   <a href="#" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+  <i class="material-icons">filter_5</i>
   </a></div>
   <div class="line" style="background-color:gray"></div>
 
   <div id="section6" style="background-color:gray">
-  <p class="guideHeader">Yhteenveto</p>
+  <p class="guide-header">    Kilpailu</p>
+  <a href="event6.php" style="text-decoration:none">
+  <i class="material-icons">filter_6</i>
+  </a></div>
+  <div class="line" style="background-color:gray"></div>
+
+  <div id="section7" style="background-color:gray">
+  <p class="guide-header">Yhteenveto</p>
   <a href="event_overview.php?c" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+  <i class="material-icons">filter_7</i>
   </a></div>
 </div>
 
 <div class="row">
   <div class="twelve columns">
-    <span id="msg" class="msgError"></span>
+    <span id="msg" class="msg-fail"></span>
   </div>
 </div>
   <div class="row">
@@ -112,17 +118,24 @@ if (file_exists(${'fileName' . $i . 'es'})){
       <div style="display:inline-block">
             <div id="preview" class="cropit-image-preview"></div>
           </div>
-            <input style="display:inline-block;padding-left:30px" type="file" class="cropit-image-input">
+
+            <input style="display:inline-block;padding-left:30px;max-width:300px" type="file" class="cropit-image-input">
+            <div id="zoom" style="display:none">
             <label for="zoom">Zoomaus</label>
-            <input id="zoom" style="display:inline-block;" type="range" class="cropit-image-zoom-input">
+            <p class="zoom-minus">-</p><input style="display:inline-block;" type="range" class="cropit-image-zoom-input">
+            <p class="zoom-plus">+</p>
+            </div>
+            <form id="form">
             <?php
             listAdLinks();
             ?>
             <input type="hidden" id="image-data" name="image-data" class="hidden-image-data"/>
+          </form>
+
 </div>
 <div class="twelve columns" style="text-align:center;margin-top:20px">
-            <button id="removeEventAd" class="button-remove" type="submit">Poista</button>
-            <button id="submitAd" class="button-primary" type="submit">Tallenna</button>
+            <button id="removeEventAd" class="remove-btn" type="submit">Poista</button>
+            <button form="form" id="setAd" class="button-primary" type="submit">Tallenna</button>
 </div>
     </span>
   </div>
@@ -135,14 +148,14 @@ if (file_exists(${'fileName' . $i . 'es'})){
     </div>
 
     <div id="1and2" class="on" style="position:relative;display:initial;text-align:center">
-    <div id="adSelector" class="overlay">
+    <div id="ad-selector" class="overlay">
       <?php
       if (file_exists($fileName1s) || file_exists($fileName1j)){
-      echo '<div class="ad reserved" onclick="notify(this);" id="1"><img src="'.$ad1.'?'.time().'"></div>';
+      echo '<div class="ad reserved" onclick="notify(this);" id="1"><img alt="mainos 1" src="'.$ad1.'?'.time().'"></div>';
     } else {
       echo '<div class="ad free" onclick="addAd(this);" id="1">';
       if ($ad1 != "") {
-      echo '<img src="'.$ad1.'?'.time().'">';
+      echo '<img alt="mainos 1" src="'.$ad1.'?'.time().'">';
     } else {
       echo '<h4 style="line-height:3">Mainos 1</h4>';
     }
@@ -153,11 +166,11 @@ if (file_exists(${'fileName' . $i . 'es'})){
     echo '<div><h5 class="preview">Pelaaja Yksi</h5></div>';
     echo '<div><h5 class="preview">Pelaaja Kaksi</h5></div>';
     if (file_exists($fileName2s) || file_exists($fileName2j)){
-    echo '<div class="ad reserved" onclick="notify(this);" id="2"><src="'.$ad2.'?'.time().'"></div>';
+    echo '<div class="ad reserved" onclick="notify(this);" id="2"><img alt="mainos 2" src="'.$ad2.'?'.time().'"></div>';
   } else {
     echo '<div class="ad free" onclick="addAd(this);" id="2">';
     if ($ad2 != "") {
-    echo '<img src="'.$ad2.'?'.time().'">';
+    echo '<img alt="mainos 2" src="'.$ad2.'?'.time().'">';
   } else {
     echo '<h4 style="line-height:3">Mainos 2</h4>';
   }
@@ -171,45 +184,44 @@ if (file_exists(${'fileName' . $i . 'es'})){
     </div>
 
     <div id="popup" style="display:none;text-align:center">
-    <div id="adSelector">
+    <div id="ad-selector">
       <?php
       echo '<div><h3 class="preview">Tapahtuman nimi</h3></div>';
       echo '<div><h3 class="preview">Päivämäärä</h3></div>';
       echo '<div><h3 class="preview">Paikka</h3></div>';
-      echo '<div id="popupWindow">';
+      echo '<div id="popup-window">';
       echo '<div id="close2">X</div>';
       if (file_exists($fileName5s) || file_exists($fileName5j)){
-      echo '<div class="ad reserved" onclick="notify(this);" id="5"><img src="'.$ad5.'?'.time().'"></div>';
+      echo '<div class="ad reserved" onclick="notify(this);" id="5"><img alt="mainos 5" src="'.$ad5.'?'.time().'"></div>';
     } else {
       echo '<div class="ad free popup" onclick="addAd(this);" id="5">';
       if ($ad5 != "") {
-      echo '<img src="'.$ad5.'?'.time().'">';
+      echo '<img alt="mainos 5" src="'.$ad5.'?'.time().'"></div>';
     } else {
       echo '<div id="empty">';
-      echo '<h4 style="color:black;line-height:3">Mainos 5</h4>';
+      echo '<h4 style="color:black;line-height:3">Mainos 5</h4></div>';
       echo '</div>';
     }
     }
       ?>
-    </div>
-  <p id="popupTextPreview">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  <p id="popup-text-preview">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     Nam vel enim aliquet.</p>
     </div>
     </div>
-</div>
+    </div>
     <div id="sponsors" style="display:none;text-align:center;">
-    <div id="adSelector" style="overflow-x:hidden;overflow-y:scroll;">
+    <div id="ad-selector" style="overflow-x:hidden;overflow-y:scroll;">
       <div><h3 class="preview">Kumppanit</h3></div>
       <?php
       $i = 1;
       foreach ($adArray as $value) {
       if($i > 5 && $i <= 25) {
       if (file_exists(${'fileName' . $i . 's'}) || file_exists(${'fileName' . $i . 'j'})){
-      echo '<div class="ad reserved" onclick="notify(this);" id="'.$i.'"><img src="'.${'ad' . $i }.'?'.time().'"></div>';
+      echo '<div class="ad reserved" onclick="notify(this);" id="'.$i.'"><img alt="'.'mainos' . $i .'" src="'.${'ad' . $i }.'?'.time().'"></div>';
     } else {
       echo '<div class="ad free" onclick="addAd(this);" id="'.$i.'">';
       if (${'ad' . $i } != "") {
-      echo '<img src="'.${'ad' . $i }.'?'.time().'">';
+      echo '<img alt="mainos ' . $i .'" src="'.${'ad' . $i }.'?'.time().'">';
     } else {
       echo '<h4 style="line-height:3">Kumppani '.($i-5).'</h4>';
     }
@@ -226,31 +238,37 @@ if (file_exists(${'fileName' . $i . 'es'})){
 </div>
 </div>
 </div>
-  <div class="row">
-    <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
-
+</div>
+    <div id="event-buttons" class="twelve columns">
       <button type="button" onclick="window.location='event4.php'"/>Takaisin</button>
       <button class="button-primary" type="button" id="btnEvent6" onclick="window.location='event_overview.php?c'"/>Seuraava</button>
     </div>
-  </div>
 
 
 <script>
-document.getElementById('popupTextPreview').innerHTML = document.getElementById('popupText').value;
+document.getElementById('popup-text-preview').innerHTML = document.getElementById('popup-text').value;
 var imageData = "";
 var url = "";
 $('.image-editor').cropit(
     {
+      minZoom: 'fit',
+      fitWidth: 'true',
+      smallImage: 'stretch',
       onImageError: function() {
             $('#preview').css("background-image", "none");
             imageData = "";
             message('imgError');
-
         },
         onImageLoaded: function() {
               $('#image-data').val("");
               $('#image-data').val($('.image-editor').cropit('export'));
-          }
+          },
+          onZoomDisabled: function() {
+                $('#zoom').css("display", "none");
+            },
+            onZoomEnabled: function() {
+                  $('#zoom').css("display", "initial");
+              }
     }
 );
 
@@ -273,6 +291,7 @@ $(this).css({"border-width":"3px"});
 });
 
 function addAd(element) {
+$('#zoom').css("display", "none");
 $(function(){
   $('.free:not(#'+element.id+')').removeClass('active');
   if(!$('.free:not(#'+element.id+')').hasClass('reserved')){
@@ -286,22 +305,23 @@ $(function(){
   $('#preview').fadeIn();
 });
 $("#adHeader").css({"color":"gray"});
-document.getElementById('popupDiv').style="display:none";
+$('#popupDiv').css("display","none");
 
 if (element.id == 5) {
 document.getElementById('adHeader').innerHTML="Popup-Mainos";
-document.getElementById('popupDiv').style="display:initial";
+$('#popupDiv').css("display","initial");
 }else if (element.id >= 6){
 document.getElementById('adHeader').innerHTML="Kumppani "+(element.id-5);
 }else {
 document.getElementById('adHeader').innerHTML="Mainos "+element.id;
 }
-document.getElementById('upload').style="visibility:visible;";
-document.getElementById('submitAd').value=element.id;
+$('#upload').css("visibility","visible");
+document.getElementById('setAd').value=element.id;
 document.getElementById('removeEventAd').value=element.id;
 document.getElementById('linkHeader').style="initial";
 $('.link:not(#link'+element.id+')').css({"display":"none"});
-document.getElementById('link'+element.id).style="display:inline-block;width:240px";
+$('#link'+element.id).css("display","inline-block");
+$('#link'+element.id).css("width","240px");
 
 //Ladataan asetettu kuva esikatselua varten
 $('#preview').css("background-image", "none");
@@ -315,29 +335,29 @@ $('.image-editor').cropit('imageSrc', url);
 }
 
 function notify(element) {
-
+message('eventAdReserved');
 if($(element).hasClass('reserved')){
 $(element).css({"border-color":"red"});
 $(element).css({"border-width":"3px"});
 }
 $("#adHeader").css({"color":"red"});
-document.getElementById('adHeader').innerHTML="Seurasi on asettanut mainospaikan!";
+document.getElementById('adHeader').innerHTML="";
 document.getElementById('upload').style="visibility:hidden";
-document.getElementById('submitAd').name="adUpload";
+document.getElementById('setAd').name="adUpload";
 }
-$('#submitAd').click(function(event){
+$('#setAd').click(function(event){
       event.preventDefault();
       if ($('#image-data').val()!="") {
       $('#image-data').val($('.image-editor').cropit('export'));
     }
       imageData = $('#image-data').val();
-      var ad = $('#submitAd').val();
-      var popupText = $('#popupText').val();
+      var ad = $('#setAd').val();
+      var popupText = $('#popup-text').val();
       var length = $('.ad').length;
       for (i = 0; i < 25; i++) {
       eval("adlink" + i + " = $('#link'+(i+1)).val()");
     }
-      var finish = $.post("functions.php", { submitAd: ad, imgData: imageData ,
+      var finish = $.post("functions.php", { setAd: ad, imgData: imageData ,
 link1: adlink0, link2: adlink1, link3: adlink2, link4: adlink3,
 link5: adlink4, link6: adlink5, link7: adlink6, link8: adlink7,
 link9: adlink8, link10: adlink9, link11: adlink10, link12: adlink11,
@@ -352,7 +372,7 @@ link21: adlink20, link22: adlink21, link23: adlink22, link24: adlink23, link25: 
       });
   });
   $('#removeEventAd').click(function(event){
-        event.preventDefault(); // stop the form from submitting
+        event.preventDefault();
 
         var ad = $('#removeEventAd').val();
         var finish = $.post("functions.php", { removeEventAd: ad, fileName: url }, function(data) {

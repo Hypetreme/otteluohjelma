@@ -1,14 +1,15 @@
 <?php
   include('inc/header.php');
+  session_start();
   if (isset($_SESSION['id'])) {
-    header("Location: profile.php");
+      header("Location: profile.php");
   }
 ?>
 
 <!-- Tähän sitten se switchi -->
 
 <div class="container">
-  <span id="msg" class="msgError"></span>
+  <span id="msg" class="msg-fail"></span>
   <div class="row">
     <div class="twelve columns">
       <h1>
@@ -17,7 +18,7 @@
     </div>
   </div>
   <div class="row">
-    <form name="form" action="functions.php" method="POST">
+    <form id="form" action="functions.php" method="POST">
       <div class="twelve columns">
         <h4>
           Kirjaudu sisään
@@ -27,17 +28,17 @@
         <label for="uid">
           Käyttäjänimi
         </label>
-        <input class="styled" type="text" id="uid" name="uid">
+        <input class="styled" type="text" id="uid">
       </div>
       <div class="twelve columns">
         <label for="pwd">
           Salasana
         </label>
-        <input type="password" id="pwd" name="pwd">
+        <input type="password" id="pwd">
       </div>
       <div class="twelve columns">
-        <input class="button-primary" id="logIn" name="logIn" id="submit" type="submit" value="Login">
-        <input class="button-primary" type="button" value="Register" onclick="window.location.href='register.php'">
+        <input class="button-primary" id="logIn" id="submit" type="submit" value="Kirjaudu">
+        <input class="button-primary" type="button" value="Rekisteröidy" onclick="window.location.href='register.php'">
       </div>
     </form>
 
@@ -65,4 +66,4 @@ $('form').submit(function(event){
     });
 });
 </script>
-<?php include ('inc/footer.php'); ?>
+<?php include('inc/footer.php'); ?>

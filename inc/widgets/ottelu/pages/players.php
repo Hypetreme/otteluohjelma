@@ -12,7 +12,7 @@
     <div class="row" style="text-align:center">
       <div class="twelve columns">
         <span id="homeTeam" style="white-space: pre;color:white"></span>
-        <ul id="playerListHome" style="list-style-type: none;"></ul>
+        <ul id="list-home" style="list-style-type: none;"></ul>
       </div>
       <div class="row" style="text-align:center">
         <div id="gameAd2">
@@ -20,7 +20,7 @@
       </div>
       <div class="twelve columns">
         <span id="visitorTeam" style="white-space: pre;color:white"></span>
-        <ul id="playerListVisitors" style="list-style-type: none;color:white"></ul>
+        <ul id="list-visitors" style="list-style-type: none;color:white"></ul>
       </div>
     </div>
   </div>

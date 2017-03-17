@@ -2,66 +2,74 @@
 session_start();
 include 'dbh.php';
 if (!isset($_SESSION['id'])) {
-header("Location: index.php");
+    header("Location: index.php");
 }
 if (isset($_GET['eventId'])) {
-$_SESSION['editEvent'] = true;
+    $_SESSION['editEvent'] = true;
 }
 if (!isset($_SESSION['editEvent'])) {
-header("Location: profile.php");
+    header("Location: profile.php");
 }
-include ('inc/header.php');
+include('inc/header.php');
 include 'functions.php';
 ?>
 
 <!-- Theme included stylesheets -->
 <link href="css/quill.snow.css" rel="stylesheet">
 <div id="cover"></div>
-  <div class="container">
+  <div class="container" style="padding-bottom:60px;">
   <?php if (!isset($_GET['eventId'])) {
     echo '<div class="twelve columns" style="text-align:center" id="guide">
 
       <div id="section1">
-      <p class="guideHeader">Tapahtuman tiedot</p>
+      <p class="guide-header">Tapahtuman tiedot</p>
       <a href="event1.php" style="text-decoration:none">
-      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+      <i class="material-icons">filter_1</i>
       </a></div>
       <div class="line"></div>
 
       <div id="section2">
-      <p class="guideHeader">Kotipelaajat</p>
+      <p class="guide-header">Kotipelaajat</p>
       <a href="event2.php" style="text-decoration:none">
-      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+      <i class="material-icons">filter_2</i>
       </a></div>
       <div class="line"></div>
 
       <div id="section3">
-      <p class="guideHeader">Vieraspelaajat</p>
+      <p class="guide-header">Vieraspelaajat</p>
       <a href="event3.php" style="text-decoration:none">
-      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+      <i class="material-icons">filter_3</i>
       </a></div>
       <div class="line"></div>
 
       <div id="section4">
-      <p class="guideHeader">Ennakkoteksti</p>
+      <p class="guide-header">Ennakkoteksti</p>
       <a href="event4.php" style="text-decoration:none">
-      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+      <i class="material-icons">filter_4</i>
       </a></div>
       <div class="line"></div>
 
       <div id="section5">
-      <p class="guideHeader">Mainospaikat</p>
+      <p class="guide-header">Mainospaikat</p>
       <a href="event5.php" style="text-decoration:none">
-      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+      <i class="material-icons">filter_5</i>
+      </a></div>
+      <div class="line"></div>
+
+      <div id="section6">
+      <p class="guide-header">Yhteenveto</p>
+      <a href="event6.php" style="text-decoration:none">
+      <i class="material-icons">filter_6</i>
       </a></div>
       <div class="line" style="background-color:#2bc9c9"></div>
 
-      <div id="section6" style="background-color:#2bc9c9">
-      <p class="guideHeader">Yhteenveto</p>
+      <div id="section7" style="background-color:#2bc9c9">
+      <p class="guide-header">Yhteenveto</p>
       <a href="#" style="text-decoration:none">
-      <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+      <i class="material-icons">filter_7</i>
       </a></div>
-    </div>'; }
+    </div>';
+}
   ?>
 
   <div id="fb-root"></div>
@@ -92,7 +100,7 @@ include 'functions.php';
 }(document, "script", "twitter-wjs"));</script>
   <div class="row">
     <div class="twelve columns">
-      <div id="msg" class="msgError"></div>
+      <div id="msg" class="msg-fail"></div>
       <div id="share">
       <div id="close">X</div>
       <div id="title">Valmista!</div>
@@ -101,7 +109,7 @@ include 'functions.php';
 
       <div id="email" style="text-align:center">
       <a href="">
-      <button id="emailBtn" type="button "style="background-color:black;color:white;width:144px">
+      <button id="email-btn" type="button "style="background-color:black;color:white;width:144px">
       <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-email"></i>Sähköposti</button></a>
       </div>
 
@@ -110,20 +118,20 @@ include 'functions.php';
       <div data-href="" data-layout="button"
       data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank"
       href="">
-      <button id="fbBtn" type="button "style="background-color:black;color:white;width:144px">
+      <button id="fb-btn" type="button "style="background-color:black;color:white;width:144px">
       <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-facebook"></i>Facebook</button></a>
       </div>
       </div>
       <!--Twitter-->
       <div id="twitter" style="text-align:center">
       <a href="">
-      <button id="twitterBtn" type="button "style="background-color:black;color:white;width:144px">
+      <button id="twitter-btn" type="button "style="background-color:black;color:white;width:144px">
       <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-twitter"></i>Twitter</button></a>
       </div>
       <!--Whatsapp-->
       <div id="whatsapp" style="text-align:center">
       <a href="whatsapp://send?text=Hello world">
-      <button id="whatsappBtn" type="button "style="background-color:black;color:white;width:144px">
+      <button id="whatsapp-btn" type="button "style="background-color:black;color:white;width:144px">
       <i style="font-size:20px;padding-right:5px;width:25px;" class="ion-social-whatsapp"></i>Whatsapp</button></a>
       </div>
 
@@ -139,92 +147,90 @@ include 'functions.php';
   </div>
 
     <div class="row">
-      </div>
+    </div>
 
     <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
 
       <div class="six columns">
-        <h4>
-          <span><?php
+        <h4 style="color:#6f6f67">
+          <?php
            echo $_SESSION['eventName'];
-            ?></span>
+            ?>
         </h4>
-        <h5>
-          <span><?php
+        <h5 style="color:#6f6f67">
+          <?php
             if (isset($_SESSION['homeName'])) {
-            echo $_SESSION['homeName'];
-          } else {
-            echo $_SESSION['teamName'];
-          }
-            ?></span>
+                echo $_SESSION['homeName'];
+            } else {
+                echo $_SESSION['teamName'];
+            }
+            ?>
         </h5>
          <table class="u-full-width">
-          <?php showHome();
+          <?php showHomeTeam();
           ?>
           </table>
       </div>
 
       <div class="six columns">
-        <h4>
-          <span><?php
+        <h4 style="color:#6f6f67">
+          <?php
             echo $_SESSION['eventDate'];
-            ?></span>
+            ?>
         </h4>
-        <h5>
-          <span><?php if (isset($_SESSION['visitorName'])) {
-            echo $_SESSION['visitorName'];
-          } else {
-            echo '<h4 style="color:gray">Lisää vierasjoukkueen nimi!</h4>';
-          }
-            ?></span>
+        <h5 style="color:#6f6f67">
+          <?php if (isset($_SESSION['visitorName'])) {
+                echo $_SESSION['visitorName'];
+            } else {
+                echo '<h4 style="color:gray">Lisää vierasjoukkueen nimi!</h4>';
+            }
+            ?>
         </h5>
           <table class="u-full-width">
           <?php
-          showVisitors();
+          showVisitorTeam();
           ?>
         </table>
       </div>
     <div class="twelve columns" style="text-align: center;">
-      <h4>
-        <span>Ennakkoteksti</span>
+      <h4 style="color:#6f6f67">
+        Ennakkoteksti
       </h4>
-      <span><?php if (isset($_SESSION['matchText'])) {
-        echo '<div id="editor" class="twelve columns" style="font-size:17px;border:none;min-height:200px">';
-        echo '</div>';
-      } else {
-        echo '<h3 style="color:gray">Ei ennakkotekstiä</h3>';
-      }
-        ?></span>
+      <?php if (isset($_SESSION['matchText'])) {
+              echo '<div id="editor" class="twelve columns" style="font-size:17px;border:none;min-height:200px">';
+              echo '</div>';
+          } else {
+              echo '<h3 style="color:gray">Ei ennakkotekstiä</h3>';
+          }
+        ?>
     </div>
     </div>
     </div>
-    <div class="row">
-      <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
+      <div id="event-buttons" class="twelve columns">
        <?php
        if (isset($_GET['eventId'])) {
-      $eventId = $_GET['eventId'];
-    }
-      $url = "event5.php";
+           $eventId = $_GET['eventId'];
+       }
+      $url = "event6.php";
       $url2 = "event1.php";
         if (isset($_GET['c'])) {
-       echo "<button type='button' value='Takaisin' onclick='window.location=\"$url\"'/>";
-       echo "Takaisin</button>";
-       if ((isset($_SESSION['saved']) || isset($_SESSION['home'])) && $_SESSION['visitorName'] && $_SESSION['visitors']) {
-       echo "<form style='display: inline;padding: 5px' action='functions.php' method='POST'>";
-       echo "<button class='button-primary' type='submit' name='createEvent' id='createEvent' value='Tallenna'>";
-       echo "Tallenna</button>";
-       echo "</form>"; }
-     } else if (isset($_GET['eventId'])) {
-       echo "<form style='display: inline;padding: 5px' action='functions.php?removeEvent=".$eventId."' method='POST'>";
-       echo "<button class='button-remove' name='removeEvent' type='submit' id='btnremoveEvent' value='Poista'>";
-       echo "Poista</button>";
-       echo "</form>";
-       echo "<button class='button-primary' type='button' value='Muokkaa' onclick='window.location=\"$url2\"'/>";
-       echo "Muokkaa</button>";
-
-} ?>
+            echo "<button type='button' value='Takaisin' onclick='window.location=\"$url\"'/>";
+            echo "Takaisin</button>";
+            if ((isset($_SESSION['saved']) || isset($_SESSION['home'])) && $_SESSION['visitorName'] && $_SESSION['visitors']) {
+                echo "<form style='display: inline;padding: 5px' action='functions.php' method='POST'>";
+                echo "<button class='button-primary' type='submit' id='createEvent' value='Tallenna'>";
+                echo "Tallenna</button>";
+                echo "</form>";
+            }
+        } elseif (isset($_GET['eventId'])) {
+            echo "<form style='display: inline;padding: 5px' action='functions.php?removeEvent=".$eventId."' method='POST'>";
+            echo "<button class='remove-btn' type='submit' id='removeEvent' value='Poista'>";
+            echo "Poista</button>";
+            echo "</form>";
+            echo "<button class='button-primary' type='button' value='Muokkaa' onclick='window.location=\"$url2\"'/>";
+            echo "Muokkaa</button>";
+        } ?>
       </div>
-    </div>
 
   </div>
   <script>
@@ -287,8 +293,8 @@ include 'functions.php';
   var editor = new Quill('#editor', options);
   <?php
   if (isset($_SESSION['matchText'])) {
-  echo 'editor.setContents ('.$_SESSION['matchText'].');';
-}
+      echo 'editor.setContents ('.$_SESSION['matchText'].');';
+  }
   echo '</script>';
   ?>
   <?php include('inc/footer.php'); ?>

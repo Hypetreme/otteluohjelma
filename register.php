@@ -3,12 +3,12 @@
 ?>
 
 <div class="container">
-  <span id="msg" class="msgError"></span>
+  <span id="msg" class="msg-fail"></span>
   <div class="row">
     <div class="twelve columns">
-      <h1>
+      <h4 style="margin-bottom:0">
         Rekisteröidy
-      </h1>
+      </h4>
     </div>
   </div>
   <div class="row">
@@ -17,14 +17,14 @@
         <label for="uid">
           Käyttäjänimi
         </label>
-        <input type="text" id="uid" name="uid">
+        <input type="text" id="uid">
       </div>
 
       <div class="six columns">
         <label for="email">
           Sähköposti
         </label>
-        <input type="text" id="email" name="email">
+        <input type="text" id="email">
         <input type="text" style="display:none">
       </div>
     </div>
@@ -34,13 +34,14 @@
           Salasana
         </label>
         <input type="password" style="display:none">
-        <input type="password" id="pwd" name="pwd">
+        <input type="password" id="pwd">
       </div>
       <div class="six columns">
         <label for="pwdConfirm">
           Kirjoita salasana uudelleen
         </label>
-        <input type="password" id="pwdConfirm" name="pwdConfirm">
+        <input type="password" style="display:none">
+        <input type="password" id="pwdConfirm">
       </div>
     </div>
     <div class="row">
@@ -48,7 +49,7 @@
         <label for="taso">
           Valitse taso
         </label>
-        <select id="level" name="level">
+        <select id="level">
           <option disabled selected>Valitse</option>
           <option value="seura">Seura (11,99e/kk)</option>
           <option value="joukkue">Joukkue (6,99e/kk)</option>
@@ -58,7 +59,7 @@
         <label for="laji">
           Urheilulaji
         </label>
-        <select id="sport" name="sport">
+        <select id="sport">
           <option disabled selected>Valitse</option>
           <option value="1">Salibandy</option>
           <option value="2">Jääkiekko</option>
@@ -68,7 +69,7 @@
       </div>
       <div class="twelve columns">
         <button type="button" value="Takaisin" onclick="window.location='index.php'"/>Takaisin</button>
-        <input class="button-primary" id="register" name="register" type="submit" value="Rekisteröidy">
+        <input class="button-primary" id="register" type="submit" value="Rekisteröidy">
       </div>
     </form>
   </div>
@@ -90,4 +91,4 @@ $('form').submit(function(event){
     });
 });
 </script>
-<?php include ('inc/footer.php'); ?>
+<?php include('inc/footer.php'); ?>

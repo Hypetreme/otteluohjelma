@@ -9,6 +9,7 @@
       <h4>
         <?php verifyAccount();?>
       </h4>
+    <button type="button" value="Takaisin" onclick="window.location='index.php'"/>Etusivulle</button>
     </div>
   </div>
 </div>

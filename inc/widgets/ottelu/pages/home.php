@@ -30,18 +30,18 @@ return t;
     <div id="cover"></div>
     <div id="popup">
 <div id="close">X</div>
-<div id="popupAd"></div>
-<p id="popupText"></p>
+<div id="popup-ad"></div>
+<p id="popup-text"></p>
     </div>
     <div class="row">
       <div class="twelve columns">
         <!-- Name of the game -->
-        <div id="gameName" class="gameName">
+        <div id="game-name" class="game-name">
         </div>
       </div>
       <div class="twelve columns">
         <!-- Date of the game -->
-        <div id="gameDate" class="gameDate">
+        <div id="game-date" class="game-date">
         </div>
       </div>
       <div class="twelve columns">
@@ -51,14 +51,14 @@ return t;
       </div>
 
       <div class="twelve columns">
-        <!-- gameTime -->
-        <div id="gameTime" class="gameTime">
+        <!-- game-time -->
+        <div id="game-time" class="game-time">
 
         </div>
       </div>
       <div class="twelve columns">
-        <!-- gamePlace -->
-        <div id="gamePlace" class="gamePlace">
+        <!-- game-place -->
+        <div id="game-place" class="game-place">
 
         </div>
       </div>
@@ -66,7 +66,7 @@ return t;
 
   <div id="game-share" class="game-share">
     <div id="share-header">
-      <h3>JAA</h3>
+      <h3 style="margin:0">JAA</h3>
     </div>
       <div id="facebook">
       <div data-href="" data-layout="button"data-mobile-iframe="true">

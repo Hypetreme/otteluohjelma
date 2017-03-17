@@ -2,11 +2,11 @@
   session_start();
   include 'dbh.php';
   if (!$_SESSION['type'] == 0) {
-  $teamId = $_SESSION['teamId'];
-  $teamUid = $_SESSION['teamUid'];
-}
+      $teamId = $_SESSION['teamId'];
+      $teamUid = $_SESSION['teamUid'];
+  }
   if (!isset($_SESSION['id'])) {
-    header("Location: index.php");
+      header("Location: index.php");
   }
     unset($_SESSION['homeName']);
     unset($_SESSION['visitorName']);
@@ -19,17 +19,19 @@
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
+    unset($_SESSION['guessName']);
+    unset($_SESSION['guessType']);
     unset($_SESSION['popupText']);
     unset($_SESSION['ads']);
     unset($_SESSION['adlinks']);
     unset($_SESSION['editEvent']);
     unset($_SESSION['old']);
   if (isset($_GET['back'])) {
-    unset($_SESSION['teamId']);
-    unset($_SESSION['teamUid']);
-    unset($_SESSION['teamName']);
+      unset($_SESSION['teamId']);
+      unset($_SESSION['teamUid']);
+      unset($_SESSION['teamName']);
   }
-  include ('functions.php');
+  include('functions.php');
   getTeamName();
   include('inc/header.php');
 ?>
@@ -44,7 +46,12 @@
            </h4>
       </div>
     </div>
-
+    <?php if (isset($_SESSION['teamId'])) {
+    echo '<form action="functions.php" method="POST">';
+    echo '<input class="button-primary" type="submit" name="addEvent" value="Luo Tapahtuma">';
+}
+        echo '</form>';
+    ?>
     <div class="row">
         <div class="six columns">
             <h5>
@@ -66,12 +73,6 @@
           </table>
        </div>
     </div>
-
-<?php if (isset($_SESSION['teamId'])) {
-    echo '<form action="functions.php" method="POST">';
-    echo '<input class="button-primary" type="submit" name="newEvent" value="Luo Tapahtuma">'; }
-    echo '</form>';
-?>
     <?php
-      include ('inc/footer.php');
+      include('inc/footer.php');
     ?>

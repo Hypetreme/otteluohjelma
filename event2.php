@@ -28,7 +28,6 @@ include 'functions.php';
       var tr = document.createElement("tr");
       //voidaan lisää id suoraan tr:n
       tr.id = id + "t";
-      //tr.setAttribute("name", count );
       tr.className += "removed";
 
       playerElement.appendChild(tr);
@@ -44,7 +43,7 @@ include 'functions.php';
       td1.addEventListener("click", function(){
         movePlayer(id,count);
       }, false);
-      td2.innerHTML = '<img style="width: 35px; vertical-align: middle;" src="images/default.png">';
+      td2.innerHTML = '<img alt="pelaajan kuva" style="width: 35px; vertical-align: middle;" src="images/logos/joukkue.png">';
       td3.innerHTML = num;
       td4.innerHTML = first;
       td5.innerHTML = last;
@@ -93,65 +92,72 @@ include 'functions.php';
       element.appendChild(first);
       element.appendChild(last);
 
-      document.getElementById(id).style = "display: grid";
+      document.getElementById(id).style = "display: table-row";
     }
   </script>
 
-  <div class="container">
+  <div class="container" style="padding-bottom:60px;">
     <div class="twelve columns" style="text-align:center" id="guide">
     <div id="section1">
-    <p class="guideHeader">Tapahtuman tiedot</p>
+    <p class="guide-header">Tapahtuman tiedot</p>
     <a href="event1.php" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+    <i class="material-icons">filter_1</i>
     </a></div>
     <div class="line" style="background-color:#2bc9c9"></div>
 
     <div id="section2" style="background-color:#2bc9c9">
-    <p class="guideHeader">Kotipelaajat</p>
+    <p class="guide-header">Kotipelaajat</p>
     <a href="event2.php" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+    <i class="material-icons">filter_2</i>
     </a></div>
     <div class="line" style="background-color:gray"></div>
 
     <div id="section3" style="background-color:gray">
-    <p class="guideHeader">Vieraspelaajat</p>
+    <p class="guide-header">Vieraspelaajat</p>
     <a id="btnEvent3" href="#" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+    <i class="material-icons">filter_3</i>
     </a></div>
     <div class="line" style="background-color:gray"></div>
 
     <div id="section4" style="background-color:gray">
-    <p class="guideHeader">Ennakkoteksti</p>
+    <p class="guide-header">Ennakkoteksti</p>
     <a id="btnEvent4" href="#" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+    <i class="material-icons">filter_4</i>
     </a></div>
     <div class="line" style="background-color:gray"></div>
 
     <div id="section5" style="background-color:gray">
-    <p class="guideHeader">Mainospaikat</p>
+    <p class="guide-header">Mainospaikat</p>
     <a id="btnEvent5" href="#" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+    <i class="material-icons">filter_5</i>
     </a></div>
     <div class="line" style="background-color:gray"></div>
 
     <div id="section6" style="background-color:gray">
-    <p class="guideHeader">Yhteenveto</p>
+    <p class="guide-header">    Kilpailu</p>
     <a id="btnEvent6" href="#" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+    <i class="material-icons">filter_6</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
+
+    <div id="section7" style="background-color:gray">
+    <p class="guide-header">Yhteenveto</p>
+    <a id="btnEvent7" href="#" style="text-decoration:none">
+    <i class="material-icons">filter_7</i>
     </a></div>
     </div>
 
   <div class="row">
     <div class="twelve columns">
-      <span id="msg" class="msgError"></span>
+      <span id="msg" class="msg-fail"></span>
     </div>
   </div>
 
     <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
 
       <div class="six columns">
-        <h5>
-          <span>Poistetut pelaajat</span>
+        <h5 style="color:#6f6f67">
+          Poistetut pelaajat
         </h5>
          <table class="u-full-width" id="removedPlayers">
 
@@ -159,39 +165,31 @@ include 'functions.php';
       </div>
 
       <div class="six columns">
-        <h5>
-          <span>Tapahtuman pelaajat</span>
+        <h5 style="color:#6f6f67">
+          Tapahtuman pelaajat
         </h5>
-<form action="functions.php" method="POST">
           <table class="u-full-width">
           <?php
-          listHome();
+          listHomeTeam();
           ?>
         </table>
-
       </div>
     </div>
-
-        <div class="row">
-          <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
-         <input type="button" value="Takaisin" onclick="window.location='event1.php'"/>
-
-            <input class="button-primary" type="submit" name="setHomeTeam" id="btnEvent3" value="Seuraava">
-            </form>
-          </div>
-        </div>
+      </div>
+      <div id="event-buttons" class="twelve columns">
+     <input type="button" value="Takaisin" onclick="window.location='event1.php'"/>
+      <input class="button-primary" type="submit" id="btnEvent3" value="Seuraava">
       </div>
     <script>
-    $('#btnEvent3, #btnEvent4, #btnEvent5, #btnEvent6').click(function(event){
+    $('#btnEvent3, #btnEvent4, #btnEvent5, #btnEvent6, #btnEvent7').click(function(event){
         var selected = ($(this).attr("id"));
-        event.preventDefault(); // stop the form from submitting
+        event.preventDefault();
         var numbers = $('input:hidden.numbers').serializeArray();
         var firstnames = $('input:hidden.firstnames').serializeArray();
         var lastnames = $('input:hidden.lastnames').serializeArray();
         var first = $('#firstName').val();
         var last = $('#lastName').val();
         var num = $('#number').val();
-      //console.log(players);
         var finish = $.post("functions.php", { setHomeTeam: 'hometeam', homeNumbers: numbers, homeFirstNames: firstnames, homeLastNames: lastnames }, function(data) {
           if(data){
             console.log(data);

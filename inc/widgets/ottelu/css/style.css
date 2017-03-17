@@ -1,5 +1,3 @@
-/*@import url('https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800');*/
-
 @font-face {
     font-family: "Raleway";
     font-style: normal;
@@ -14,10 +12,7 @@ body {
     background-color: black;
     font-family: "Raleway", sans-serif;
     overflow: hidden;
-
 }
-
-
 
 .background {
     background-repeat: no-repeat;
@@ -25,8 +20,9 @@ body {
     background-size: cover;
 }
 
-.jaakiekko {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/jaakiekko.jpg');background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/jaakiekko.jpg');
+.hockey {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('../images/hockey.jpg');
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('../images/hockey.jpg');
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: center;
@@ -65,7 +61,7 @@ nav a {
     height: 45px;
     width: 45px;
     border-radius: 50%;
-    font-size: 16px;
+    font-size: 16px !important;
     color: #000000;
     line-height: 45px;
     text-align: center;
@@ -75,9 +71,10 @@ nav a {
 }
 
 #share-header {
-  text-align:center;
-  color:white;
+    text-align: center;
+    color: white;
 }
+
 #fullscreen {
     background-color: #1EAEDB;
     color: white;
@@ -88,12 +85,7 @@ nav a {
     color: #fff;
 }
 
-.on a:active, .on a:focus, .on a:hover {
-    background-color: #dc1313;
-    color: #fff;
-}
-
-.off a:active, .off a:focus, .off a:hover {
+.off a:hover {
     color: black;
 }
 
@@ -105,12 +97,12 @@ h1.title {
     color: #fff;
 }
 
-.gameName h1 {
+.game-name h1 {
     font-weight: 100;
     font-size: 55px;
 }
 
-.gameName, .gameTime, .gamePlace, .gameDate {
+.game-name, .game-time, .game-place, .game-date, .guess-name {
     text-transform: uppercase;
     text-align: center;
     font-weight: 100;
@@ -118,15 +110,16 @@ h1.title {
     font-size: 42px;
 }
 
-#playerListHome, #playerListVisitors {
+#list-home, #list-visitors {
     color: white;
     font-size: 25px;
 }
 
-#contentWrapper {
-    display: block;
+#content-wrapper {
+    display: none;
     overflow: hidden;
 }
+
 .game-share a {
     display: inline-block;
     font-weight: 600;
@@ -144,34 +137,34 @@ h1.title {
     / transition: all 200ms;
 }
 
+
 /*Pysty*/
 
-@media screen and (max-width: 2280px){
+@media screen and (max-width: 2280px) {
     #up {
         height: 90%;
         width: 100%;
         float: left;
         overflow-y: scroll;
-
     }
     #popup {
         width: 90%;
         top: 20%;
     }
-    #popupText {
-      min-width: 340px;
-      max-width: inherit;
+    #popup-text {
+        min-width: 340px;
+        max-width: inherit;
     }
-    #popupAd img {
+    #popup-ad img {
         width: 100%;
     }
     .game-share {
-      text-align: center;
-      position:fixed;
-      top:50%;
-      width: 100%;
-      left:0;
-      right:0;
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        width: 100%;
+        left: 0;
+        right: 0;
     }
     .game-share a {
         float: left;
@@ -181,19 +174,19 @@ h1.title {
         padding: 10px;
     }
     #share-header {
-      display:initial;
+        display: initial;
     }
     #space {
-      height:90px;
+        height: 90px;
     }
 }
 
 
 /*Vaaka*/
 
-@media screen and (max-height: 385px){
+@media screen and (max-height: 410px) {
     #up {
-        height: 42%;
+        height: 45%;
         width: 100%;
         float: left;
         overflow-y: scroll;
@@ -203,19 +196,21 @@ h1.title {
         width: 75%;
         top: 5%;
     }
-    #popupAd img {
+    #popup-ad img {
         width: 80%;
     }
-    #sponsor-logos a img{
-      width: 40%;
-
+    #sponsor-logos a img {
+        width: 40%;
+    }
+    #sponsor-logos img {
+        width: 40%;
     }
     .game-share {
         text-align: center;
         width: 20%;
         position: absolute;
         left: 90%;
-        top: 1%;
+        top: -1%;
     }
     .game-share a {
         width: 62px;
@@ -227,26 +222,26 @@ h1.title {
         padding: 5px;
     }
     #share-header {
-      display:none;
+        display: none;
     }
     #space {
-      height:0px;
+        height: 30px;
     }
     #bottom {
-      padding-bottom:20px;
+        padding-bottom: 20px;
     }
 }
 
 #bottom {
-    position:fixed;
-    height:12%;
+    position: fixed;
+    height: 12%;
     width: 100%;
     bottom: 0;
     z-index: 998;
-
 }
 
 #popup {
+    display: none;
     position: fixed;
     left: 50%;
     transform: translate(-50%, 0);
@@ -270,18 +265,23 @@ h1.title {
     left: 10px;
     float: right;
     width: 20px;
-    padding-left:5px;
-    padding-right:5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 #cover {
+    display: none;
     position: fixed;
-    background: -webkit-linear-gradient(left,rgba(0,0,0,0.7),rgba(0,0,0,0.7)); /*Safari 5.1-6*/
-    background: -o-linear-gradient(right,rgba(0,0,0,0.7),rgba(0,0,0,0.7)); /*Opera 11.1-12*/
-    background: -moz-linear-gradient(right,rgba(0,0,0,0.1),rgba(0,0,0,0.7)); /*Fx 3.6-15*/
-    background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.7)); /*Standard*/
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    /*Safari 5.1-6*/
+    background: -o-linear-gradient(right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    /*Opera 11.1-12*/
+    background: -moz-linear-gradient(right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7));
+    /*Fx 3.6-15*/
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    /*Standard*/
     width: 100%;
-    height:100%;
+    height: 100%;
     left: 0;
     right: 0;
     top: 0;
@@ -289,15 +289,65 @@ h1.title {
     z-index: 999;
 }
 
-#popupAd {
+#popup-ad {
     z-index: 999;
     text-align: center;
     width: 100%;
 }
 
-#popupText {
+#popup-text {
     text-align: center;
     font-size: 26px;
     font-weight: 400;
     font-family: "Ubuntu";
 }
+
+
+/* https://github.com/tobiasahlin/SpinKit */
+
+.spinner {
+    margin: 100px auto 0;
+    width: 70px;
+    text-align: center;
+}
+
+.spinner>div {
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0)
+    }
+    40% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    40% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
+}
+svg > g > g:last-child { pointer-events: none; }

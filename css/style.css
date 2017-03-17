@@ -44,7 +44,7 @@ header {
 }
 
 .wrapper {
-    margin-top: 180px;
+    margin-top: 125px;
 }
 
 .navbar {}
@@ -92,19 +92,19 @@ header {
     background-color: #fff;
 }
 
-.liLogo {
+.li-logo {
     padding: 10px 0px;
     line-height: initial;
     margin-right: 10px;
 }
 
-.liLogo .openNav, .liLogo .changeTeam, .btn {
+.li-logo .open-nav, .li-logo .change-team, .btn {
     display: inline-block;
     cursor: pointer;
     vertical-align: middle;
 }
 
-.liLogo .changeTeam {
+.li-logo .change-team {
     border-radius: 50%;
     padding: 4px;
     margin-right: 4px;
@@ -139,7 +139,7 @@ header {
     cursor: pointer;
 }
 
-.ctx:hover, .liLogo .changeTeam:hover {
+.ctx:hover, .li-logo .change-team:hover {
     background-color: #f7f7f7;
 }
 
@@ -152,7 +152,7 @@ header {
 .ctx .avatar {
     width: 40px;
     height: 40px;
-    background-image: url('../images/default.png');
+    background-image: url('../images/logos/joukkue.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -183,11 +183,11 @@ header {
     bottom: 0;
 }
 
-.msgError {
+.msg-fail {
     background-color: #e80000;
 }
 
-.msgSuccess {
+.msg-success {
     background-color: green;
 }
 
@@ -242,23 +242,23 @@ header {
     height: 0px;
 }
 
-#fbBtn:hover {
+#fb-btn:hover {
     background-color: #2A279B !important;
 }
 
-#twitterBtn:hover {
+#twitter-btn:hover {
     background-color: #702796 !important;
 }
 
-#whatsappBtn:hover {
+#whatsapp-btn:hover {
     background-color: #2A9B27 !important;
 }
 
-#emailBtn:hover {
+#email-btn:hover {
     background-color: #F69F00 !important;
 }
 
-#linkappBtn:hover {
+#link-app-btn:hover {
     background-color: #2A9B27 !important;
 }
 
@@ -306,47 +306,90 @@ header {
     background-color: whitesmoke;
 }
 
-.button-remove {
+.remove-btn {
     color: #FFF;
-    background-color: red;
+    background-color: #cf2f2f;
 }
 
-.button-remove:hover, .button-remove:focus {
+.remove-btn:hover, .remove-btn:focus {
     color: #FFF;
     background-color: #c50202 !important;
 }
 
-#section1, #section2, #section3, #section4, #section5, #section6 {
-    float: left;
-    width: 60px;
-    height: 60px;
-    -moz-border-radius: 50px;
-    -webkit-border-radius: 50px;
-    border-radius: 50px;
-    background-color: #26b3b3;
+@media screen and (min-width: 1140px) {
+    #section1, #section2, #section3, #section4, #section5, #section6, #section7 {
+        float: left;
+        width: 60px;
+        height: 60px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        background-color: #26b3b3;
+    }
+    #section1, #section2, #section3, #section4, #section5, #section6, #section7:hover {}
+    .guide-header {
+        margin: 0;
+        font-size: 18px;
+        position: relative;
+        bottom: 40px;
+        right: 15px;
+        white-space: pre;
+    }
+    #guide a i {
+        position: relative;
+        bottom: 15px;
+        font-size: 35px;
+        color: white;
+    }
+    #section1 .guide-header {
+        right: 40px;
+    }
+    .line {
+        float: left;
+        width: 90px;
+        height: 10px;
+        background-color: #26b3b3;
+        margin-top: 24px;
+    }
 }
 
-#section1, #section2, #section3, #section4, #section5, #section6:hover {}
-
-.guideHeader {
-    margin: 0;
-    font-size: 18px;
-    position: relative;
-    bottom: 40px;
-    right: 15px;
-    white-space: pre;
-}
-
-#section1 .guideHeader {
-    right: 40px;
-}
-
-.line {
-    float: left;
-    width: 110px;
-    height: 10px;
-    background-color: #26b3b3;
-    margin-top: 24px;
+@media screen and (max-width: 1139px) {
+    #section1, #section2, #section3, #section4, #section5, #section6, #section7 {
+        float: left;
+        width: 60px;
+        height: 60px;
+        /*-moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;*/
+        background-color: #26b3b3;
+    }
+    #section1, #section2, #section3, #section4, #section5, #section6, #section7:hover {}
+    .guide-header {
+        display:none;
+        margin: 0;
+        font-size: 13px;
+        position: relative;
+        bottom: 40px;
+        right: 15px;
+        white-space: pre;
+    }
+    #guide a i {
+        position: relative;
+        bottom: -9px;
+        font-size: 35px;
+        color: white;
+    }
+    #section1 .guide-header {
+        right: 40px;
+    }
+    .line {
+        display:none;
+        float: left;
+        width: 4%;
+        height: 10px;
+        background-color: #26b3b3;
+        margin-top: 24px;
+    }
 }
 
 #phone {
@@ -359,8 +402,8 @@ header {
     background-repeat: no-repeat;
 }
 
-#adSelector {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../inc/widgets/ottelu/images/jaakiekko.jpg');
+#ad-selector {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../inc/widgets/ottelu/images/hockey.jpg');
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -403,7 +446,7 @@ header {
     height: 100%;
 }
 
-#popupText {
+#popup-text {
     width: 293px;
     height: 103px;
     max-width: 293px;
@@ -412,22 +455,11 @@ header {
     min-height: 103px;
 }
 
-#popupTextPreview {
+#popup-text-preview {
     word-break: break-all;
 }
 
-
-/*#popupWindow {
-    background-color: white;
-    border: 2px solid gray;
-    padding: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 300px;
-    height: 200px;
-}*/
-
-#popupWindow {
+#popup-window {
     background-color: white;
     border: 2px solid gray;
     padding-top: 35px;
@@ -455,4 +487,89 @@ h3.preview {
 
 h5.preview {
     line-height: 1.2;
+}
+
+.zoom-minus {
+    float: left;
+    margin-left: 5%;
+    font-size: 30px;
+    line-height: 20px;
+    color: gray;
+}
+
+.zoom-plus {
+    float: right;
+    margin-right: 5%;
+    font-size: 30px;
+    line-height: 20px;
+    color: gray;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+
+/* Special styling for WebKit/Blink */
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #000000;
+    height: 26px;
+    width: 16px;
+    border-radius: 3px;
+    background: #ffffff;
+    cursor: pointer;
+    margin-top: -14px;
+    /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    /* Add cool effects to your sliders! */
+}
+
+
+/* All the same stuff for Firefox */
+
+input[type=range]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 26px;
+    width: 16px;
+    border-radius: 3px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+
+/* All the same stuff for IE */
+
+input[type=range]::-ms-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 26px;
+    width: 16px;
+    border-radius: 3px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+#event-buttons {
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    border-top: 1px solid #D1D1D1;
+    padding-top: 5px;
+    background-color: white;
+    height: 54px;
+}
+
+#event-buttons input {
+    margin-bottom: 0;
+}
+
+.picker__holder {
+    bottom: 0px;
+    left: 340px;
+}
+.email {
+  text-transform: none;
 }

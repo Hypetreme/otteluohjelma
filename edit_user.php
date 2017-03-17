@@ -23,7 +23,7 @@
 ?>
 
   <div class="container">
-    <span id="msg" class="msgError"></span>
+    <span id="msg" class="msg-fail"></span>
     <div class="row">
       <div class="twelve columns">
         <h4>
@@ -40,15 +40,15 @@
 
 <tr>
 <td class="bold">Vahvista salasana</td>
-<td><input type="password" id="pwd" name="pwd" ></td></tr>
+<td><input type="password" id="pwd"></td></tr>
             </tr>
           </body>
         </table>
       <ul class="navbar-list">
-      <li class="navbar-item"><input class="button-primary" type="submit" name="editUser" id="editUser" value="Tallenna">
+      <li class="navbar-item"><input class="button-primary" type="submit" id="setUser" value="Tallenna">
       <?php
        if ($_SESSION['type'] == 0 && isset($_SESSION['teamId'])) {
-      echo '<li class="navbar-item"><input style="background-color:red;color:white"type="submit" id="removeTeam" name="removeTeam" value="Poista joukkue">';
+      echo '<li class="navbar-item"><input style="background-color:red;color:white"type="submit" id="removeTeam" value="Poista joukkue">';
       } ?>
 
       </form>
@@ -56,12 +56,12 @@
       </div>
     </div>
     <script>
-    $('#editUser').click(function(event){
+    $('#setUser').click(function(event){
         event.preventDefault(); // stop the form from submitting
         var teamname = $('#name').val();
         var pass = $('#pwd').val();
         var serie = $('#serie').val();
-        var finish = $.post("functions.php", { editUser: 'edit', pwd: pass, name: teamname, teamSerie: serie }, function(data) {
+        var finish = $.post("functions.php", { setUser: 'edit', pwd: pass, name: teamname, teamSerie: serie }, function(data) {
           if(data){
             console.log(data);
           }

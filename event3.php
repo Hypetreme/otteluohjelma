@@ -2,12 +2,12 @@
 session_start();
 include 'dbh.php';
 if (!isset($_SESSION['id'])) {
-header("Location: index.php");
+    header("Location: index.php");
 }
 if (!isset($_SESSION['editEvent'])) {
-header("Location: profile.php");
+    header("Location: profile.php");
 }
-include ('inc/header.php');
+include('inc/header.php');
 include 'functions.php';
 ?>
 
@@ -33,6 +33,7 @@ include 'functions.php';
     var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num, button: btn}, function(data) {
       if(data){
         console.log(data);
+        $("#visitors").load(location.href + " #visitors");
       }
        message(data);
        if (data == "event3More") {
@@ -50,11 +51,11 @@ include 'functions.php';
       message: 'Lisää pelaaja',
       input: [
           '<label for="firstName">Etunimi</label>',
-          '<input id="firstName" name="firstName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä etunimi\')">',
+          '<input id="firstName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä etunimi\')">',
           '<label for="firstName">Sukunimi</label>',
-          '<input id="lastName" name="lastName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä sukunimi\')">',
+          '<input id="lastName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä sukunimi\')">',
           '<label for="firstName">Pelinumero</label>',
-          '<input id="number" name="number" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä pelinumero\')">',
+          '<input id="number" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä pelinumero\')">',
       ].join(''),
       buttons: [
           $.extend({}, vex.dialog.buttons.YES, { text: 'Lisää uusi'}),
@@ -71,72 +72,78 @@ include 'functions.php';
     });
 }
   </script>
-  <div class="container">
+  <div class="container" style="padding-bottom:60px;">
     <div class="twelve columns" style="text-align:center" id="guide">
 
     <div id="section1">
-    <p class="guideHeader">Tapahtuman tiedot</p>
+    <p class="guide-header">Tapahtuman tiedot</p>
     <a href="event1.php" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+    <i class="material-icons">filter_1</i>
     </a></div>
     <div class="line"></div>
 
     <div id="section2">
-    <p class="guideHeader">Kotipelaajat</p>
+    <p class="guide-header">Kotipelaajat</p>
     <a href="event2.php" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+    <i class="material-icons">filter_2</i>
     </a></div>
     <div class="line" style="background-color:#2bc9c9"></div>
 
     <div id="section3" style="background-color:#2bc9c9">
-    <p class="guideHeader">Vieraspelaajat</p>
+    <p class="guide-header">Vieraspelaajat</p>
     <a href="#" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+    <i class="material-icons">filter_3</i>
     </a></div>
     <div class="line" style="background-color:gray"></div>
 
     <div id="section4" style="background-color:gray">
-    <p class="guideHeader">Ennakkoteksti</p>
+    <p class="guide-header">Ennakkoteksti</p>
     <a id="btnEvent4" href="#" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+    <i class="material-icons">filter_4</i>
     </a></div>
     <div class="line" style="background-color:gray"></div>
 
     <div id="section5" style="background-color:gray">
-    <p class="guideHeader">Mainospaikat</p>
+    <p class="guide-header">Mainospaikat</p>
     <a id="btnEvent5" href="#" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+    <i class="material-icons">filter_5</i>
     </a></div>
     <div class="line" style="background-color:gray"></div>
 
     <div id="section6" style="background-color:gray">
-    <p class="guideHeader">Yhteenveto</p>
+    <p class="guide-header">    Kilpailu</p>
     <a id="btnEvent6" href="#" style="text-decoration:none">
-    <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+    <i class="material-icons">filter_6</i>
+    </a></div>
+    <div class="line" style="background-color:gray"></div>
+
+    <div id="section7" style="background-color:gray">
+    <p class="guide-header">Yhteenveto</p>
+    <a id="btnEvent7" href="#" style="text-decoration:none">
+    <i class="material-icons">filter_7</i>
     </a></div>
     </div>
 
   <div class="row">
     <div class="twelve columns">
-      <span id="msg" class="msgError"></span>
+      <span id="msg" class="msg-fail"></span>
     </div>
   </div>
     <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
       <div class="twelve columns" style="text-align: center">
-        <form id="form" action="functions.php" method="POST">
+        <form id="form">
        <label for="visitorName">Vierasjoukkueen nimi</label>
-      <input type="text" id="visitorName" name="visitorName" value="<?php
+      <input type="text" id="visitorName" value="<?php
       if (isset($_SESSION['visitorName'])) {
-         echo $_SESSION['visitorName'];
-       }
+          echo $_SESSION['visitorName'];
+      }
         ?>">
         </form>
         <button type="button" class="button-primary" id="iconAddPlayer" style="float:left;position:relative;left:-10px">Lisää</button>
       </div>
 
       <div class="twelve columns">
-        <form name="players" action="functions.php" method="POST">
-          <table class='u-full-width'>
+          <table id="visitors" class='u-full-width'>
             <thead>
               <tr>
                 <th>Avatar</th>
@@ -147,24 +154,20 @@ include 'functions.php';
               </tr>
             </thead>
           <?php
-          $count = listVisitors();
+          listVisitorTeam();
           ?>
         </table>
-      </form>
       </div>
 </div>
-
-<div class="row">
-      <div class="twelve columns" style='text-align:center;padding-top:50px'>
+  </div>
+  <div id="event-buttons" class="twelve columns">
 <button type="button" value="Takaisin" onclick="window.location='event2.php'"/>Takaisin</button>
-<input form="form" class="button-primary" type="submit" id="btnEvent4" name="setVisitorTeam" value="Seuraava">
-      </div>
-    </div>
+<input form="form" class="button-primary" type="submit" id="btnEvent4" value="Seuraava">
   </div>
 <script>
-$('#btnEvent4, #btnEvent5, #btnEvent6').click(function(event){
+$('#btnEvent4, #btnEvent5, #btnEvent6, #btnEvent7').click(function(event){
     var selected = ($(this).attr("id"));
-    event.preventDefault(); // stop the form from submitting
+    event.preventDefault();
     var visitor = $('#visitorName').val();
     var first = $('#firstName').val();
     var last = $('#lastName').val();

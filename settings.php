@@ -1,11 +1,11 @@
 <?php
   session_start();
-  include ('dbh.php');
+  include('dbh.php');
   if (isset($_SESSION['teamId'])) {
-  $teamId = $_SESSION['teamId'];
-}
+      $teamId = $_SESSION['teamId'];
+  }
   if (!isset($_SESSION['id'])) {
-    header("Location: index.php");
+      header("Location: index.php");
   }
     unset($_SESSION['homeName']);
     unset($_SESSION['visitorName']);
@@ -18,17 +18,19 @@
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
+    unset($_SESSION['guessName']);
+    unset($_SESSION['guessType']);
     unset($_SESSION['popupText']);
     unset($_SESSION['ads']);
     unset($_SESSION['adlinks']);
     unset($_SESSION['editEvent']);
     unset($_SESSION['old']);
-  include ('functions.php');
-  include ('inc/header.php');
+  include('functions.php');
+  include('inc/header.php');
 ?>
 
   <div class="container">
-    <span id="msg" class="msgError"></span>
+    <span id="msg" class="msg-fail"></span>
     <div class="row" style="text-align:left">
       <div class="twelve columns">
       <div style="float:left">
@@ -39,19 +41,19 @@
         <?php
           $url = "";
           if (isset($_SESSION['teamId'])) {
-            $team = 'team.php?teamId='.$_SESSION['teamId'];
-            $url = 'location.href="'.$team.'"';
+              $team = 'team.php?teamId='.$_SESSION['teamId'];
+              $url = 'location.href="'.$team.'"';
           }
-            $ads = 'ads.php';
-            $url3 = 'location.href="'.$ads.'"';
-            $events = 'my_events.php';
-            $url2 = 'location.href="'.$events.'"';
+            $url2 = 'location.href="my_events.php"';
+            $url3 = 'location.href="guess.php"';
+            $url4 = 'location.href="ads.php"';
           echo '<div style="float:right">';
           if (isset($_SESSION['teamId'])) {
-            echo '<button class="button-primary" onclick='.$url.'>Kokoonpano</button>';
-            echo '<button class="button-primary" onclick='.$url2.'>Tapahtumasi</button>';
-            }
-            echo '<button class="button-primary" onclick='.$url3.'>Aseta Mainospaikat</button>';
+              echo '<button class="button-primary" onclick='.$url.'>Kokoonpano</button>';
+              echo '<button class="button-primary" onclick='.$url2.'>Tapahtumasi</button>';
+              echo '<button class="button-primary" onclick='.$url3.'>Kilpailut</button>';
+          }
+            echo '<button class="button-primary" onclick='.$url4.'>Aseta Mainospaikat</button>';
             echo '</div>';
 
         ?>
@@ -61,28 +63,42 @@
     <div class="row">
       <div class="six columns" style="float:left">
         <h5>Logo</h5>
-        <table style="margin-top:23px" class="u-full-width">
         <form action="functions.php" method="post" enctype="multipart/form-data">
+        <table style="margin-top:23px" class="u-full-width">
           <tbody>
             <tr>
-              <td><input type="file" onchange="loadData()"></td>
+              <td>
+                <p style="font-size:14px;color:gray;margin:0">Kuvan maksimikoko 500kt</p>
+                <input style="max-width:375px"type="file" onchange="loadData()"></td>
             </tr>
 
-              <img src= <?php
+              <div style="height:166px">
+              <img alt="logo" src= <?php
               if (isset($_SESSION['teamId'])) {
                   $fileName =  'images/logos/' . $teamUid . $teamId .'.png';
-                  echo $fileName .'?'.time();
+                  $default = 'images/logos/joukkue.png';
+                  if (file_exists($fileName)) {
+                      echo $fileName .'?'.time();
+                  } else {
+                      echo $default;
+                  }
               } else {
-                $fileName = 'images/logos/' . $uid . $id . '.png';
-                echo $fileName .'?'.time();
+                  $fileName = 'images/logos/' . $uid . $id . '.png';
+                  $default = 'images/logos/seura.png';
+                  if (file_exists($fileName)) {
+                      echo $fileName .'?'.time();
+                  } else {
+                      echo $default;
+                  }
               }
-              ?> height="180" alt="Image preview...">
+              ?> style="max-width:370px;max-height:202px;vertical-align:-160px">
+            </div>
               <input type="hidden" id="imgData">
 
           </tbody>
-        </form>
         </table>
         <input class="button-primary" type="submit" value="Tallenna logo" id="fileUpload" name="fileUpload">
+        </form>
       </div>
 
 
@@ -127,5 +143,5 @@ if (file) {
     </script>
 
   <?php
-    include ('inc/footer.php');
+    include('inc/footer.php');
   ?>

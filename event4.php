@@ -14,48 +14,55 @@ include ('inc/header.php');
 <!-- Theme included stylesheets -->
 <link href="css/quill.snow.css" rel="stylesheet">
 
-<div class="container">
+<div class="container" style="padding-bottom:60px;">
   <div class="twelve columns" style="text-align:center" id="guide">
 
   <div id="section1">
-  <p class="guideHeader">Tapahtuman tiedot</p>
+  <p class="guide-header">Tapahtuman tiedot</p>
   <a href="event1.php" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_1</i>
+  <i class="material-icons">filter_1</i>
   </a></div>
   <div class="line"></div>
 
   <div id="section2">
-  <p class="guideHeader">Kotipelaajat</p>
+  <p class="guide-header">Kotipelaajat</p>
   <a href="event2.php" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_2</i>
+  <i class="material-icons">filter_2</i>
   </a></div>
   <div class="line"></div>
 
   <div id="section3">
-  <p class="guideHeader">Vieraspelaajat</p>
+  <p class="guide-header">Vieraspelaajat</p>
   <a href="event3.php" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_3</i>
+  <i class="material-icons">filter_3</i>
   </a></div>
   <div class="line" style="background-color:#2bc9c9"></div>
 
   <div id="section4" style="background-color:#2bc9c9">
-  <p class="guideHeader">Ennakkoteksti</p>
+  <p class="guide-header">Ennakkoteksti</p>
   <a href="#" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_4</i>
+  <i class="material-icons">filter_4</i>
   </a></div>
   <div class="line" style="background-color:gray"></div>
 
   <div id="section5" style="background-color:gray">
-  <p class="guideHeader">Mainospaikat</p>
+  <p class="guide-header">Mainospaikat</p>
   <a id="btnEvent5" href="#" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_5</i>
+  <i class="material-icons">filter_5</i>
   </a></div>
   <div class="line" style="background-color:gray"></div>
 
   <div id="section6" style="background-color:gray">
-  <p class="guideHeader">Yhteenveto</p>
+  <p class="guide-header">    Kilpailu</p>
   <a id="btnEvent6" href="#" style="text-decoration:none">
-  <i style="position:relative;bottom:15px;font-size:35px;color:white;" class="material-icons">filter_6</i>
+  <i class="material-icons">filter_6</i>
+  </a></div>
+  <div class="line" style="background-color:gray"></div>
+
+  <div id="section7" style="background-color:gray">
+  <p class="guide-header">Yhteenveto</p>
+  <a id="btnEvent7" href="#" style="text-decoration:none">
+  <i class="material-icons">filter_7</i>
   </a></div>
 </div>
 
@@ -68,12 +75,10 @@ include ('inc/header.php');
     <div id="editor" class="twelve columns" style="min-height:253px"></div>
     </div>
   </div>
-  <div class="row">
-    <div class="twelve columns" style="text-align:center;position:absolute;padding-top:50px">
-      <button type="button" value="Takaisin" onclick="window.location='event3.php'"/>Takaisin</button>
-      <input class="button-primary" type="submit" name="setMatchText" id="btnEvent5" value="Seuraava">
-    </div>
-  </div>
+</div>
+<div id="event-buttons" class="twelve columns">
+  <button type="button" value="Takaisin" onclick="window.location='event3.php'"/>Takaisin</button>
+  <input class="button-primary" type="submit" id="btnEvent5" value="Seuraava">
 </div>
 
 <!-- Main Quill library -->
@@ -94,7 +99,7 @@ var quill = new Quill('#editor', {
   theme: 'snow',
 });
 
-$('#btnEvent5,#btnEvent6').click(function(event){
+$('#btnEvent5,#btnEvent6, #btnEvent7').click(function(event){
   event.preventDefault();
   var selected = ($(this).attr("id"));
   var text = JSON.stringify(quill.getContents());

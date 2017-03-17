@@ -1,11 +1,11 @@
 <?php
   session_start();
-  include ('dbh.php');
+  include('dbh.php');
   if (!isset($_SESSION['id'])) {
-    header("Location: index.php");
+      header("Location: index.php");
   }
-  include ('functions.php');
-  include ('inc/header.php');
+  include('functions.php');
+  include('inc/header.php');
     unset($_SESSION['homeName']);
     unset($_SESSION['visitorName']);
     unset($_SESSION['eventId']);
@@ -17,6 +17,8 @@
     unset($_SESSION['saved']);
     unset($_SESSION['matchText']);
     unset($_SESSION['plainMatchText']);
+    unset($_SESSION['guessName']);
+    unset($_SESSION['guessType']);
     unset($_SESSION['popupText']);
     unset($_SESSION['ads']);
     unset($_SESSION['adlinks']);
@@ -45,12 +47,16 @@
       var first = $('#firstName').val();
       var last = $('#lastName').val();
       var num = $('#number').val();
-      var finish = $.post("functions.php", { savePlayer: "saveplayer", firstName : first, lastName : last, number : num, button: btn }, function(data) {
+      var finish = $.post("functions.php", { addPlayer: "addPlayer", firstName : first, lastName : last, number : num, button: btn }, function(data) {
         if(data){
+          $("#players").load(location.href + " #players");
+          $("#emptyHeader").css("display", "none");
+          $("#edit").css("display", "initial");
+
           console.log(data);
         }
          message(data);
-         if (data == "savePlayerMore") {
+         if (data == "addPlayerMore") {
             vex.closeAll();
             setTimeout(function(){
             openDialog();
@@ -63,11 +69,11 @@
       message: 'Lisää pelaaja',
       input: [
           '<label for="firstName">Etunimi</label>',
-          '<input id="firstName" name="firstName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä etunimi\')">',
+          '<input id="firstName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä etunimi\')">',
           '<label for="firstName">Sukunimi</label>',
-          '<input id="lastName" name="lastName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä sukunimi\')">',
+          '<input id="lastName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä sukunimi\')">',
           '<label for="firstName">Pelinumero</label>',
-          '<input id="number" name="number" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä pelinumero\')">',
+          '<input id="number" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä pelinumero\')">',
       ].join(''),
       buttons: [
           $.extend({}, vex.dialog.buttons.YES, { text: 'Lisää uusi'}),
@@ -75,7 +81,7 @@
       ],
       callback: function (data) {
           if (!data) {
-          message("savePlayerClose");
+          message("addPlayerClose");
           }
       }
   })
@@ -96,61 +102,11 @@ $('.vex-first').click(function(event){
     $content += "<input type='text'>";
     $content += "</div>";
 
-    function addInput() {
-      $("#newTr").fadeIn();
-      //document.getElementById('newTr').style="display:table-row;height:61px";
-      $("#iconAddPlayer").hide();
-      //document.getElementById('iconAddPlayer').style="display:none";
-      $("#savePlayer").fadeIn();
-      //document.getElementById('btnSave').style="display:block";
-
-      var etuField = document.createElement("input");
-      etuField.type = "text";
-      etuField.name = "firstName";
-      etuField.id = "firstName";
-
-      var sukuField = document.createElement("input");
-      sukuField.type = "text";
-      sukuField.name = "lastName";
-      sukuField.id = "lastName";
-
-      var nroField = document.createElement("input");
-      nroField.type = "text";
-      nroField.name = "number";
-      nroField.id = "number";
-
-      var etuH = document.createElement("label");
-      etuH.innerHTML = "Etunimi";
-
-      var sukuH = document.createElement("label");
-      sukuH.innerHTML = "Sukunimi";
-
-      var nroH = document.createElement("label");
-      nroH.innerHTML = "Numero";
-
-      //var headerCount = "Pelaaja " + finalNum;
-
-      //var header = document.createElement("h4");
-      //var headerText = document.createTextNode(headerCount);
-      //header.appendChild(headerText);
-
-      //var br = document.createElement("br");
-
-      //document.getElementById('newrow').appendChild(header);
-      document.getElementById('newrow').appendChild(etuH);
-      document.getElementById('newrow').appendChild(etuField);
-      document.getElementById('newrow').appendChild(sukuH);
-      document.getElementById('newrow').appendChild(sukuField);
-      document.getElementById('newrow').appendChild(nroH);
-      document.getElementById('newrow').appendChild(nroField);
-      //document.getElementById('newrow').appendChild(br);
-    }
-
   </script>
 
   <div class="container">
-    <span id="msg" class="msgError"></span>
-    <form name="form" action="functions.php" method="POST">
+    <span id="msg" class="msg-fail"></span>
+    <form id="form" action="functions.php" method="POST">
     <div class="row">
       <div class="twelve columns">
          <h4>
@@ -159,31 +115,22 @@ $('.vex-first').click(function(event){
           <button type="button" class="button-primary" id="iconAddPlayer" style="position:relative;">Lisää</button>
           <?php
 
-          echo '<button id="edit" style="display:none" class="button-primary" type="button" onclick="window.location.href=\'edit.php\'">Muokkaa</button>';
+          echo '<button id="edit" style="display:none" class="button-primary" type="button" onclick="window.location.href=\'edit_team.php\'">Muokkaa</button>';
 
           ?>
       </div>
       <div class="twelve columns">
-          <table class='u-full-width'>
+          <table id="players" class='u-full-width'>
 
             <?php
               listPlayers();
             ?>
-            <tr id="newTr" style="height:61px;display:none">
-              <td><img style="width: 35px; vertical-align: middle;" src="images/default.png"></td>
-              <td><span id="newrow"></span></td>
-              <td></td>
-            </tr>
           </table>
           </div>
           <div class="row">
             <div class="twelve columns" style="text-align:left">
 
-              <!--<a href="#" id="iconAddPlayer" class="addPlayer">
-                Lisää pelaaja
-              </a>-->
-
-            <input style="display:none"class="button-primary" name="savePlayer" type="submit" id="savePlayer" value="Tallenna">
+            <input style="display:none"class="button-primary" type="submit" id="addPlayer" value="Tallenna">
             </div>
 
           </div>

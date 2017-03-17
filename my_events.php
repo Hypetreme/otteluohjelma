@@ -38,7 +38,7 @@ unset($_SESSION['visitors']);
 
     <div class="row">
 
-        <form name="form" action="functions.php" method="GET">
+        <form id="form" action="functions.php" method="GET">
           <?php listEvents('all');
           ?>
           </table>

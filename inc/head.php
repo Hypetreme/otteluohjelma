@@ -8,13 +8,14 @@
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
   <link rel="stylesheet" type="text/css" href="css/skeleton.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" href="vex/vex.css" />
-  <link rel="stylesheet" href="vex/vex-theme-default.css" />
+  <link rel="stylesheet" href="inc/widgets/vex/vex.css" />
+  <link rel="stylesheet" href="inc/widgets/vex/vex-theme-default.css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script src="vex/vex.combined.min.js"></script>
+  <script src="inc/widgets/vex/vex.combined.min.js"></script>
   <script src="js/clipboard.min.js"></script>
   <script type="text/javascript" src="js/qrcode.min.js"></script>
   <script>vex.defaultOptions.className = 'vex-theme-default';</script>
   <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jquery-migrate.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
 </head>

@@ -18,7 +18,11 @@
   unset($_SESSION['saved']);
   unset($_SESSION['matchText']);
   unset($_SESSION['plainMatchText']);
+  unset($_SESSION['guessName']);
+  unset($_SESSION['guessType']);
   unset($_SESSION['ads']);
+  unset($_SESSION['editEvent']);
+  unset($_SESSION['old']);
   //unset($_SESSION['adlinks']);
   unset($_SESSION['editEvent']);
   include ('functions.php');
@@ -51,10 +55,10 @@ for ($i = 1; $i <= 25; $i++) {
 
 }
 ?>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
 <script src="js/jquery.cropit.js"></script>
 <link rel="stylesheet" type="text/css" href="css/cropit.css">
-<span id="msg" class="msgError"></span>
+<span id="msg" class="msg-fail"></span>
   <div class="container">
     <div class="twelve columns" style="text-align:center">
       <h4>Mainospaikat</h4>
@@ -72,17 +76,22 @@ for ($i = 1; $i <= 25; $i++) {
       <div style="display:inline-block">
             <div id="preview" class="cropit-image-preview"></div>
           </div>
-            <input style="display:inline-block;padding-left:30px" type="file" class="cropit-image-input">
+            <input style="display:inline-block;padding-left:30px;max-width:300px" type="file" class="cropit-image-input">
+            <div id="zoom" style="display:none">
             <label for="zoom">Zoomaus</label>
-            <input id="zoom" style="display:inline-block;" type="range" class="cropit-image-zoom-input">
+            <p class="zoom-minus">-</p><input style="display:inline-block;" type="range" class="cropit-image-zoom-input">
+            <p class="zoom-plus">+</p>
+            </div>
+            <form id="form">
             <?php
             listAdLinks();
             ?>
             <input type="hidden" id="image-data" name="image-data" class="hidden-image-data"/>
+            </form>
 </div>
 <div class="twelve columns" style="text-align:center;margin-top:20px">
-            <button id="removeAd" class="button-remove" type="submit">Poista</button>
-            <button id="submitAd" class="button-primary" type="submit">Tallenna</button>
+            <button id="removeAd" class="remove-btn" type="submit">Poista</button>
+            <button form="form" id="setAd" class="button-primary" type="submit">Tallenna</button>
           </div>
       </span>
     </div>
@@ -94,14 +103,14 @@ for ($i = 1; $i <= 25; $i++) {
     </div>
 
       <div id="1and2" class="on" style="position:relative;display:initial;text-align:center">
-      <div id="adSelector" class="overlay">
+      <div id="ad-selector" class="overlay">
         <?php
         if (file_exists($fileName1s) && isset($_SESSION['teamId'])){
-        echo '<div class="ad reserved" onclick="notify(this);" id="1"><img src="'.$ad1.'?'.time().'"></div>';
+        echo '<div class="ad reserved" onclick="notify(this);" id="1"><img alt="mainos 1" src="'.$ad1.'?'.time().'"></div>';
       } else {
         echo '<div class="ad free" onclick="addAd(this);" id="1">';
         if ($ad1 != "") {
-        echo '<img src="'.$ad1.'?'.time().'">';
+        echo '<img alt="mainos 1" src="'.$ad1.'?'.time().'">';
       } else {
         echo '<h4 style="line-height:3">Mainos 1</h4>';
       }
@@ -112,11 +121,11 @@ for ($i = 1; $i <= 25; $i++) {
       echo '<div><h5 class="preview">Pelaaja Yksi</h5></div>';
       echo '<div><h5 class="preview">Pelaaja Kaksi</h5></div>';
       if (file_exists($fileName2s) && isset($_SESSION['teamId'])){
-      echo '<div class="ad reserved" onclick="notify(this);" id="2"><img src="'.$ad2.'?'.time().'"></div>';
+      echo '<div class="ad reserved" onclick="notify(this);" id="2"><img alt="mainos 2" src="'.$ad2.'?'.time().'"></div>';
     } else {
       echo '<div class="ad free" onclick="addAd(this);" id="2">';
       if ($ad2 != "") {
-      echo '<img src="'.$ad2.'?'.time().'">';
+      echo '<img alt="mainos 2" src="'.$ad2.'?'.time().'">';
     } else {
       echo '<h4 style="line-height:3">Mainos 2</h4>';
     }
@@ -130,43 +139,43 @@ for ($i = 1; $i <= 25; $i++) {
       </div>
 
       <div id="popup" style="display:none;text-align:center">
-      <div id="adSelector">
+      <div id="ad-selector">
         <?php
         echo '<div><h3 class="preview">Tapahtuman nimi</h3></div>';
         echo '<div><h3 class="preview">Päivämäärä</h3></div>';
         echo '<div><h3 class="preview">Paikka</h3></div>';
-        echo '<div id="popupWindow">';
+        echo '<div id="popup-window">';
         echo '<div style="color:black" id="close2">X</div>';
         if (file_exists($fileName5s) && isset($_SESSION['teamId'])){
-        echo '<div class="ad reserved" onclick="notify(this);" id="5"><img src="'.$ad5.'?'.time().'"></div>';
+        echo '<div class="ad reserved" onclick="notify(this);" id="5"><img alt="mainos 5" src="'.$ad5.'?'.time().'"></div>';
       } else {
         echo '<div class="ad free" style="margin-top:10px" onclick="addAd(this);" id="5">';
         if ($ad5 != "") {
-        echo '<img src="'.$ad5.'?'.time().'">';
+        echo '<img alt="mainos 5" src="'.$ad5.'?'.time().'"></div>';
       } else {
-        echo '<h4 style="color:black;line-height:3">Mainos 5</h4>';
+        echo '<h4 style="color:black;line-height:3">Mainos 5</h4></div>';
       }
       }
         ?>
+        <p id="popup-text-preview">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Nam vel enim aliquet.</p>
       </div>
-    <p id="popupTextPreview">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Nam vel enim aliquet.</p>
       </div>
       </div>
-</div>
+
       <div id="sponsors" style="display:none;text-align:center;">
-      <div id="adSelector" style="overflow-x:hidden;overflow-y:scroll;">
+      <div id="ad-selector" style="overflow-x:hidden;overflow-y:scroll;">
         <div><h3 class="preview">Kumppanit</h3></div>
         <?php
         $i = 1;
         foreach ($adArray as $value) {
         if($i > 5 && $i <= 25) {
         if (file_exists(${'fileName' . $i . 's'}) && isset($_SESSION['teamId'])){
-        echo '<div class="ad reserved" onclick="notify(this);" id="'.$i.'"><img src="'.${'ad' . $i }.'?'.time().'"></div>';
+        echo '<div class="ad reserved" onclick="notify(this);" id="'.$i.'"><img alt="'.'mainos' . $i .'" src="'.${'ad' . $i }.'?'.time().'"></div>';
       } else {
         echo '<div class="ad free" onclick="addAd(this);" id="'.$i.'">';
         if (${'ad' . $i } != "") {
-        echo '<img src="'.${'ad' . $i }.'?'.time().'">';
+        echo '<img alt="mainos ' . $i .'" src="'.${'ad' . $i }.'?'.time().'">';
       } else {
         echo '<h4 style="line-height:3">Kumppani '.($i-5).'</h4>';
       }
@@ -184,11 +193,14 @@ for ($i = 1; $i <= 25; $i++) {
 </div>
 
   <script>
-document.getElementById('popupTextPreview').innerHTML = document.getElementById('popupText').value;
+document.getElementById('popup-text-preview').innerHTML = document.getElementById('popup-text').value;
 var imageData = "";
 var url = "";
 $('.image-editor').cropit(
     {
+      minZoom: 'fit',
+      fitWidth: 'true',
+      smallImage: 'stretch',
       onImageError: function() {
             $('#preview').css("background-image", "none");
             imageData = "";
@@ -197,7 +209,13 @@ $('.image-editor').cropit(
         onImageLoaded: function() {
               $('#image-data').val("");
               $('#image-data').val($('.image-editor').cropit('export'));
-          }
+          },
+          onZoomDisabled: function() {
+                $('#zoom').css("display", "none");
+            },
+            onZoomEnabled: function() {
+                  $('#zoom').css("display", "initial");
+              }
     }
 );
       $(".free").on("mouseenter focus", function(){
@@ -219,6 +237,7 @@ $('.image-editor').cropit(
       });
 
   function addAd(element) {
+    $('#zoom').css("display", "none");
     $(function(){
         $('.free:not(#'+element.id+')').removeClass('active');
         if(!$('.free:not(#'+element.id+')').hasClass('reserved')){
@@ -232,22 +251,23 @@ $('.image-editor').cropit(
         $('#preview').fadeIn();
     });
 $("#adHeader").css({"color":"gray"});
-document.getElementById('popupDiv').style="display:none";
+$('#popupDiv').css("display","none");
 
 if (element.id == 5) {
 document.getElementById('adHeader').innerHTML="Popup-Mainos";
-document.getElementById('popupDiv').style="display:initial";
+$('#popupDiv').css("display","initial");
 }else if (element.id >= 6){
 document.getElementById('adHeader').innerHTML="Kumppani "+(element.id-5);
 }else {
 document.getElementById('adHeader').innerHTML="Mainos "+element.id;
 }
-document.getElementById('upload').style="visibility:visible;";
-document.getElementById('submitAd').value=element.id;
+$('#upload').css("visibility","visible");
+document.getElementById('setAd').value=element.id;
 document.getElementById('removeAd').value=element.id;
 document.getElementById('linkHeader').style="initial";
 $('.link:not(#link'+element.id+')').css({"display":"none"});
-document.getElementById('link'+element.id).style="display:inline-block;width:240px";
+$('#link'+element.id).css("display","inline-block");
+$('#link'+element.id).css("width","240px");
 
 //Ladataan asetettu kuva esikatselua varten
 $('#preview').css("background-image", "none");
@@ -259,31 +279,32 @@ if (typeof document.getElementById(element.id).children[0] != 'undefined') {
     $('.image-editor').cropit('imageSrc', url);
 }
 }
-function notify(element) {
 
+function notify(element) {
+message('adReserved');
 if($(element).hasClass('reserved')){
 $(element).css({"border-color":"red"});
 $(element).css({"border-width":"3px"});
 }
 $("#adHeader").css({"color":"red"});
-document.getElementById('adHeader').innerHTML="Seurasi on asettanut mainospaikan!";
+document.getElementById('adHeader').innerHTML="";
 document.getElementById('upload').style="visibility:hidden";
-document.getElementById('submitAd').name="adUpload";
+document.getElementById('setAd').name="adUpload";
 }
 
-$('#submitAd').click(function(event){
+$('#setAd').click(function(event){
       event.preventDefault();
       if ($('#image-data').val()!="") {
       $('#image-data').val($('.image-editor').cropit('export'));
     }
       imageData = $('#image-data').val();
-      var ad = $('#submitAd').val();
-      var popupText = $('#popupText').val();
+      var ad = $('#setAd').val();
+      var popupText = $('#popup-text').val();
       var length = $('.ad').length;
       for (i = 0; i < 25; i++) {
       eval("adlink" + i + " = $('#link'+(i+1)).val()");
     }
-      var finish = $.post("functions.php", { submitAd: ad, imgData: imageData ,
+      var finish = $.post("functions.php", { setAd: ad, imgData: imageData ,
 link1: adlink0, link2: adlink1, link3: adlink2, link4: adlink3,
 link5: adlink4, link6: adlink5, link7: adlink6, link8: adlink7,
 link9: adlink8, link10: adlink9, link11: adlink10, link12: adlink11,
