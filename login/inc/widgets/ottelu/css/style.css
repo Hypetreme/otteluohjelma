@@ -1,0 +1,505 @@
+@font-face {
+    font-family: "Raleway";
+    font-style: normal;
+    src: local('Raleway'), url('../raleway/Raleway-Regular.ttf')
+}
+
+@font-face {
+    font-family: 'Cuprum';
+    font-style: normal;
+    src: local('Cuprum'), url('../cuprum/Cuprum-Regular.ttf')
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    background-color: #232323;
+    font-family: 'Cuprum', sans-serif;
+    overflow: scroll;
+    min-height: 100%;
+}
+
+.background {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.hockey {
+    /*background: linear-gradient(0deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('../images/hockey.jpg');
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('../images/hockey.jpg');*/
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+header {
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    min-height: 79px;
+}
+
+nav {
+    width: 100%;
+}
+
+nav ul {
+    list-style: none;
+    text-align: center;
+    padding-top: 7px;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0;
+    padding-right: 4px;
+    padding-left: 6px;
+}
+
+nav a {
+    font-weight: 600;
+    text-decoration: none;
+    background-color: #e2e2e2;
+    float: left;
+    height: 43px;
+    width: 43px;
+    border-radius: 50%;
+    color: #000000;
+    line-height: 43px;
+    text-align: center;
+    box-sizing: border-box;
+    -webkit-transition: all 200ms;
+    / transition: all 200ms;
+}
+
+.share-header {
+    text-align: center;
+    color: white;
+}
+
+.off a:hover {
+    color: black;
+}
+
+h1.title {
+    font-weight: 100;
+    font-size: 42px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+}
+
+.game-time, .game-place, .game-date {
+    text-transform: uppercase;
+    text-align: center;
+    font-style: italic;
+}
+
+.game-place h3, .game-date h3 {
+    color: #fff087 !important;
+    font-size: 1.5em !important;
+}
+
+.guess-name h3 {
+    font-size: 1.5em !important;
+}
+
+.list-home, .list-visitors {
+    color: #fff087;
+    font-size: 22px;
+    line-height: 23px;
+    text-align: left;
+    font-style: italic;
+    margin-left: 10%;
+}
+
+.advertisement {}
+
+.content-wrapper {
+    /*display: none;*/
+    overflow: hidden;
+    margin-bottom: 0px;
+}
+
+.game-share a {
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    background-color: #e2e2e2;
+    height: 58px;
+    width: 58px;
+    border-radius: 50%;
+    font-size: 35px;
+    color: #000000;
+    line-height: 60px;
+    text-align: center;
+    box-sizing: border-box;
+    -webkit-transition: all 200ms;
+    / transition: all 200ms;
+}
+
+
+/*Pysty*/
+
+@media screen and (max-width: 2280px) {
+    .up {
+        /*height: 90%;
+        width: 100%;
+        float: left;
+        overflow-y: scroll;
+        overflow-x: hidden;*/
+    }
+    .popup {
+        width: 90%;
+        top: 20%;
+    }
+    .popup-text {
+        min-width: 340px;
+        max-width: inherit;
+    }
+    .popup-ad img {
+        width: 100%;
+    }
+    .game-share {
+        text-align: center;
+        /*position: fixed;*/
+        top: 50%;
+        width: 100%;
+        left: 0;
+        right: 0;
+    }
+    .game-share a {
+        float: left;
+    }
+    .facebook, .twitter, .whatsapp {
+        display: inline-block;
+        padding: 10px;
+    }
+    .share-header {
+        display: initial;
+    }
+    .space {
+        height: 90px;
+    }
+}
+
+
+/*Vaaka*/
+
+@media screen and (max-height: 520px) and (min-width: 540px) {
+    .up {
+        height: 45%;
+        width: 100%;
+        float: left;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    .popup {
+        width: 75%;
+        top: 5%;
+    }
+    .popup-ad img {
+        width: 80%;
+    }
+    .sponsor-logos a img {
+        width: 40%;
+    }
+    .sponsor-logos img {
+        width: 40%;
+    }
+    .game-share {
+        text-align: center;
+        width: 10%;
+        position: absolute;
+        left: 100%;
+        top: 5%;
+    }
+    .game-share a {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        line-height: 51px;
+    }
+    h2 {
+        margin-bottom: 0;
+        font-size: 36px;
+    }
+    .facebook, .twitter, .whatsapp {
+        padding: 5px;
+    }
+    .share-header {
+        display: none;
+    }
+    .space {
+        height: 30px;
+    }
+    .bottom {
+        /*padding-bottom: 20px;*/
+    }
+    .game-date {
+        float: left;
+        width: 43%;
+        text-align: right;
+    }
+    .game-place {
+        float: left;
+        width: 43%;
+        text-align: left;
+    }
+    .divider {
+        width: 14%;
+        float: left;
+    }
+}
+
+@media screen and (min-width: 614px) {
+    .offer-close {
+        float: left;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    nav a {
+        height: 35px!important;
+        width: 35px!important;
+        line-height: 35px!important;
+    }
+}
+
+.bottom {
+    position: fixed;
+    /*height: 12%;*/
+    width: 100%;
+    bottom: -19px;
+    z-index: 998;
+    -webkit-backface-visibility: hidden;
+}
+
+.home-logo, .visitor-logo, .players-home-logo, .players-visitor-logo {
+    width: 40%;
+    display: inline;
+}
+
+.home-logo img, .visitor-logo img, .players-home-logo img, .players-visitor-logo img {
+    max-width: 60%;
+    max-height: 86px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: white;
+    border: 3px solid grey;
+    color: black;
+    padding: 10px;
+    z-index: 999;
+    font-family: "Ubuntu";
+}
+
+.close {
+    cursor: pointer;
+    font-size: 24px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+    top: -10px;
+    left: 10px;
+    float: right;
+    width: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.cover {
+    display: none;
+    position: fixed;
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    /*Safari 5.1-6*/
+    background: -o-linear-gradient(right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    /*Opera 11.1-12*/
+    background: -moz-linear-gradient(right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7));
+    /*Fx 3.6-15*/
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    /*Standard*/
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+.popup-ad {
+    z-index: 999;
+    text-align: center;
+    width: 100%;
+}
+
+.popup-text {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    font-family: "Ubuntu";
+}
+
+.chart-header {
+    height: 41px;
+    text-align: left;
+}
+
+
+/* https://github.com/tobiasahlin/SpinKit */
+
+.spinner {
+    margin: 100px auto 0;
+    width: 70px;
+    text-align: center;
+}
+
+.spinner>div {
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0)
+    }
+    40% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    40% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
+}
+
+svg>g>g:last-child {
+    pointer-events: none;
+}
+
+.home-logo {
+    float: left;
+}
+
+.visitor-logo {
+    float: left;
+}
+
+.home-name {
+    float: left;
+    width: 40%;
+}
+
+.home-name-players, .visitor-name-players {
+    text-align: center;
+    white-space: pre;
+    color: white;
+}
+
+.visitor-name {
+    float: right;
+    width: 40%;
+}
+
+.home-name h3, .visitor-name h3 {
+    font-size: 20px;
+    margin-left: 10%;
+}
+
+h1, h2, h3, h4, h5 {
+    color: white;
+    letter-spacing: 0.01em;
+}
+
+h3 {
+    font-weight: 100;
+}
+
+.offer-box {
+    width: 285px;
+    height: 150px;
+    border: 3px dashed black;
+    border-radius: 5px;
+    display: inline-block;
+    background-color: #c22f43;
+    margin-bottom: 20px;
+}
+
+.offer-image {
+    width: 130px;
+    height: 100%;
+    background-color: #c22f43;
+}
+
+.offer-image img {
+    border-radius: 44px;
+}
+
+.offer-text {
+    font-family: helvetica;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    word-wrap: break-word;
+    margin: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+    font-style: italic;
+}
+
+.offer-price {
+    color: white;
+    font-size: 40px;
+}
+
+.offer-close {}
+
+hr {
+    margin: 2px;
+    border-width: 1px;
+    border-color: antiquewhite;
+}
+
+.divider {
+    text-align: center;
+}
+
+.divider h3 {
+    color: #fff087;
+}
