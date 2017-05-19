@@ -15,7 +15,11 @@
   <script src="js/clipboard.min.js"></script>
   <script type="text/javascript" src="js/qrcode.min.js"></script>
   <script>vex.defaultOptions.className = 'vex-theme-default';</script>
+  <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
   <script type="text/javascript" src="js/jquery.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery-migrate.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
 </head>

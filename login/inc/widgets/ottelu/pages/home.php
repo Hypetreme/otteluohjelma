@@ -29,7 +29,9 @@ return t;
   <div class="container">
     <div class="cover" id="cover"></div>
     <div class="popup" id="popup">
+<div class="close-line">
 <div id="close" class="close">X</div>
+</div>
 <div class="popup-ad" id="popupAd"></div>
 <p class="popup-text" id="popupText"></p>
     </div>
@@ -46,10 +48,8 @@ return t;
     <div class="visitor-name" id="visitorName" style="float:right"><h3>Vierasjoukkue</h3></div>
   </div>
       <div class="twelve columns">
-        <!-- Date of the game -->
         <div id="gameDate" class="game-date"></div>
         <div class="divider"><h3 style="font-size:1.5em">-</h3></div>
-        <!-- gamePlace -->
         <div id="gamePlace" class="game-place"></div>
   </div>
 
@@ -64,12 +64,12 @@ return t;
       </div>
 
       <div class="twitter" id="twitter">
-      <a href="" style="background-color:#702796;color:white">
+      <a href="" style="background-color:#00A4E4;color:white">
       <i class="ion-social-twitter"></i></a>
       </div>
 
       <div class="whatsapp" id="whatsapp">
-      <a style="background-color:#2A9B27;color:white" href="whatsapp://send?text=Hello world">
+      <a style="background-color:#2A9B27;color:white" href="">
       <i class="ion-social-whatsapp"></i></a>
       </div>
 

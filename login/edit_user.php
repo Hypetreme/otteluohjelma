@@ -1,59 +1,47 @@
 <?php
-  session_start();
-  include ('dbh.php');
-  if (isset($_SESSION['teamId'])) {
-  $teamId = $_SESSION['teamId'];
-}
-  if (!isset($_SESSION['id'])) {
-    header("Location: index.php");
-  }
-  if (isset($_SESSION['event']['id'])) {
-    unset($_SESSION['event']['homeName']);
-    unset($_SESSION['event']['visitorName']);
-    unset($_SESSION['event']['id']);
-    unset($_SESSION['event']['name']);
-    unset($_SESSION['event']['place']);
-    unset($_SESSION['event']['date']);
-    unset($_SESSION['event']['home']);
-    unset($_SESSION['event']['visitors']);
-    unset($_SESSION['event']['saved']);
-  }
-  include ('functions.php');
-  include ('inc/header.php');
+session_start();
+include ('dbh.php');
+include ('unset.php');
+include ('inc/header.php');
+include ('functions.php');
 ?>
-
+<div class="header-bg"></div>
   <div class="container">
     <span class="msg msg-fail" id="msg"></span>
     <div class="row">
       <div class="twelve columns">
+        <div class="section-header">
         <h4>
           Muokkaa käyttäjätietoja
         </h4>
       </div>
-
+        <input form="form" class="button-primary" type="submit" id="setUser" value="Tallenna">
+        <?php
+         if ($_SESSION['type'] == 0 && isset($_SESSION['teamId'])) {
+        echo '<button class="remove-btn" type="submit" id="removeTeam">Poista joukkue</button>';
+        } ?>
+      </div>
+      <div class="shadow-box">
       <div class="six columns">
+
         <table class="u-full-width">
-        <form action="functions.php" method="POST">
+        <form id="form">
           <tbody>
             <tr>
               <?php userData('edit'); ?>
 
 <tr>
-<td class="bold">Vahvista salasana</td>
+<th>Vahvista salasana</th>
 <td><input type="password" id="pwd"></td></tr>
             </tr>
           </body>
         </table>
-      <ul class="navbar-list">
-      <li class="navbar-item"><input class="button-primary" type="submit" id="setUser" value="Tallenna">
-      <?php
-       if ($_SESSION['type'] == 0 && isset($_SESSION['teamId'])) {
-      echo '<li class="navbar-item"><button class="remove-btn" type="submit" id="removeTeam">Poista joukkue</button>';
-      } ?>
+        </div>
 
       </form>
-    </ul>
       </div>
+      </div>
+    </div>
     </div>
     <script>
     $('#setUser').click(function(event){

@@ -108,6 +108,7 @@ a, a:hover {
     background-color: white;
     padding: 20px;
     box-shadow: 7px 5px 15px #03030333;
+    -webkit-box-shadow: 7px 5px 15px gray;
     display: table;
 }
 

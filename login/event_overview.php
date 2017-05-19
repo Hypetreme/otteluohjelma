@@ -1,20 +1,27 @@
 <?php
 session_start();
-include 'dbh.php';
-include('inc/header.php');
-include 'functions.php';
-
-if (!isset($_SESSION['event']['edit']) || !isset($_SESSION['id']) || !isset($_SESSION['teamId'])) {
-header("Location: index.php");
-}
+include ('dbh.php');
+include ('functions.php');
+include ('unset.php');
+include ('inc/header.php');
 ?>
 
 <!-- Theme included stylesheets -->
 <link href="css/quill.snow.css" rel="stylesheet">
 <div class="cover" id="cover"></div>
-  <div class="container" style="padding-bottom:60px;">
+<div class="header-bg"></div>
+<div class="container" style="padding-bottom:60px;">
+  <div class="row">
+    <div class="twelve columns">
+      <div class="section-header">
+      <h4>
+        Tapahtuma
+         </h4>
+       </div>
+    </div>
+  </div>
   <?php if (!isset($_GET['eventId'])) {
-    echo '<div class="twelve columns" style="text-align:center" class="guide">
+    echo '<div class="twelve columns" style="text-align:center;margin-top:35px;margin-bottom: 20px;">
 
       <div class="section1">
       <p class="guide-header">Tapahtuman tiedot</p>
@@ -144,7 +151,7 @@ header("Location: index.php");
     <div class="row">
     </div>
 
-    <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
+    <div class="shadow-box2">
 
       <div class="six columns">
         <h4 style="color:#6f6f67">

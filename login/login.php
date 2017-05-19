@@ -12,15 +12,15 @@
 
 <div class="container">
   <span class="msg msg-fail" id="msg"></span>
-  <div class="row">
+  <div class="row" style="text-align:center">
     <div class="twelve columns">
       <h1>
         Otteluohjelma
       </h1>
     </div>
   </div>
-  <div class="row">
-    <form id="form" action="functions.php" method="POST">
+  <div class="shadow-box-login">
+    <form style="margin-bottom:0px;"id="form" action="functions.php" method="POST">
       <div class="twelve columns">
         <h4>
           Kirjaudu sisään
@@ -43,13 +43,6 @@
         <input class="button-primary" type="button" value="Rekisteröidy" onclick="window.location.href='register.php'">
       </div>
     </form>
-
-
-  </div>
-
-  <div class="row">
-    <div class="twelve columns">
-    </div>
   </div>
 
 

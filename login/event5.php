@@ -1,12 +1,9 @@
 <?php
 session_start();
-include 'dbh.php';
-if (!isset($_SESSION['id']) || !isset($_SESSION['event']['edit']) || !isset($_SESSION['teamId'])) {
-header("Location: index.php");
-}
-
-include ('inc/header.php');
+include ('dbh.php');
 include ('functions.php');
+include ('unset.php');
+include ('inc/header.php');
 
 $teamId = $teamUid = "";
 if (isset($_SESSION['teamId'])) {
@@ -66,8 +63,18 @@ if (file_exists(${'offerFileName' . $i . 'es'})){
 <link rel="stylesheet" type="text/css" href="css/cropit.css">
 <script src="js/jquery.cropit.js"></script>
 
+<div class="header-bg"></div>
 <div class="container" style="padding-bottom:60px;">
-  <div class="twelve columns" style="text-align:center" class="guide">
+  <div class="row">
+    <div class="twelve columns">
+      <div class="section-header">
+      <h4>
+        Tapahtuma
+         </h4>
+       </div>
+    </div>
+  </div>
+  <div class="twelve columns" style="text-align:center;margin-top:35px;margin-bottom: 20px;">
 
   <div class="section1">
   <p class="guide-header">Tapahtuman tiedot</p>
@@ -125,19 +132,19 @@ if (file_exists(${'offerFileName' . $i . 'es'})){
 </div>
   <div class="row">
   </div>
-  <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
-  <div class="row" style="float:left">
+  <div class="shadow-box2">
     <div class="six columns" style="text-align: center;">
-      <h5 style="margin-bottom:0" id="adHeader">&nbsp;</h5>
+      <h5 style="margin-bottom:0" class="ad-header" id="adHeader">&nbsp;</h5>
       <span id="upload" style="visibility:hidden;">
         <tbody>
         <tr>
-          <div class="image-editor" id="crop" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
+          <div class="image-editor" id="crop" style="padding:15px;margin-top:20px">
+            <div class="shadow-box">
       <div style="display:inline-block">
             <div id="preview" class="cropit-image-preview"></div>
           </div>
 
-            <input style="display:inline-block;padding-left:30px;max-width:300px" type="file" class="cropit-image-input">
+            <input style="padding-left:30px;max-width:300px" type="file" class="cropit-image-input">
             <div id="zoom" style="display:none">
             <label for="zoom">Zoomaus</label>
             <p class="zoom-minus">-</p><input style="display:inline-block;" type="range" class="cropit-image-zoom-input">
@@ -151,12 +158,13 @@ if (file_exists(${'offerFileName' . $i . 'es'})){
           </form>
 
 </div>
-
-<div class="image-editor" id="crop-offer" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px;display:none">
+</div>
+<div class="image-editor" id="crop-offer" style="padding:15px;margin-top:20px;display:none">
+<div class="shadow-box">
 <div style="display:inline-block">
   <div id="preview-offer" class="cropit-image-preview offer-view"></div>
 </div>
-  <input style="display:inline-block;padding-left:30px;max-width:300px" type="file" class="cropit-image-input">
+  <input style="padding-left:30px;max-width:300px" type="file" class="cropit-image-input">
   <div id="zoom-offer" style="display:none">
   <label for="zoom">Zoomaus</label>
   <p class="zoom-minus">-</p><input style="display:inline-block;" type="range" class="cropit-image-zoom-input">
@@ -171,7 +179,7 @@ if (file_exists(${'offerFileName' . $i . 'es'})){
   </form>
 
 </div>
-
+</div>
 <div class="twelve columns" style="text-align:center;margin-top:20px">
             <button id="removeEventAd" class="remove-btn" type="submit">Poista</button>
             <button form="form" id="set" class="button-primary" type="submit">Tallenna</button>
@@ -189,6 +197,7 @@ if (file_exists(${'offerFileName' . $i . 'es'})){
     <div id="1and2" class="on" style="position:relative;display:initial;text-align:center">
     <div class="ad-selector overlay">
       <?php
+      echo '<div><h2 class="preview">Pelaajat</h2></div>';
       if (file_exists($fileName1s) || file_exists($fileName1j)){
       echo '<div class="ad reserved" onclick="notify(this);" id="1"><img alt="mainos 1" src="'.$ad1.'?'.time().'"></div>';
     } else {
@@ -200,10 +209,13 @@ if (file_exists(${'offerFileName' . $i . 'es'})){
     }
       echo '</div>';
     }
-    echo '<div><h2 class="preview">Pelaajat</h2></div>';
-    echo '<div><h3 class="preview">Kotijoukkue</h3></div>';
-    echo '<div><h5 class="preview">Pelaaja Yksi</h5></div>';
-    echo '<div><h5 class="preview">Pelaaja Kaksi</h5></div>';
+    echo '<div class="team-preview">
+    <img src="images/logos/'.$uid.$teamId.'.png">
+    <h3 class="preview">'.$_SESSION['teamName'].'</h3>
+    </div>';
+    echo '<div class="players-preview">
+    <h5>01 Pelaaja Yksi</h5>';
+    echo '<h5>02 Pelaaja Kaksi</h5></div>';
     if (file_exists($fileName2s) || file_exists($fileName2j)){
     echo '<div class="ad reserved" onclick="notify(this);" id="2"><img alt="mainos 2" src="'.$ad2.'?'.time().'"></div>';
   } else {
@@ -225,15 +237,21 @@ if (file_exists(${'offerFileName' . $i . 'es'})){
     <div id="popup" style="display:none;text-align:center">
     <div class="ad-selector">
       <?php
-      echo '<div><h3 class="preview">Tapahtuman nimi</h3></div>';
+      echo '<div style="height:50px"></div>';
+      echo '<div style="height:60px">';
+      echo '<div style="width:40%;float:left"><h3 class="preview-name">Koti</h3></div>';
+      echo '<div style="width:20%;float:left"><h3 class="preview-name">VS</h3></div>';
+      echo '<div style="width:40%;float:right"><h3 class="preview-name">Vieras</h3></div>';
+      echo '</div>';
       echo '<div><h3 class="preview">Päivämäärä</h3></div>';
       echo '<div><h3 class="preview">Paikka</h3></div>';
       echo '<div class="popup-window">';
-      echo '<div class="close2">X</div>';
+      echo '<div class="close-line">';
+      echo '<div class="close2">X</div></div>';
       if (file_exists($fileName5s) || file_exists($fileName5j)){
-      echo '<div class="ad reserved" onclick="notify(this);" id="5"><img alt="mainos 5" src="'.$ad5.'?'.time().'"></div>';
+      echo '<div class="ad reserved" style="margin-top:10px" onclick="notify(this);" id="5"><img alt="mainos 5" src="'.$ad5.'?'.time().'"></div>';
     } else {
-      echo '<div class="ad free popup" onclick="addAd(this);" id="5">';
+      echo '<div class="ad free" style="margin-top:10px" onclick="addAd(this);" id="5">';
       if ($ad5 != "") {
       echo '<img alt="mainos 5" src="'.$ad5.'?'.time().'"></div>';
     } else {
@@ -283,19 +301,17 @@ if (file_exists(${'offerFileName' . $i . 'es'})){
 foreach ($offerArray as $value) {
       if (file_exists(${'offerFileName' . $i . 's'}) || file_exists(${'offerFileName' . $i . 'j'})){
       echo '<div class="reserved offer" onclick="notify(this);" id="offer'.$i.'">';
+      echo '<p id="offerText'.$i.'" class="offer-text-preview"></p>';
     } else {
       echo '<div class="free offer" onclick="addAd(this);" id="offer'.$i.'">';
+      echo '<p id="offerText'.$i.'" class="offer-text-preview"></p>';
     }
     echo '<div class="offer-image" id="offerImage" style="float:left;">';
      if (${'offer' . $i } != "") {
        echo '<img src="'.${'offer' . $i }.'?'.time().'">';
-     } else {
-       echo '<h4>Tarjous '.($i).'</h4>';
      }
     echo'</div>
         <div style="float:right;width:50%">
-          <p id="offerText'.$i.'" class="offer-text-preview"></p>
-          <hr></hr>
         <p id="offerPrice'.$i.'" class="offer-price-preview"></p></div>
       </div>';
       $i++;
@@ -392,22 +408,23 @@ $(".free").on("mouseenter focus", function(){
   if(!$(this).hasClass('active')){
   $(this).css({"border-color":"orange"});
   $(this).css({"border-style":"solid"});
-  $(this).css({"border-width":"3px"});
+  $(this).css({"border-width":"4px"});
 }
 });
 $(".free").on("mouseleave", function(){
   if ($(this).hasClass('offer') && !$(this).hasClass('active')) {
     $(this).css({"border-style":"dashed"});
-    $(this).css({"border-color":"black"});
-    $(this).css({"border-width":"3px"});
+    $(this).css({"border-color":"#999999"});
+    $(this).css({"border-width":"4px"});
   }
   else if(!$(this).hasClass('active')){
+  $(this).css({"border-style":"none"});
   $(this).css({"border-color":"transparent"});
-  $(this).css({"border-width":"3px"});
+  $(this).css({"border-width":"4px"});
 }
 if($(this).hasClass('reserved')){
 $(this).css({"border-color":"red"});
-$(this).css({"border-width":"3px"});
+$(this).css({"border-width":"4px"});
 }
 });
 
@@ -418,25 +435,27 @@ $(this).css({"border-width":"3px"});
       $(function(){
           $('.free:not(#'+element.id+')').removeClass('active');
           if(!$('.free:not(#'+element.id+')').hasClass('reserved')){
+          $('.free:not(#'+element.id+')').css({"border-style":"none"});
           $('.free:not(#'+element.id+')').css({"border-color":"transparent"});
           $('.offer').css({"border-style":"dashed"});
-          $('.offer').css({"border-color":"black"});
-          $('.offer').css({"border-width":"3px"});
+          $('.offer').css({"border-color":"#999999"});
+          $('.offer').css({"border-width":"4px"});
         }
           $(element).addClass('active')
+          $(element).css({"border-style":"solid"});
           $(element).css({"border-color":"#2def30"});
-          $(element).css({"border-width":"3px"});
+          $(element).css({"border-width":"4px"});
 
           $('#preview').css("display","none");
           $('#preview').fadeIn();
           $('#preview-offer').css("display","none");
           $('#preview-offer').fadeIn();
       });
-          $("#adHeader").css({"color":"gray"});
+
           $('#offer-box').css("display","none");
           $('#popupDiv').css("display","none");
           $('#crop-offer').css("display","none");
-          $('#crop').css("display","inline-block");
+          $('#crop').css("display","block");
 
 if ($(element).hasClass('offer')) {
       var number = element.id.replace('offer', '')
@@ -477,8 +496,8 @@ if ($(element).hasClass('offer')) {
       if (typeof document.getElementById(element.id).children[0] != 'undefined' && !$(element).hasClass("offer")) {
           url = document.getElementById(element.id).children[0].src;
           $('#crop').cropit('imageSrc', url);
-      } else if (typeof document.getElementById(element.id).children[0].children[0] != 'undefined' && $(element).hasClass("offer")){
-        url = document.getElementById(element.id).children[0].children[0].src;
+      } else if (typeof document.getElementById(element.id).children[1].children[0] != 'undefined' && $(element).hasClass("offer")){
+        url = document.getElementById(element.id).children[1].children[0].src;
         $('#crop-offer').cropit('imageSrc', url);
 }
 }
@@ -487,9 +506,9 @@ function notify(element) {
 message('eventAdReserved');
 if($(element).hasClass('reserved')){
 $(element).css({"border-color":"red"});
-$(element).css({"border-width":"3px"});
+$(element).css({"border-width":"4px"});
 }
-$("#adHeader").css({"color":"red"});
+
 document.getElementById('adHeader').innerHTML="";
 document.getElementById('upload').style="visibility:hidden";
 document.getElementById('set').name="adUpload";

@@ -4,6 +4,14 @@
 
 <div class="container">
   <span class="msg msg-fail" id="msg"></span>
+  <div class="row" style="text-align:center">
+    <div class="twelve columns">
+      <h1>
+        Otteluohjelma
+      </h1>
+    </div>
+  </div>
+  <div class="shadow-box-register">
   <div class="row">
     <div class="twelve columns">
       <h4 style="margin-bottom:0">
@@ -45,7 +53,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="six columns">
+      <!--<div class="six columns">
         <label for="taso">
           Valitse taso
         </label>
@@ -54,7 +62,7 @@
           <option value="seura">Seura (11,99e/kk)</option>
           <option value="joukkue">Joukkue (6,99e/kk)</option>
         </select>
-      </div>
+      </div>-->
       <div class="six columns">
         <label for="laji">
           Urheilulaji
@@ -73,6 +81,7 @@
       </div>
     </form>
   </div>
+</div>
 </div>
 <script>
 $('form').submit(function(event){

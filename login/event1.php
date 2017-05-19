@@ -1,28 +1,30 @@
 <?php
-session_start();
-include 'dbh.php';
-if (!isset($_SESSION['id']) || !isset($_SESSION['teamId'])) {
-header("Location: index.php");
-}
-$_SESSION['event']['edit'] = true;
-$_SESSION['event']['homeName'] = $_SESSION['teamName'];
-if (!isset($_SESSION['event']['edit'])) {
-    header("Location: index.php");
-}
 
-include('inc/header.php');
+session_start();
+include ('dbh.php');
+include ('functions.php');
+include ('unset.php');
+include ('inc/header.php');
 ?>
 <link rel="stylesheet" href="inc/widgets/datepicker/classic.css">
 <link rel="stylesheet" href="inc/widgets/datepicker/classic.date.css">
-<script src="js/jquery.js"></script>
-<script src="js/main.js"></script>
 <script src="inc/widgets/datepicker/picker.js"></script>
 <script src="inc/widgets/datepicker/picker.date.js"></script>
 <script>
 datePicker();
 </script>
-<div class="container">
-  <div class="twelve columns" style="text-align:center" class="guide">
+<div class="header-bg"></div>
+<div class="container" style="padding-bottom:60px;">
+  <div class="row">
+    <div class="twelve columns">
+      <div class="section-header">
+      <h4>
+        Tapahtuma
+         </h4>
+       </div>
+    </div>
+  </div>
+  <div class="twelve columns" style="text-align:center;margin-top:35px;margin-bottom: 20px;">
   <div class="section1" style="background-color:#2bc9c9">
   <p class="guide-header">Tapahtuman tiedot</p>
   <a href="#" style="text-decoration:none">
@@ -77,7 +79,7 @@ datePicker();
     <span class="msg msg-fail" id="msg"></span>
   </div>
 </div>
-  <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
+  <div class="shadow-box2">
 <form id="form">
     <div class="twelve columns">
       <label for="eventName">Tapahtuman nimi</label>
@@ -94,7 +96,7 @@ datePicker();
         ?>">
 
       <label for="eventdate">Tapahtuman pvm</label>
-      <input maxlength="30" type="text" id="eventDate" value="<?php
+      <input maxlength="30" class="calendar" type="text" id="eventDate" value="<?php
       if (isset($_SESSION['event']['date'])) {
           echo $_SESSION['event']['date'];
       }

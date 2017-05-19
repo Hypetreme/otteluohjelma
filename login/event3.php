@@ -1,11 +1,9 @@
 <?php
 session_start();
-include 'dbh.php';
-if (!isset($_SESSION['id']) || !isset($_SESSION['event']['edit']) || !isset($_SESSION['teamId'])) {
-header("Location: index.php");
-}
-include('inc/header.php');
-include 'functions.php';
+include ('dbh.php');
+include ('functions.php');
+include ('unset.php');
+include ('inc/header.php');
 ?>
 
   <script>
@@ -27,7 +25,8 @@ include 'functions.php';
     var first = $('#firstName').val();
     var last = $('#lastName').val();
     var num = $('#number').val();
-    var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num, button: btn}, function(data) {
+    var visitorrole = $('#visitorrole').val();
+    var finish = $.post("functions.php", { addVisitor: "visitors", firstName : first, lastName : last, number : num, role: visitorrole, button: btn}, function(data) {
       if(data){
         console.log(data);
         $("#visitors").load(location.href + " #visitors");
@@ -53,6 +52,8 @@ include 'functions.php';
           '<input maxlength="30" id="lastName" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä sukunimi\')">',
           '<label for="firstName">Pelinumero</label>',
           '<input imaxlength="3" id="number" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä pelinumero\')">',
+          '<label for="visitorrole">Pelipaikka</label>',
+          '<input id="visitorrole" type="text">',
       ].join(''),
       buttons: [
           $.extend({}, vex.dialog.buttons.YES, { text: 'Lisää uusi'}),
@@ -69,8 +70,18 @@ include 'functions.php';
     });
 }
   </script>
-  <div class="container" style="padding-bottom:60px;">
-    <div class="twelve columns" style="text-align:center" class="guide">
+  <div class="header-bg"></div>
+<div class="container" style="padding-bottom:60px;">
+    <div class="row">
+      <div class="twelve columns">
+        <div class="section-header">
+        <h4>
+          Tapahtuma
+           </h4>
+         </div>
+      </div>
+    </div>
+    <div class="twelve columns" style="text-align:center;margin-top:35px;margin-bottom: 20px;">
 
     <div class="section1">
     <p class="guide-header">Tapahtuman tiedot</p>
@@ -126,7 +137,7 @@ include 'functions.php';
       <span class="msg msg-fail" id="msg"></span>
     </div>
   </div>
-    <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
+      <div class="shadow-box2">
       <div class="twelve columns" style="text-align: center">
         <div class="six columns">
         <form id="form">
@@ -196,9 +207,6 @@ $('#btnEvent4, #btnEvent5, #btnEvent6, #btnEvent7').click(function(event){
     var selected = ($(this).attr("id"));
     event.preventDefault();
     var visitor = $('#visitorName').val();
-    var first = $('#firstName').val();
-    var last = $('#lastName').val();
-    var num = $('#number').val();
     var finish = $.post("functions.php", { setVisitorTeam: "visitors", visitorName: visitor }, function(data) {
       if(data){
         console.log(data);

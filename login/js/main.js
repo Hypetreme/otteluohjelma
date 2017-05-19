@@ -1,4 +1,4 @@
-$(function() {
+/*$(function() {
 
     var moreNav = $('.more');
     var links = $(".more li");
@@ -61,12 +61,13 @@ $(function() {
         return false;
     });
 
-});
+});*/
 
 function datePicker() {
+    // Kalenteri
     $(document).ready(function() {
-        $("#eventDate").focus(function() {
-            $("#eventDate").pickadate({
+        $(".calendar").focus(function() {
+            $(".calendar").pickadate({
                 today: 'Tänään',
                 clear: '',
                 close: '',
@@ -84,6 +85,7 @@ function datePicker() {
 }
 
 function message(data, selected) {
+    // Ilmoitusten esitys
     var msg = document.getElementById("msg");
     var errorSymbol = '<i class="material-icons" style="margin-right:10px;vertical-align:-5px">warning</i>';
     var successSymbol = '<i class="material-icons" style="margin-right:10px;vertical-align:-5px">check</i>';
@@ -105,10 +107,17 @@ function message(data, selected) {
     } else if (data == "notActivated") {
         msg.className = "msg-fail";
         msg.innerHTML = errorSymbol + "Käyttäjätunnusta ei ole aktivoitu!";
+    } else if (data == "expired") {
+        msg.className = "msg-fail";
+        msg.innerHTML = errorSymbol + "Tilin käyttöaika on umpeutunut!";
     } else if (data == "loginSuccess") {
         msg.className = "msg-success";
         $("#msg").css("display", "none");
         window.location.href = "index.php";
+    } else if (data == "adminLoginSuccess") {
+        msg.className = "msg-success";
+        $("#msg").css("display", "none");
+        window.location.href = "control.php";
     }
     // Register
     else if (data == "duplicate") {
@@ -177,7 +186,7 @@ function message(data, selected) {
         vex.closeAll();
         msg.className = "msg-success";
         msg.innerHTML = successSymbol + "Pelaaja lisätty!";
-    } else if (data == "setPlayerSuccessful") {
+    } else if (data == "setPlayerSuccess") {
         msg.className = "msg-success";
         msg.innerHTML = successSymbol + "Kokoonpanon tiedot muutettu!";
         setTimeout(function() {
@@ -190,7 +199,7 @@ function message(data, selected) {
     } else if (data == "addPlayerClose") {
         $("#msg").css("display", "none");
     }
-    // Advertisements
+    // Advertisements, Pictures
     else if (data == "imgEmpty") {
         msg.innerHTML = errorSymbol + "Valitse ladattava kuva!";
     } else if (data == "imgInvalid") {
@@ -301,9 +310,30 @@ function message(data, selected) {
     } else if (data == "teamRemoveSuccess") {
         msg.className = "msg-fail";
         msg.innerHTML = successSymbol + "Joukkueen poistaminen epäonnistui!";
+    } else if (data == "userRemoveSuccess") {
+        msg.className = "msg-success";
+        msg.innerHTML = successSymbol + "Käyttäjä poistettu!";
+        $('.remove-btn').prop('disabled', true);
+        setTimeout(function() {
+            window.location.href = "control.php";
+        }, 1800);
+    } else if (data == "userRemoveFail") {
+        msg.className = "msg-fail";
+        msg.innerHTML = successSymbol + "Käyttäjän poistaminen epäonnistui!";
+    } else if (data == "setDateSuccess") {
+        msg.className = "msg-success";
+        msg.innerHTML = successSymbol + "Käyttäjien tiedot muutettu!";
+        setTimeout(function() {
+            window.location.href = "control.php";
+        }, 1800);
     }
     // Event
-    else if (data == "event1Empty") {
+    else if (data == "startEventFail") {
+        msg.innerHTML = errorSymbol + "Lisää joukkueen <a style='color:white' href='team.php'>Kokoonpano</a> ennen tapahtuman luomista!";
+    } else if (data == "startEventSuccess") {
+        $("#msg").css("display", "none");
+        window.location.href = "event1.php";
+    } else if (data == "event1Empty") {
         msg.innerHTML = errorSymbol + "Täytä kaikki tapahtuman tiedot!";
     } else if (data == "event1Success") {
         $("#msg").css("display", "none");
@@ -417,6 +447,7 @@ function message(data, selected) {
         msg.className = "msg-success";
         $("#msg").css("display", "none");
 
+        // QR-koodin luominen
         $("#cover").fadeIn().css("display", "initial");
         var url = window.location.href;
         url = url.substring(0, url.indexOf('event'));
@@ -429,13 +460,14 @@ function message(data, selected) {
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
         });
+        // Jakolinkit
         document.getElementById('facebook').children[0].setAttribute('data-href', url + 'inc/widgets/ottelu/index.php?eventId=' + selected);
         document.getElementById('facebook').children[0].children[0].href = 'https://www.facebook.com/sharer/sharer.php?u=' + url + 'inc/widgets/ottelu/index.php?eventId=' + selected + '&amp;src=sdkpreparse';
-        //https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.otteluohjelma.fi%2F&amp;src=sdkpreparse
         document.getElementById('twitter').children[0].setAttribute('href', 'https://twitter.com/intent/tweet?text=Tässä ottelumme käsiohjelma suoraan mobiliisi:' + url + 'inc/widgets/ottelu/index.php?eventId=' + selected + '&hashtags=otteluohjelma');
         document.getElementById('link').children[0].setAttribute('data-clipboard-text', url + 'inc/widgets/ottelu/index.php?eventId=' + selected);
-        document.getElementById('email').children[0].setAttribute('href', 'mailto:?subject:?body=' + url + 'inc/widgets/ottelu/index.php?eventId=' + selected);
+        document.getElementById('email').children[0].setAttribute('href', 'mailto:?subject=Otteluohjelma&body=Tässä ottelumme käsiohjelma suoraan mobiliisi:' + url + 'inc/widgets/ottelu/index.php?eventId=' + selected);
     } else {
-        msg.innerHTML = "Ilmoitus";
+        msg.className = "msg-fail";
+        msg.innerHTML = errorSymbol + "Tapahtui virhe!";
     }
 }

@@ -1,100 +1,23 @@
 <?php
 session_start();
-include 'dbh.php';
-if (!isset($_SESSION['id']) || !isset($_SESSION['event']['edit']) || !isset($_SESSION['teamId'])) {
-header("Location: index.php");
-}
-include ('inc/header.php');
-include 'functions.php';
+include('dbh.php');
+include('functions.php');
+include('unset.php');
+include('inc/header.php');
+
 ?>
-  <script type="text/javascript">
-    function removePlayer(id, first, last, num) {
-      //poistetaan näkyvistä valittu
-      document.getElementById(id).style = "display: none";
-      var element = document.getElementById(id);
-      var count = element.querySelectorAll("input")[0].name.match(/\d+/)[0];
-      var remNum = element.querySelectorAll("input")[0];
-      remNum.parentNode.removeChild(remNum);
-      var remFirst = element.querySelectorAll("input")[0];
-      remFirst.parentNode.removeChild(remFirst);
-      var remLast = element.querySelectorAll("input")[0];
-      remLast.parentNode.removeChild(remLast);
-
-      //määritetään table
-      var playerElement = document.getElementById("removedPlayers");
-      var tr = document.createElement("tr");
-      //voidaan lisää id suoraan tr:n
-      tr.id = id + "t";
-      tr.className += "removed";
-
-      playerElement.appendChild(tr);
-      //luodaan rowin jokanen kenttä
-      var td1 = document.createElement("td");
-      var td2 = document.createElement("td");
-      var td3 = document.createElement("td");
-      var td4 = document.createElement("td");
-      var td5 = document.createElement("td");
-
-      td1.innerHTML = '<i id="plus" style="font-size:25px;cursor: pointer;color:green" class="material-icons">add</i>';
-      //luodaan funktion kuuntelija
-      td1.addEventListener("click", function(){
-        movePlayer(id,count);
-      }, false);
-      td2.innerHTML = '<img alt="pelaajan kuva" style="width: 35px; vertical-align: middle;" src="images/logos/joukkue.png">';
-      td3.innerHTML = num;
-      td4.innerHTML = first;
-      td5.innerHTML = last;
-
-      tr.appendChild(td1);
-      tr.appendChild(td2);
-      tr.appendChild(td3);
-      tr.appendChild(td4);
-      tr.appendChild(td5);
-
-    }
-
-    function movePlayer(i,c) {
-      var id = i;
-      var element = document.getElementById(id);
-
-      var move = document.getElementById(id+"t");
-      move.parentNode.removeChild(move);
-
-
-      var num = document.createElement("input");
-      var value = move.querySelectorAll("td")[2].innerHTML;
-      num.type = "hidden";
-      num.name = "number"+c+"";
-      num.id = "number"+c+"";
-      num.className = "numbers";
-      num.value = value;
-
-      var first = document.createElement("input");
-      var value = move.querySelectorAll("td")[3].innerHTML;
-      first.type = "hidden";
-      first.name = "firstName"+c+"";
-      first.id = "firstName"+c+"";
-      first.className = "firstnames";
-      first.value = value;
-
-      var last = document.createElement("input");
-      var value = move.querySelectorAll("td")[4].innerHTML;
-      last.type = "hidden";
-      last.name = "lastName"+c+"";
-      last.id = "lastName"+c+"";
-      last.className = "lastnames";
-      last.value = value;
-
-      element.appendChild(num);
-      element.appendChild(first);
-      element.appendChild(last);
-
-      document.getElementById(id).style = "display: table-row";
-    }
-  </script>
-
-  <div class="container" style="padding-bottom:60px;">
-    <div class="twelve columns" style="text-align:center" class="guide">
+  <div class="header-bg"></div>
+<div class="container" style="padding-bottom:60px;">
+    <div class="row">
+      <div class="twelve columns">
+        <div class="section-header">
+        <h4>
+          Tapahtuma
+           </h4>
+         </div>
+      </div>
+    </div>
+    <div class="twelve columns" style="text-align:center;margin-top:35px;margin-bottom:20px;">
     <div class="section1">
     <p class="guide-header">Tapahtuman tiedot</p>
     <a href="event1.php" style="text-decoration:none">
@@ -104,7 +27,7 @@ include 'functions.php';
 
     <div class="section2" style="background-color:#2bc9c9">
     <p class="guide-header">Kotipelaajat</p>
-    <a href="event2.php" style="text-decoration:none">
+    <a href="#" style="text-decoration:none">
     <i class="material-icons guide">filter_2</i>
     </a></div>
     <div class="line" style="background-color:gray"></div>
@@ -150,25 +73,208 @@ include 'functions.php';
     </div>
   </div>
 
-    <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
+      <div class="shadow-box2">
+        <div class="twelve columns">
+        <label style="margin-left:4%;">Esitystapa</label>
+        <select id="display" style="margin-left:4%;" onchange="select()">
+          <option selected value="1">Lista</option>
+          <option value="2">Kentälliset</option>
+        </select>
+      </div>
 
-      <div class="six columns">
+        <div class="field six columns">
+          <div class="first-line shadow-box-position">
+          <h5 style="color:#6f6f67">
+            1. Kenttä
+          </h5>
+            <div class="position">
+              <div class="box">
+              </div>
+              <div class="position-info 1-1"><p>Hyökkääjä</p></div>
+          </div>
+          <div class="position">
+            <div class="box">
+            </div>
+            <div class="position-info 1-2"><p>Hyökkääjä</p></div>
+        </div>
+        <div class="position">
+          <div class="box">
+          </div>
+          <div class="position-info 1-3"><p>Hyökkääjä</p></div>
+      </div>
+      <div class="position">
+        <div class="box">
+        </div>
+        <div class="position-info 1-4"><p>Puolustaja</p></div>
+    </div>
+    <div class="position">
+      <div class="box">
+      </div>
+      <div class="position-info 1-5"><p>Puolustaja</p></div>
+  </div>
+        </div>
+<div class="second-line shadow-box-position">
+        <h5 style="color:#6f6f67">
+          2. Kenttä
+        </h5>
+          <div class="position">
+            <div class="box">
+            </div>
+            <div class="position-info 2-1"><p>Hyökkääjä</p></div>
+        </div>
+        <div class="position">
+          <div class="box">
+          </div>
+          <div class="position-info 2-2"><p>Hyökkääjä</p></div>
+      </div>
+      <div class="position">
+        <div class="box">
+        </div>
+        <div class="position-info 2-3"><p>Hyökkääjä</p></div>
+    </div>
+    <div class="position">
+      <div class="box">
+      </div>
+      <div class="position-info 2-4"><p>Puolustaja</p></div>
+  </div>
+  <div class="position">
+    <div class="box">
+    </div>
+    <div class="position-info 2-5"><p>Puolustaja</p></div>
+</div>
+      </div>
+      <div class="third-line shadow-box-position">
+              <h5 style="color:#6f6f67">
+                3. Kenttä
+              </h5>
+                <div class="position">
+                  <div class="box">
+                  </div>
+                  <div class="position-info 3-1"><p>Hyökkääjä</p></div>
+              </div>
+              <div class="position">
+                <div class="box">
+                </div>
+                <div class="position-info 3-2"><p>Hyökkääjä</p></div>
+            </div>
+            <div class="position">
+              <div class="box">
+              </div>
+              <div class="position-info 3-3"><p>Hyökkääjä</p></div>
+          </div>
+          <div class="position">
+            <div class="box">
+            </div>
+            <div class="position-info 3-4"><p>Puolustaja</p></div>
+        </div>
+        <div class="position">
+          <div class="box">
+          </div>
+          <div class="position-info 3-5"><p>Puolustaja</p></div>
+      </div>
+            </div>
+            <div class="fourth-line shadow-box-position">
+                    <h5 style="color:#6f6f67">
+                      4. Kenttä
+                    </h5>
+                      <div class="position">
+                        <div class="box">
+                        </div>
+                        <div class="position-info 4-1"><p>Hyökkääjä</p></div>
+                    </div>
+                    <div class="position">
+                      <div class="box">
+                      </div>
+                      <div class="position-info 4-2"><p>Hyökkääjä</p></div>
+                  </div>
+                  <div class="position">
+                    <div class="box">
+                    </div>
+                    <div class="position-info 4-3"><p>Hyökkääjä</p></div>
+                </div>
+                <div class="position">
+                  <div class="box">
+                  </div>
+                  <div class="position-info 4-4"><p>Puolustaja</p></div>
+              </div>
+              <div class="position">
+                <div class="box">
+                </div>
+                <div class="position-info 4-5"><p>Puolustaja</p></div>
+            </div>
+                  </div>
+                  <div class="fifth-line shadow-box-position">
+                          <h5 style="color:#6f6f67">
+                            5. Kenttä
+                          </h5>
+                            <div class="position">
+                              <div class="box">
+                              </div>
+                              <div class="position-info 5-1"><p>Hyökkääjä</p></div>
+                          </div>
+                          <div class="position">
+                            <div class="box">
+                            </div>
+                            <div class="position-info 5-2"><p>Hyökkääjä</p></div>
+                        </div>
+                        <div class="position">
+                          <div class="box">
+                          </div>
+                          <div class="position-info 5-3"><p>Hyökkääjä</p></div>
+                      </div>
+                      <div class="position">
+                        <div class="box">
+                        </div>
+                        <div class="position-info 5-4"><p>Puolustaja</p></div>
+                    </div>
+                    <div class="position">
+                      <div class="box">
+                      </div>
+                      <div class="position-info 5-5"><p>Puolustaja</p></div>
+                  </div>
+                        </div>
+                        <div class="goalie-line shadow-box-position">
+                                <h5 style="color:#6f6f67">
+                                  Maalivahdit
+                                </h5>
+                                  <div class="position">
+                                    <div class="box">
+                                    </div>
+                                    <div class="position-info 6-1"><p>Maalivahti</p></div>
+                                </div>
+                                <div class="position">
+                                  <div class="box">
+                                  </div>
+                                  <div class="position-info 6-2"><p>Maalivahti</p></div>
+                              </div>
+                              <div class="position">
+                                <div class="box">
+                                </div>
+                                <div class="position-info 6-3"><p>Maalivahti</p></div>
+                            </div>
+                              </div>
+        </div>
+      <div class="six columns out" style="width:44%;">
         <h5 style="color:#6f6f67">
           Poistetut pelaajat
         </h5>
-         <table class="u-full-width" id="removedPlayers">
+         <table class="u-full-width">
+           <tbody class="removed">
 
+         </tbody>
           </table>
       </div>
 
-      <div class="six columns">
+      <div class="six columns in" style="width:44%;">
         <h5 style="color:#6f6f67">
           Tapahtuman pelaajat
         </h5>
           <table class="u-full-width">
+            <tbody class="added">
           <?php
           listHomeTeam();
           ?>
+        </tbody>
         </table>
       </div>
     </div>
@@ -177,14 +283,18 @@ include 'functions.php';
      <input type="button" value="Takaisin" onclick="window.location='event1.php'"/>
       <input class="button-primary" type="submit" id="btnEvent3" value="Seuraava">
       </div>
+    <script src="js/drag.js"></script>
     <script>
+
     $('#btnEvent3, #btnEvent4, #btnEvent5, #btnEvent6, #btnEvent7').click(function(event){
         var selected = ($(this).attr("id"));
         event.preventDefault();
-        var numbers = $('input:hidden.numbers').serializeArray();
-        var firstnames = $('input:hidden.firstnames').serializeArray();
-        var lastnames = $('input:hidden.lastnames').serializeArray();
-        var finish = $.post("functions.php", { setHomeTeam: 'hometeam', homeNumbers: numbers, homeFirstNames: firstnames, homeLastNames: lastnames }, function(data) {
+        var numbers = $('.numbers.enabled').serializeArray();
+        var firstnames = $('.firstnames.enabled').serializeArray();
+        var lastnames = $('.lastnames.enabled').serializeArray();
+        var roles = $('.roles.enabled').serializeArray();
+        var positions = $('.positions.enabled').serializeArray();
+        var finish = $.post("functions.php", { setHomeTeam: 'hometeam', homeNumbers: numbers, homeFirstNames: firstnames, homeLastNames: lastnames, homeRoles: roles, homePositions: positions }, function(data) {
           if(data){
             console.log(data);
           }

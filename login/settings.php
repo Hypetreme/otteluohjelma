@@ -1,27 +1,22 @@
 <?php
-  session_start();
-  include('dbh.php');
-  if (isset($_SESSION['teamId'])) {
-      $teamId = $_SESSION['teamId'];
-  }
-  if (!isset($_SESSION['id'])) {
-      header("Location: index.php");
-  }
-  unset($_SESSION['event']);
-  include('functions.php');
-  include('inc/header.php');
+session_start();
+include ('dbh.php');
+include ('unset.php');
+include ('inc/header.php');
+include ('functions.php');
 ?>
-
+<div class="header-bg"></div>
   <div class="container">
     <span class="msg msg-fail" id="msg"></span>
     <div class="row" style="text-align:left">
       <div class="twelve columns">
-      <div style="float:left">
+        <div class="section-header">
         <h4>
         Asetukset
         </h4>
       </div>
         <?php
+        if ($_SESSION['type'] != 2) {
           $url = "";
           if (isset($_SESSION['teamId'])) {
               $team = 'team.php?teamId='.$_SESSION['teamId'];
@@ -30,7 +25,7 @@
             $url2 = 'location.href="my_events.php"';
             $url3 = 'location.href="guess.php"';
             $url4 = 'location.href="ads.php"';
-          echo '<div style="float:right">';
+          echo '<div>';
           if (isset($_SESSION['teamId'])) {
               echo '<button class="button-primary" onclick='.$url.'>Kokoonpano</button>';
           }
@@ -40,12 +35,12 @@
             }
             echo '<button class="button-primary" onclick='.$url4.'>Aseta Mainospaikat</button>';
             echo '</div>';
-
+}
         ?>
     </div>
     </div>
 
-    <div class="row">
+    <div class="shadow-box">
       <div class="six columns" style="float:left">
         <h5>Logo</h5>
         <form action="functions.php" method="post" enctype="multipart/form-data">
@@ -96,7 +91,11 @@
 
           </body>
         </table>
-      <button class="button-primary" onclick="window.location='edit_user.php'">Muokkaa</button>
+      <?php
+      if ($_SESSION['type'] != 2) {
+      echo '<button class="button-primary" onclick="window.location=\'edit_user.php\'">Muokkaa</button>';
+    }
+      ?>
 
       </div>
       </div>

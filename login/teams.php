@@ -1,21 +1,9 @@
 <?php
-  session_start();
-  include 'dbh.php';
-if (!isset($_SESSION['id'])) {
-header("Location: index.php");
-  }
-if (($_SESSION['type']==0)) {
-unset($_SESSION['teamId']);
-unset($_SESSION['teamUid']);
-unset($_SESSION['teamName']);
-} else {
-$teamId = $_SESSION['teamId'];
-header("Location: index.php");
-exit();
-}
-  unset($_SESSION['event']);
-  include('inc/header.php');
-  include('functions.php');
+session_start();
+include ('dbh.php');
+include ('unset.php');
+include ('inc/header.php');
+include ('functions.php');
 ?>
 
   <script type="text/javascript">
@@ -26,17 +14,18 @@ exit();
     event.preventDefault();
     event.stopPropagation();
 
-  if ($('#uid').val()!="" && $('#email').val()!="" && $('#pwd').val()!="" && $('#pwdConfirm').val()!="") {
+  if ($('#uid').val()!="" && $('#teamname').val()!="" && $('#email').val()!="" && $('#pwd').val()!="" && $('#pwdConfirm').val()!="") {
     if ($('.vex-first').hasClass("ok")) {
     var btn = "add"
   } else {
     var btn = "";
   }
     var username = $('#uid').val();
+    var teamname = $('#teamname').val();
     var emailaddress = $('#email').val();
     var pass = $('#pwd').val();
     var passconfirm = $('#pwdConfirm').val();
-    var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, email: emailaddress, pwdConfirm: passconfirm, button: btn }, function(data) {
+    var finish = $.post("functions.php", { register: 'register', pwd: pass, uid: username, name: teamname, email: emailaddress, pwdConfirm: passconfirm, button: btn }, function(data) {
       if(data){
         console.log(data);
         $("#teams").load(location.href + " #teams");
@@ -58,6 +47,8 @@ exit();
       input: [
           '<label for="uid">Käyttäjänimi</label>',
           '<input id="uid" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä käyttäjänimi\')">',
+          '<label for="teamname">Joukkueen nimi</label>',
+          '<input id="teamname" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä joukkueen nimi\')">',
           '<label for="email">Sähköposti</label>',
           '<input id="email" type="text" required="" valid. oninput="setCustomValidity(\'\')" oninvalid="this.setCustomValidity(\'Syötä sähköpostiosoite\')">',
           '<input id="fake1" style="display:none">',
@@ -83,19 +74,21 @@ exit();
 
 }
 </script>
-
+<div class="header-bg"></div>
   <div class="container">
   <span class="msg msg-fail" id="msg"></span>
     <div class="row">
       <div class="twelve columns">
+        <div class="section-header">
         <h4>
           Joukkueet
         </h4>
+      </div>
         <button type="button" class="button-primary" id="iconAddPlayer" style="position:relative;">Lisää</button>
       </div>
     </div>
 
-    <div class="row">
+    <div class="shadow-box2">
       <div class="twelve columns">
 <form id="form" action="functions.php" method="POST">
           <table id="teams" class='u-full-width'>

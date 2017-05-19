@@ -16,7 +16,10 @@ while ($row = $stmt->fetch()) {
     break;
   }
 }
+// Poista alla oleva rivi salliaksesi vain 1 äänestys per käyttäjä
 $answered = false;
+//--
+
   $stmt = $conn->prepare("SELECT answer from guess WHERE event_id = :eventid GROUP BY answer");
   $stmt->bindParam(':eventid', $eventId);
   $stmt->execute();
@@ -31,10 +34,10 @@ $answered = false;
       $most['player'][$i] = $row['answer'];
       $i++;
   }
-//Vaaditaan vähintään 3 eri vastausta graafin näyttämiseen
+// Vaaditaan vähintään 3 eri vastausta graafin näyttämiseen
 if (@$most['player'][0] != "" && @$most['player'][1] != "" && @$most['player'][2] != "" && $guessType != 4) {
     array_multisort($most['count'], SORT_DESC, $most['player'], SORT_DESC);
-//Asetetaan dataksi 5 äänestetyintä
+// Asetetaan dataksi 5 äänestetyintä
 for ($i=0;$i<5;$i++) {
     if (@$most['count'][$i] != "") {
         $choice = $most['player'][$i];

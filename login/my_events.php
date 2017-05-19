@@ -1,33 +1,45 @@
 <?php
-  session_start();
-  if (!isset($_SESSION['id'])) {
-    header("Location: index.php");
-  }
-  if (isset($_SESSION['teamId'])) {
-  $teamId = $_SESSION['teamId'];
-}
-  unset($_SESSION['event']);
-
-  include('inc/header.php');
-  include 'functions.php';
+session_start();
+include ('dbh.php');
+include ('unset.php');
+include ('inc/header.php');
+include ('functions.php');
 ?>
 
-  <script type="text/javascript">
-</script>
-
+<div class="header-bg"></div>
   <div class="container">
-
-
-
-    <div class="row">
+  <div class="row">
       <div class="twelve columns" >
-        <h4 style="position: relative;">
+        <div class="section-header">
+        <h4>
           Tapahtumat
         </h4>
       </div>
+        <?php
+          $url = "";
+          if (isset($_SESSION['teamId'])) {
+              $team = 'team.php?teamId='.$_SESSION['teamId'];
+              $url = 'location.href="'.$team.'"';
+          }
+            $url2 = 'location.href="my_events.php"';
+            $url3 = 'location.href="guess.php"';
+            $url4 = 'location.href="ads.php"';
+          echo '<div>';
+          if (isset($_SESSION['teamId'])) {
+              echo '<button class="button-primary" onclick='.$url.'>Kokoonpano</button>';
+          }
+            echo '<button class="button-primary" onclick='.$url2.'>Tapahtumasi</button>';
+            if (isset($_SESSION['teamId'])) {
+                echo '<button class="button-primary" onclick='.$url3.'>Kilpailut</button>';
+            }
+            echo '<button class="button-primary" onclick='.$url4.'>Aseta Mainospaikat</button>';
+            echo '</div>';
+
+        ?>
+      </div>
     </div>
 
-    <div class="row">
+    <div class="row shadow-box">
 
         <form id="form" action="functions.php" method="GET">
           <?php listEvents('all');

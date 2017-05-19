@@ -20,11 +20,13 @@
 
 
     echo '<meta property="og:title" content="'. $title .' :: Otteluohjelma.fi" />'; }?>
+    <link rel="manifest" href="/manifest.json">
     <title><?php echo $title .' :: Otteluohjelma.fi' ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta property="fb:app_id" content="184484190795"/>
     <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="/icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta property="fb:app_id" content="184484190795"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link href="css/quill.snow.css" rel="stylesheet">
@@ -43,7 +45,7 @@
 </head>
 <!-- Riippuen lajin tyypistä -->
 
-<body id="mainBody" class="background hockey">
+<body id="mainBody" class="background">
 
   <div class="content-wrapper" id="contentWrapper">
   <div class="up">

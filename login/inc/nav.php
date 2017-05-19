@@ -9,8 +9,11 @@
       </div>
     </div>
     <?php
+    if ($_SESSION['type'] != 2) {
+        echo '<div class="time"><p>Käyttöaikaa jäljellä '.$_SESSION['time'].' päivää</p></div>';
+    }
     if (isset($_SESSION)) {
-        if ($_SESSION['type'] == 0) {
+        if (!isset($_SESSION['teamId'])) {
             echo '<style>
       .navbar-link,.open-nav {
       color: white;
@@ -46,14 +49,14 @@
 
               if (isset($_SESSION['teamId'])) {
                   $profile = 'index.php?teamId=' . $_SESSION['teamId'];
+              } elseif ($_SESSION['type'] == 2) {
+                  $profile = 'control.php';
               } else {
                   $profile = 'index.php';
               }
 
-
-
           //defining variables
-          $team       =   'teams.php';
+              $team       =   'teams.php';
               $url        =   'location.href="'.$profile.'"';
               $id         =   $_SESSION['id'];
               $uid        =   $_SESSION['uid'];
@@ -61,8 +64,6 @@
                   $teamUid   =   $_SESSION['teamUid'];
                   $teamId     =   $_SESSION['teamId'];
               }
-
-
               $stmt = $conn->prepare("SELECT * FROM team WHERE user_id = :user_id");
               $stmt->bindParam(":user_id", $id);
               $stmt->execute();
@@ -114,7 +115,7 @@
           ?>
         <script type="text/javascript">
 
-          $(function(){
+          /*$(function(){
 
             var moreNav = $('.more');
             var links = $(".more li");
@@ -154,49 +155,32 @@
                 });
               });
             });
-
-
-          });
+          });*/
         </script>
-
-        <style>
-          .more li {
-            display: none;
-          }
-
-          .nav-joukkueet {
-           display: none;
-            position: absolute;
-            top: 10px;
-            left: 0px;
-            height: 42px;
-            border-top-left-radius: 0px;
-            border-bottom-left-radius: 0px;
-            width: 155px;
-          }
-        </style>
 
         <div class="more">
           <li class="navbar-item"><a class="navbar-link" onclick=' <?php echo $url ?>'>Etusivu</a></li>
           <?php
-          if (!isset($_SESSION['teamId'])) {
-              echo '<li class="navbar-item"><a class="navbar-link" href="teams.php">Joukkueet</a></li>';
-          } else {
-              echo '<li class="navbar-item"><a class="navbar-link" href="team.php?teamId='.$teamId.'">Kokoonpano</a></li>';
+          if ($_SESSION['type'] != 2) {
+              if (!isset($_SESSION['teamId'])) {
+                  echo '<li class="navbar-item"><a class="navbar-link" href="teams.php">Joukkueet</a></li>';
+              } else {
+                  echo '<li class="navbar-item"><a class="navbar-link" href="team.php?teamId='.$teamId.'">Kokoonpano</a></li>';
+              }
           }
           ?>
           <li class="navbar-item"><a class="navbar-link" onclick="location.href='settings.php'">Asetukset</a></li>
           <li class="navbar-item"><a class="navbar-link" onclick="location.href='goodbye.php'">Kirjaudu ulos</a></li>
         </div>
 
-        <select id="nav-joukkueet" name="nav-joukkueet" class="nav-joukkueet" onchange="location = this.value;">
+        <!--<select id="nav-joukkueet" name="nav-joukkueet" class="nav-joukkueet" onchange="location = this.value;">
           <option value="current" selected disabled>Valitse joukkue</option>
           <?php
-            foreach ($result as $row) {
+            /*foreach ($result as $row) {
                 echo "<option value='index.php?teamId=".$row['id']."'>".$row['name']."</option>";
-            }
+            }*/
           ?>
-        </select>
+        </select>-->
 
       </ul>
     </div>

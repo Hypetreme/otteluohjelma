@@ -1,18 +1,26 @@
 <?php
 session_start();
-include 'dbh.php';
-if (!isset($_SESSION['id']) || !isset($_SESSION['event']['edit']) || !isset($_SESSION['teamId'])) {
-header("Location: index.php");
-}
-
+include ('dbh.php');
+include ('functions.php');
+include ('unset.php');
 include ('inc/header.php');
 ?>
 
 <!-- Theme included stylesheets -->
 <link href="css/quill.snow.css" rel="stylesheet">
 
+<div class="header-bg"></div>
 <div class="container" style="padding-bottom:60px;">
-  <div class="twelve columns" style="text-align:center" class="guide">
+  <div class="row">
+    <div class="twelve columns">
+      <div class="section-header">
+      <h4>
+        Tapahtuma
+         </h4>
+       </div>
+    </div>
+  </div>
+  <div class="twelve columns" style="text-align:center;margin-top:35px;margin-bottom: 20px;">
 
   <div class="section1">
   <p class="guide-header">Tapahtuman tiedot</p>
@@ -66,11 +74,9 @@ include ('inc/header.php');
 
   <div class="row">
   </div>
-  <div class="row" style="border: solid 1px #D1D1D1;padding:15px;margin-top:20px">
-  <div class="row">
+  <div class="shadow-box2">
     <div id="toolbar"></div>
     <div id="editor" class="twelve columns" style="min-height:253px"></div>
-    </div>
   </div>
 </div>
 <div class="twelve columns event-buttons">
