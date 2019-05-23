@@ -1,7 +1,7 @@
-<?php
+﻿<?php
   session_start();
   include ('dbh.php');
-  include ('unset.php');
+  /*include ('unset.php');*/
   include('inc/header.php');
   include ('functions.php');
   getTeamName();

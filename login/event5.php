@@ -2,7 +2,6 @@
 session_start();
 include ('dbh.php');
 include ('functions.php');
-include ('unset.php');
 include ('inc/header.php');
 
 $teamId = $teamUid = "";

@@ -3,7 +3,6 @@
 session_start();
 include ('dbh.php');
 include ('functions.php');
-include ('unset.php');
 include ('inc/header.php');
 ?>
 <link rel="stylesheet" href="inc/widgets/datepicker/classic.css">

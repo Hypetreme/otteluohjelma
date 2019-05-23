@@ -36,6 +36,9 @@ type = tilin Tyyppi
  saved = pelaajat jotka aiotaan tallentaa tapahtumaan
 
 */
+set_include_path('inc/widgets/phpmailer/src/');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 date_default_timezone_set('Europe/Helsinki');
 function register() {
     if (!isset($_SESSION)) {
@@ -224,17 +227,20 @@ function sendEmail($mod, $uid, $pwd, $email, $hash) {
         $email = $row['email'];
         $hash  = $row['hash'];
     }
-    require 'inc/widgets/phpmailer/PHPMailerAutoload.php';
-    $mail = new PHPMailer;
-    // $mail->SMTPDebug = 3;                               // Enable verbose debug output
+    require 'inc/widgets/phpmailer/src/Exception.php';
+    require 'inc/widgets/phpmailer/src/PHPMailer.php';
+    require 'inc/widgets/phpmailer/src/SMTP.php';
+    $mail = new PHPMailer(true);
+    //$mail->SMTPDebug = 3;                               // Enable verbose debug output
     $mail->isSMTP(); // Set mailer to use SMTP
-    $mail->Host       = 'mail.zoner.fi'; // Specify main and backup SMTP servers
+    $mail->Host       = 'smtp.live.com'; // Specify main and backup SMTP servers
     $mail->SMTPAuth   = true; // Enable SMTP authentication
-    $mail->Username   = 'no_reply@otteluohjelma.fi'; // SMTP username
-    $mail->Password   = 'vWV1md6ils'; // SMTP password
+    $mail->Username   = 'er_aser@hotmail.com'; // SMTP username
+    $mail->Password   = 'sensei33'; // SMTP password
     $mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
     $mail->Port       = 587; // TCP port to connect to
-    $mail->SetFrom("no_reply@otteluohjelma.fi", "Otteluohjelma");
+    $mail->From = 'er_aser@hotmail.com';
+    //$mail->SetFrom("hypetremethewanderer@gmail.com", "Otteluohjelma");
     // $mail->AddReplyTo("vahvistus@otteluohjelma.fi", "Otteluohjelma");
     $mail->addAddress($email, $uid); // Add a recipient
     $mail->isHTML(true); // Set email format to HTML
