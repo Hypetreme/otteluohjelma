@@ -1,7 +1,9 @@
-﻿<?php
+<?php
   session_start();
+  if(!isset($_SESSION['id'])){
+    header("Location: login.php");
+}
   include ('dbh.php');
-  /*include ('unset.php');*/
   include('inc/header.php');
   include ('functions.php');
   getTeamName();

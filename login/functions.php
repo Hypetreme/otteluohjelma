@@ -231,6 +231,7 @@ function sendEmail($mod, $uid, $pwd, $email, $hash) {
     require 'inc/widgets/phpmailer/src/PHPMailer.php';
     require 'inc/widgets/phpmailer/src/SMTP.php';
     $mail = new PHPMailer(true);
+    $mail->CharSet = 'UTF-8';
     //$mail->SMTPDebug = 3;                               // Enable verbose debug output
     $mail->isSMTP(); // Set mailer to use SMTP
     $mail->Host       = 'smtp.live.com'; // Specify main and backup SMTP servers
@@ -1802,6 +1803,9 @@ function startEvent() {
     include 'dbh.php';
     if (!isset($_SESSION)) {
         session_start();
+    }
+    if (isset($_SESSION['event']['edit'])) {
+        unset($_SESSION['event']);
     }
     $teamId                        = $_SESSION['teamId'];
     $_SESSION['event']['homeName'] = $_SESSION['teamName'];

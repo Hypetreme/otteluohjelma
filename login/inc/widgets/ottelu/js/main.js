@@ -273,7 +273,7 @@ function doSomething(overview) {
             });
         }
     });
-    
+
     $('.on').on("click ", function() {
         if (this.id != "home") {
             $(".content-wrapper").css("margin-bottom", "54px");

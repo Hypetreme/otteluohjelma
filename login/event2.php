@@ -2,6 +2,7 @@
 session_start();
 include('dbh.php');
 include('functions.php');
+
 include('inc/header.php');
 
 ?>
@@ -73,13 +74,13 @@ include('inc/header.php');
   </div>
 
       <div class="shadow-box2">
-        <div class="twelve columns">
+      <!--  <div class="twelve columns">
         <label style="margin-left:4%;">Esitystapa</label>
         <select id="display" style="margin-left:4%;" onchange="select()">
           <option selected value="1">Lista</option>
           <option value="2">Kentälliset</option>
         </select>
-      </div>
+      </div> -->
 
         <div class="field six columns">
           <div class="first-line shadow-box-position">
@@ -253,7 +254,7 @@ include('inc/header.php');
                             </div>
                               </div>
         </div>
-      <div class="six columns out" style="width:44%;">
+      <!--<div class="six columns out" style="width:44%;">
         <h5 style="color:#6f6f67">
           Poistetut pelaajat
         </h5>
@@ -262,7 +263,7 @@ include('inc/header.php');
 
          </tbody>
           </table>
-      </div>
+      </div>-->
 
       <div class="six columns in" style="width:44%;">
         <h5 style="color:#6f6f67">

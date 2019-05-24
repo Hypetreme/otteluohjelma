@@ -11,7 +11,6 @@ include('pages/guess.php');
 include('pages/sponsors.php');
 include('pages/offer.php');
 include('pages/home.php');
-include('inc/notify.php');
 include('inc/nav.php');
 }
 ?>

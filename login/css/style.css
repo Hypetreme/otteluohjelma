@@ -930,7 +930,6 @@ hr {
 }
 
 .removed, .added {
-  min-height: 400px;
   display: block;
 }
 

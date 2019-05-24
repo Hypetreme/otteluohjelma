@@ -1,23 +1,18 @@
 /*$(function() {
-
     var moreNav = $('.more');
     var links = $(".more li");
     var moreNavBtn = $('.li-logo .open-nav');
     var changeTeam = $('.li-logo .change-team');
     var navJoukkueet = $('.nav-joukkueet');
-
     $(".navMoreBox").hide();
-
     $(document).on("click", function() {
         $(".navMoreBox").hide();
     });
-
     $(".navMore").on("click", function(e) {
         $(".navMoreBox").fadeIn("fast");
         e.stopPropagation();
         return false;
     });
-
     changeTeam.on("click", function() {
         navJoukkueet.css({
             "display": "inline-block",
@@ -29,38 +24,28 @@
             "border-bottom-left-radius": "0"
         });
     });
-
     moreNavBtn.on("click", function(e) {
-
         $(this).animate({
             "left": "8px"
         }, 160, function() {
-
             links.css({
                 "display": "inline-block",
                 "opacity": "0",
                 "margin-left": "-40px"
             });
-
             links.animate({
                 "opacity": "1",
                 "margin-left": "0px"
             }, 300, function() {
-
             });
-
             $(this).animate({
                 "left": "4px"
             }, 160, function() {
-
             });
-
         });
-
         e.stopPropagation();
         return false;
     });
-
 });*/
 
 function datePicker() {
