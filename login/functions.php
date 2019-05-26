@@ -236,13 +236,13 @@ function sendEmail($mod, $uid, $pwd, $email, $hash) {
     $mail->isSMTP(); // Set mailer to use SMTP
     $mail->Host       = 'smtp.live.com'; // Specify main and backup SMTP servers
     $mail->SMTPAuth   = true; // Enable SMTP authentication
-    $mail->Username   = 'er_aser@hotmail.com'; // SMTP username
-    $mail->Password   = 'sensei33'; // SMTP password
+    $mail->Username   = 'username'; // SMTP username
+    $mail->Password   = 'password'; // SMTP password
     $mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
     $mail->Port       = 587; // TCP port to connect to
     $mail->From = 'er_aser@hotmail.com';
-    //$mail->SetFrom("hypetremethewanderer@gmail.com", "Otteluohjelma");
-    // $mail->AddReplyTo("vahvistus@otteluohjelma.fi", "Otteluohjelma");
+    $mail->SetFrom("vahvistus@otteluohjelma.fi", "Otteluohjelma");
+    $mail->AddReplyTo("vahvistus@otteluohjelma.fi", "Otteluohjelma");
     $mail->addAddress($email, $uid); // Add a recipient
     $mail->isHTML(true); // Set email format to HTML
     $mail->Subject = 'Otteluohjelma: Vahvistus';
